@@ -37,7 +37,6 @@ const HistoryLog = (props) => {
         fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json')
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 const fetchedList = [];
                 for (let key in data) {
                     fetchedList.push({
