@@ -1,36 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// import Box from '@material-ui/core/Box';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+
+import Form from './Form';
 
 
+const ExpenseForm = () => {
+    const [expenseForm, setExpenseForm] = useState({
+        From: '',
+        To: '',
+        Comment: '',
+        Date: '',
+        Amount: ''
+    });
 
-const ExpenseForm = (props) => {
+    const [expenseList, setExpenseList] = useState([]);
+
+    const expenseFormSubmitHandler = (event) => {
+        event.preventDefault();
+        console.log("Expense form submitted: ")
+        console.log(expenseForm);
+
+        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json', {
+            method: "POST",
+            body: JSON.stringify(expenseForm)
+        })
+            .then(response => {
+                setExpenseList([
+                    ...expenseList,
+                    expenseForm
+                ]);
+                setExpenseForm({
+                    From: '',
+                    To: '',
+                    Comment: '',
+                    Date: '',
+                    Amount: ''
+                });
+                console.log(expenseList)
+            })
+    };
+
+    const updateFormHandler = (event, formKey) => {
+        setExpenseForm({
+            ...expenseForm,
+            [formKey]: event.target.value
+        });
+    };
+
+
     return (
-        <Grid container>
-            <form onSubmit={props.formSubmitHandler}>
-                <Grid item>
-                    <TextField label="From" variant="outlined" margin="normal" value={props.expenseForm.from} onChange={e => props.setExpenseForm({ ...props.expenseForm, from: e.target.value })} />
-                </Grid>
-                <Grid item>
-                    <TextField label="To" variant="outlined" margin="normal" value={props.expenseForm.to} onChange={e => props.setExpenseForm({ ...props.expenseForm, to: e.target.value })} />
-                </Grid>
-                <Grid item>
-                    <TextField label="Comment" variant="outlined" margin="normal" value={props.expenseForm.comment} onChange={e => props.setExpenseForm({ ...props.expenseForm, comment: e.target.value })} />
-                </Grid>
-                <Grid item>
-                    <TextField label="Date" variant="outlined" margin="normal" value={props.expenseForm.date} onChange={e => props.setExpenseForm({ ...props.expenseForm, date: e.target.value })} />
-                </Grid>
-                <Grid item >
-                    <TextField label="Amount" variant="outlined" margin="normal" value={props.expenseForm.amount} onChange={e => props.setExpenseForm({ ...props.expenseForm, amount: e.target.value })} />
-                </Grid>
-                <Grid item>
-                    <Button type="submit" variant="contained" color="secondary" >Add Expense</Button>
-                </Grid>
-            </form>
-        </Grid>
+        <Box>
+            <Form form={expenseForm} updateForm={updateFormHandler} formSubmitHandler={expenseFormSubmitHandler} btnName="expense" />
+        </Box>
     )
 };
 

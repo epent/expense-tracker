@@ -75,8 +75,8 @@ const HistoryLog = (props) => {
         return <Grid item key={expense.id}>
             <Card className={classes.root}><CardContent>
                 <Box >
-                    <Typography color="secondary" variant="h6">{`${expense.from} --> ${expense.to} ${expense.amount} ILS ${expense.date}`}</Typography>
-                    <Typography color="textSecondary" variant="body1">{expense.comment}</Typography>
+                    <Typography color="secondary" variant="h6">{`${expense.From} --> ${expense.To} ${expense.Amount} ILS ${expense.date}`}</Typography>
+                    <Typography color="textSecondary" variant="body1">{expense.Comment}</Typography>
                 </Box>
             </CardContent>
             </Card>

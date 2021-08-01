@@ -11,40 +11,7 @@ import Typography from '@material-ui/core/Typography';
 
 
 const MainContent = () => {
-    const [expenseForm, setExpenseForm] = useState({
-        from: '',
-        to: '',
-        comment: '',
-        date: '',
-        amount: ''
-    });
 
-    const [expenseList, setExpenseList] = useState([]);
-
-    const expenseFormSubmitHandler = (event) => {
-        event.preventDefault();
-        console.log("Expense form submitted: ")
-        console.log(expenseForm);
-
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json', {
-            method: "POST",
-            body: JSON.stringify(expenseForm)
-        })
-            .then(response => {
-                setExpenseList([
-                    ...expenseList,
-                    expenseForm
-                ]);
-                setExpenseForm({
-                    from: '',
-                    to: '',
-                    comment: '',
-                    date: '',
-                    amount: ''
-                });
-                console.log(expenseList)
-            })
-    };
 
     const [incomeForm, setIncomeForm] = useState({
         from: '',
@@ -83,7 +50,7 @@ const MainContent = () => {
             <Typography variant="h3" gutterBottom color="secondary">
                 Expenses
             </Typography>
-            <ExpenseForm formSubmitHandler={expenseFormSubmitHandler} expenseForm={expenseForm} setExpenseForm={setExpenseForm} />
+            <ExpenseForm />
             <Typography variant="h3" gutterBottom color="primary">
                 Income
             </Typography>
