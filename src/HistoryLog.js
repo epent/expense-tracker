@@ -27,7 +27,10 @@ const HistoryLog = (props) => {
         loading: true
     });
 
-
+    const [transferLog, setTransferLog] = useState({
+        transferList: [],
+        loading: true
+    });
 
 
     useEffect(() => {
@@ -68,6 +71,25 @@ const HistoryLog = (props) => {
                     loading: false
                 })
             })
+
+        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                const fetchedList = [];
+                for (let key in data) {
+                    fetchedList.push({
+                        ...data[key],
+                        id: key
+                    })
+                }
+
+                setTransferLog({
+                    ...transferLog,
+                    transferList: fetchedList,
+                    loading: false
+                })
+            })
     }, []);
 
     let fetchedExpenseList = <p>Loading...</p>
@@ -75,7 +97,7 @@ const HistoryLog = (props) => {
         return <Grid item key={expense.id}>
             <Card className={classes.root}><CardContent>
                 <Box >
-                    <Typography color="secondary" variant="h6">{`${expense.From} --> ${expense.To} ${expense.Amount} ILS ${expense.date}`}</Typography>
+                    <Typography color="secondary" variant="h6">{`${expense.From} --> ${expense.To} ${expense.Amount} ILS ${expense.Date}`}</Typography>
                     <Typography color="textSecondary" variant="body1">{expense.Comment}</Typography>
                 </Box>
             </CardContent>
@@ -96,13 +118,32 @@ const HistoryLog = (props) => {
         </Grid>
     })
 
+    let fetchedTransferList;
+
+    if (!transferLog.loading) fetchedTransferList = transferLog.transferList.map(transfer => {
+        return <Grid item key={transfer.id}>
+            <Card className={classes.root}><CardContent>
+                <Box >
+                    <Typography color="textSecondary" variant="h6">{`${transfer.From} --> ${transfer.To} ${transfer.Amount} ILS ${transfer.Date}`}</Typography>
+                    <Typography color="textSecondary" variant="body1">{transfer.Comment}</Typography>
+                </Box>
+            </CardContent></Card>
+        </Grid>
+    })
+
     return (
         <Box>
+            <Typography variant="h3" gutterBottom color="textSecondary">
+                History
+            </Typography>
             <Grid container spacing={2}>
                 {fetchedExpenseList}
             </Grid>
             <Grid container spacing={2}>
                 {fetchedIncomeList}
+            </Grid>
+            <Grid container spacing={2}>
+                {fetchedTransferList}
             </Grid>
         </Box>
     )

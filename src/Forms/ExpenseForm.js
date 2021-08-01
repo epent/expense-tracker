@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 import Form from './Form';
 
@@ -51,6 +52,9 @@ const ExpenseForm = () => {
 
     return (
         <Box>
+            <Typography variant="h3" gutterBottom color="secondary">
+                Expenses
+            </Typography>
             <Form form={expenseForm} updateForm={updateFormHandler} formSubmitHandler={expenseFormSubmitHandler} btnName="expense" btnColor="secondary" />
         </Box>
     )

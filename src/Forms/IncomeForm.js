@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
 
 import Form from './Form';
 
@@ -43,7 +44,10 @@ const IncomeForm = (props) => {
 
     return (
         <Box>
-            <Form form={incomeForm} updateForm={updateFormHandler} formSubmitHandler={inputFormSubmitHandler} btnName="income" btnColor="primary"/>
+            <Typography variant="h3" gutterBottom color="primary">
+                Income
+            </Typography>
+            <Form form={incomeForm} updateForm={updateFormHandler} formSubmitHandler={inputFormSubmitHandler} btnName="income" btnColor="primary" />
         </Box>
     )
 };

@@ -10,6 +10,8 @@ import SideBar from './SideBar';
 import MainContent from './MainContent';
 import ExpenseForm from './Forms/ExpenseForm';
 import IncomeForm from './Forms/IncomeForm';
+import TransferForm from './Forms/TransferForm';
+import HistoryLog from './HistoryLog';
 
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -36,10 +38,11 @@ const theme = createTheme({
 
 let routes = (
   <Switch>
-    {/* <Route path="/accounts" component={}/> */}
-    <Route path="/expenses" component={ExpenseForm}/>
-    <Route path="/income" component={IncomeForm}/>
-    {/* <Route path="/history" component={}/> */}
+    <Route path="/home" component={MainContent} />
+    <Route path="/expenses" component={ExpenseForm} />
+    <Route path="/income" component={IncomeForm} />
+    <Route path="/transfers" component={TransferForm} />
+    <Route path="/history" component={HistoryLog} />
   </Switch>
 );
 
@@ -47,18 +50,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Switch>
-          <Grid container>
-            <Grid item xs={4}>
-                <SideBar />
-            </Grid>
-            <Grid item xs={8}>
-              <Route path="/main">
-                <MainContent />
-              </Route>
-            </Grid>
+        <Grid container>
+          <Grid item xs={4}>
+            <SideBar />
           </Grid>
-        </Switch>
+          <Grid item xs={8}>
+            {routes}
+          </Grid>
+        </Grid>
       </Router>
     </ThemeProvider>
   );
