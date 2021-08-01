@@ -17,7 +17,7 @@ const Form = (props) => {
         <Grid container>
             <form onSubmit={props.formSubmitHandler}>
                 {form}
-                <Button type="submit" variant="contained" color="secondary" >Add {props.btnName}</Button>
+                <Button type="submit" variant="contained" color={props.btnColor}>Add {props.btnName}</Button>
             </form>
         </Grid>
     )
