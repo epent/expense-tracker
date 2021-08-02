@@ -7,9 +7,9 @@ import {
 
 import SideBar from './SideBar';
 import MainContent from './MainContent';
-import ExpenseForm from './Forms/ExpenseForm';
-import IncomeForm from './Forms/IncomeForm';
-import TransferForm from './Forms/TransferForm';
+import Expenses from './Expenses';
+import Income from './Income';
+import Transfers from './Transfers';
 import AccountForm from './Forms/AccountForm';
 import HistoryLog from './HistoryLog';
 
@@ -40,9 +40,9 @@ let routes = (
   <Switch>
     <Route path="/home" component={MainContent} />
     <Route path="/accounts" component={AccountForm} />
-    <Route path="/expenses" component={ExpenseForm} />
-    <Route path="/income" component={IncomeForm} />
-    <Route path="/transfers" component={TransferForm} />
+    <Route path="/expenses" component={Expenses} />
+    <Route path="/income" component={Income} />
+    <Route path="/transfers" component={Transfers} />
     <Route path="/history" component={HistoryLog} />
   </Switch>
 );

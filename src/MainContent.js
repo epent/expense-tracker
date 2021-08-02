@@ -1,8 +1,8 @@
 import React from 'react';
 
-import ExpenseForm from './Forms/ExpenseForm';
-import IncomeForm from './Forms/IncomeForm';
-import TransferForm from './Forms/TransferForm';
+import Expenses from './Expenses';
+import Income from './Income';
+import Transfers from './Transfers';
 import HistoryLog from './HistoryLog';
 
 import Box from '@material-ui/core/Box';
@@ -10,9 +10,9 @@ import Box from '@material-ui/core/Box';
 const MainContent = () => {
     return (
         <Box>
-            <ExpenseForm />
-            <IncomeForm />
-            <TransferForm />
+            <Expenses />
+            <Income />
+            <Transfers />
             <HistoryLog />
         </Box>
     )

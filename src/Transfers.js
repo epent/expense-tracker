@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import Form from './Form';
+import Form from './Forms/Form';
 
-const TransferForm = (props) => {
+const Transfers = (props) => {
     const [transferForm, setTransferForm] = useState({
         From: '',
         To: '',
@@ -52,4 +52,4 @@ const TransferForm = (props) => {
     )
 };
 
-export default TransferForm;
+export default Transfers;

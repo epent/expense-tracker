@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import Form from './Form';
+import Form from './Forms/Form';
 
 
-const ExpenseForm = () => {
+const Expenses = () => {
     const [expenseForm, setExpenseForm] = useState({
         From: '',
         To: '',
@@ -60,4 +60,4 @@ const ExpenseForm = () => {
     )
 };
 
-export default ExpenseForm;
+export default Expenses;

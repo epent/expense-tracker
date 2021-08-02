@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
-import Form from './Form';
+import Form from './Forms/Form';
 
-const IncomeForm = (props) => {
+const Income = (props) => {
     const [incomeForm, setIncomeForm] = useState({
         From: '',
         To: '',
@@ -52,4 +52,4 @@ const IncomeForm = (props) => {
     )
 };
 
-export default IncomeForm;
+export default Income;
