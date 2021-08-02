@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 import Form from './Form';
+import Accounts from '../Accounts';
 
 
 const AccountForm = () => {
@@ -52,6 +53,7 @@ const AccountForm = () => {
                 New Account
             </Typography>
             <Form form={accountForm} updateForm={updateFormHandler} formSubmitHandler={accountFormSubmitHandler} btnName="save account" btnColor="secondary" />
+            <Accounts />
         </Box>
     )
 };
