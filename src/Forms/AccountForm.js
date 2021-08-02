@@ -14,28 +14,25 @@ const AccountForm = () => {
         Balance: ''
     });
 
-    const [accountList, setAccountList] = useState([]);
+
 
     const accountFormSubmitHandler = (event) => {
         event.preventDefault();
         console.log("Expense form submitted: ")
         console.log(accountForm);
 
+
         fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json', {
             method: "POST",
             body: JSON.stringify(accountForm)
         })
             .then(response => {
-                setAccountList([
-                    ...accountList,
-                    accountForm
-                ]);
                 setAccountForm({
                     Name: '',
                     Category: '',
                     Balance: ''
                 });
-                console.log(accountList)
+                
             })
     };
 
