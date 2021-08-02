@@ -47,7 +47,7 @@ const IncomeForm = (props) => {
             <Typography variant="h3" gutterBottom color="primary">
                 Income
             </Typography>
-            <Form form={incomeForm} updateForm={updateFormHandler} formSubmitHandler={inputFormSubmitHandler} btnName="income" btnColor="primary" />
+            <Form form={incomeForm} updateForm={updateFormHandler} formSubmitHandler={inputFormSubmitHandler} btnName="add income" btnColor="primary" />
         </Box>
     )
 };

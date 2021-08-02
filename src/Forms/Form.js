@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 
 const Form = (props) => {
     let form = Object.keys(props.form).map(formKey => {
-        return <Grid item>
+        return <Grid item key={formKey}>
             <TextField label={formKey} variant="outlined" margin="normal" value={props.form[formKey]} onChange={e => props.updateForm(e, formKey)} />
         </Grid>
     })
@@ -17,7 +17,7 @@ const Form = (props) => {
         <Grid container>
             <form onSubmit={props.formSubmitHandler}>
                 {form}
-                <Button type="submit" variant="contained" color={props.btnColor}>Add {props.btnName}</Button>
+                <Button type="submit" variant="contained" color={props.btnColor}>{props.btnName}</Button>
             </form>
         </Grid>
     )

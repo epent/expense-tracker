@@ -55,7 +55,7 @@ const ExpenseForm = () => {
             <Typography variant="h3" gutterBottom color="secondary">
                 Expenses
             </Typography>
-            <Form form={expenseForm} updateForm={updateFormHandler} formSubmitHandler={expenseFormSubmitHandler} btnName="expense" btnColor="secondary" />
+            <Form form={expenseForm} updateForm={updateFormHandler} formSubmitHandler={expenseFormSubmitHandler} btnName="add expense" btnColor="secondary" />
         </Box>
     )
 };

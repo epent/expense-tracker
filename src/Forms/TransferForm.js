@@ -47,7 +47,7 @@ const TransferForm = (props) => {
             <Typography variant="h3" gutterBottom color="textSecondary">
                 Transfer
             </Typography>
-            <Form form={transferForm} updateForm={updateFormHandler} formSubmitHandler={transferFormSubmitHandler} btnName="transfer" btnColor="primary" />
+            <Form form={transferForm} updateForm={updateFormHandler} formSubmitHandler={transferFormSubmitHandler} btnName="add transfer" btnColor="primary" />
         </Box>
     )
 };

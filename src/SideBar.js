@@ -9,11 +9,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import { makeStyles } from '@material-ui/core/styles';
 
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import CreditCardIcon from '@material-ui/icons/CreditCard';
 import HistoryIcon from '@material-ui/icons/History';
 import HomeIcon from '@material-ui/icons/Home';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
-import MailIcon from '@material-ui/icons/Mail';
 import MoneyIcon from '@material-ui/icons/Money';
 
 
@@ -63,6 +63,12 @@ const SideBar = () => {
                         <ListItemIcon><HomeIcon /></ListItemIcon>
                         <Link href="/home" variant="body1" underline="none">
                             Home
+                        </Link>
+                    </ListItem>
+                    <ListItem button>
+                        <ListItemIcon><AccountBalanceIcon /></ListItemIcon>
+                        <Link href="/accounts" variant="body1" underline="none">
+                            Accounts
                         </Link>
                     </ListItem>
                     <ListItem button>
