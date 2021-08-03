@@ -5,15 +5,23 @@ import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+    root: {
+        width: 300,
+    }
+});
+
 
 
 const Accounts = () => {
+    const classes = useStyles();
+
     const [accountLog, setAccountLog] = useState({
         accountList: [],
         loading: true
     });
-
-
 
     useEffect(() => {
         fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
@@ -43,10 +51,9 @@ const Accounts = () => {
         fetchedBankAccountList = accountLog.accountList.filter(account => account.Category === 'Bank account')
             .map(account => {
                 return <Grid item key={account.id}>
-                    <Card><CardContent>
-                        <Box >
-                            <Typography color="textSecondary" variant="h6">{`${account.Name} ${account.Balance} ILS`}</Typography>
-                        </Box>
+                    <Card className={classes.root} variant="outlined"><CardContent>
+                        <Typography color="textSecondary" variant="h6" align="left">{`${account.Name}`}</Typography>
+                        <Typography color="textSecondary" variant="h6" align="right">{`${account.Balance} ILS`}</Typography>
                     </CardContent></Card>
                 </Grid>
             });
@@ -58,10 +65,9 @@ const Accounts = () => {
         fetchedCreditCardList = accountLog.accountList.filter(account => account.Category === 'Credit Card')
             .map(account => {
                 return <Grid item key={account.id}>
-                    <Card><CardContent>
-                        <Box >
-                            <Typography color="textSecondary" variant="h6">{`${account.Name} ${account.Balance} ILS`}</Typography>
-                        </Box>
+                    <Card className={classes.root} variant="outlined"><CardContent>
+                        <Typography color="textSecondary" variant="h6" align="left">{`${account.Name}`}</Typography>
+                        <Typography color="textSecondary" variant="h6" align="right">{`${account.Balance} ILS`}</Typography>
                     </CardContent></Card>
                 </Grid>
             });
@@ -73,10 +79,9 @@ const Accounts = () => {
         fetchedCashList = accountLog.accountList.filter(account => account.Category === 'Cash')
             .map(account => {
                 return <Grid item key={account.id}>
-                    <Card><CardContent>
-                        <Box >
-                            <Typography color="textSecondary" variant="h6">{`${account.Name} ${account.Balance} ILS`}</Typography>
-                        </Box>
+                    <Card className={classes.root} variant="outlined"><CardContent>
+                        <Typography color="textSecondary" variant="h6" align="left">{`${account.Name}`}</Typography>
+                        <Typography color="textSecondary" variant="h6" align="right">{`${account.Balance} ILS`}</Typography>
                     </CardContent></Card>
                 </Grid>
             });
@@ -85,17 +90,23 @@ const Accounts = () => {
     return (
         <Box>
             <Typography variant="h5" gutterBottom color="primary">
-                Bank Account
+                Bank Accounts
             </Typography>
-            {fetchedBankAccountList}
+            <Grid container spacing={2}>
+                {fetchedBankAccountList}
+            </Grid>
             <Typography variant="h5" gutterBottom color="primary">
-                Credit Card
+                Credit Cards
             </Typography>
-            {fetchedCreditCardList}
+            <Grid container spacing={2}>
+                {fetchedCreditCardList}
+            </Grid>
             <Typography variant="h5" gutterBottom color="primary">
                 Cash
             </Typography>
-            {fetchedCashList}
+            <Grid container spacing={2}>
+                {fetchedCashList}
+            </Grid>
         </Box>
     )
 };

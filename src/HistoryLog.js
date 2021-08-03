@@ -95,9 +95,17 @@ const HistoryLog = (props) => {
     if (!expenseLog.loading) fetchedExpenseList = expenseLog.expenseList.map(expense => {
         return <Grid item key={expense.id}>
             <Card className={classes.root}><CardContent>
+                <Box display="inline" pr={3}>
+                    <Typography color="textSecondary" variant="body1" display="inline">{expense.Date}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="secondary" variant="h6" display="inline">{`${expense.From} --> ${expense.To}`}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="secondary" variant="h6" display="inline">{`- ${expense.Amount} ILS`}</Typography>
+                </Box>
                 <Box >
-                    <Typography color="secondary" variant="h6">{`${expense.From} --> ${expense.To} ${expense.Amount} ILS ${expense.Date}`}</Typography>
-                    <Typography color="textSecondary" variant="body1">{expense.Comment}</Typography>
+                    <Typography color="textSecondary" variant="body1" >{expense.Comment}</Typography>
                 </Box>
             </CardContent>
             </Card>
@@ -109,8 +117,16 @@ const HistoryLog = (props) => {
     if (!incomeLog.loading) fetchedIncomeList = incomeLog.incomeList.map(income => {
         return <Grid item key={income.id}>
             <Card className={classes.root}><CardContent>
+                <Box display="inline" pr={3}>
+                    <Typography color="textSecondary" variant="body1" display="inline">{`${income.Date}`}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="primary" variant="h6" display="inline">{`${income.From} --> ${income.To}`}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="primary" variant="h6" display="inline" >{`+ ${income.Amount} ILS`}</Typography>
+                </Box>
                 <Box >
-                    <Typography color="primary" variant="h6">{`${income.From} --> ${income.To} ${income.Amount} ILS ${income.Date}`}</Typography>
                     <Typography color="textSecondary" variant="body1">{income.Comment}</Typography>
                 </Box>
             </CardContent></Card>
@@ -122,8 +138,16 @@ const HistoryLog = (props) => {
     if (!transferLog.loading) fetchedTransferList = transferLog.transferList.map(transfer => {
         return <Grid item key={transfer.id}>
             <Card className={classes.root}><CardContent>
+                <Box display="inline" pr={3}>
+                    <Typography color="textSecondary" variant="body1" display="inline">{`${transfer.Date}`}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="textSecondary" variant="h6" display="inline">{`${transfer.From} --> ${transfer.To}`}</Typography>
+                </Box>
+                <Box display="inline" pr={3}>
+                    <Typography color="textSecondary" variant="h6" display="inline">{`${transfer.Amount} ILS`}</Typography>
+                </Box>
                 <Box >
-                    <Typography color="textSecondary" variant="h6">{`${transfer.From} --> ${transfer.To} ${transfer.Amount} ILS ${transfer.Date}`}</Typography>
                     <Typography color="textSecondary" variant="body1">{transfer.Comment}</Typography>
                 </Box>
             </CardContent></Card>
@@ -138,7 +162,7 @@ const HistoryLog = (props) => {
             <Grid container spacing={2}>
                 {fetchedExpenseList}
             </Grid>
-            <Grid container spacing={2}>
+            <Grid container xs={12} spacing={2}>
                 {fetchedIncomeList}
             </Grid>
             <Grid container spacing={2}>

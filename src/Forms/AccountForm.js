@@ -20,11 +20,11 @@ const AccountForm = (props) => {
 
     return (
         <Box>
-            <Typography variant="h3" gutterBottom color="secondary">
+            <Accounts />
+            <Typography variant="h4" gutterBottom color="secondary">
                 New Account
             </Typography>
             <Form form={props.accountForm} updateForm={updateFormHandler} formSubmitHandler={props.accountFormSubmitHandler} btnName="save account" btnColor="secondary" />
-            <Accounts />
         </Box>
     )
 };
