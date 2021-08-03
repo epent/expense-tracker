@@ -7,38 +7,12 @@ import Form from './Form';
 import Accounts from '../Accounts';
 
 
-const AccountForm = () => {
-    const [accountForm, setAccountForm] = useState({
-        Name: '',
-        Category: '',
-        Balance: ''
-    });
+const AccountForm = (props) => {
 
-
-
-    const accountFormSubmitHandler = (event) => {
-        event.preventDefault();
-        console.log("Expense form submitted: ")
-        console.log(accountForm);
-
-
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json', {
-            method: "POST",
-            body: JSON.stringify(accountForm)
-        })
-            .then(response => {
-                setAccountForm({
-                    Name: '',
-                    Category: '',
-                    Balance: ''
-                });
-                
-            })
-    };
 
     const updateFormHandler = (event, formKey) => {
-        setAccountForm({
-            ...accountForm,
+        props.setAccountForm({
+            ...props.accountForm,
             [formKey]: event.target.value
         });
     };
@@ -49,7 +23,7 @@ const AccountForm = () => {
             <Typography variant="h3" gutterBottom color="secondary">
                 New Account
             </Typography>
-            <Form form={accountForm} updateForm={updateFormHandler} formSubmitHandler={accountFormSubmitHandler} btnName="save account" btnColor="secondary" />
+            <Form form={props.accountForm} updateForm={updateFormHandler} formSubmitHandler={props.accountFormSubmitHandler} btnName="save account" btnColor="secondary" />
             <Accounts />
         </Box>
     )
