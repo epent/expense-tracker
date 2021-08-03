@@ -39,66 +39,74 @@ const theme = createTheme({
 
 
 function App() {
-  const [expenses, setExpenses] = useState({
-    expenseForm: {
-      From: '',
-      To: '',
-      Amount: '',
-      Date: '',
-      Comment: ''
-    },
-    expenseList: []
+  const [expenseForm, setExpenseForm] = useState({
+    From: '',
+    To: '',
+    Amount: 0,
+    Date: '',
+    Comment: ''
   });
 
   const [accountForm, setAccountForm] = useState({
     Name: '',
     Category: '',
-    Balance: ''
+    Balance: 0
   });
 
+  const fetchedAccountList = [];
 
-  const addExpenseHandler = (event) => {
+  // add new expense
+  const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
     console.log("Expense form submitted: ")
-    console.log(expenses);
+    console.log(expenseForm);
 
+    // post new expenseForm to server
     fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json', {
       method: "POST",
-      body: JSON.stringify(expenses.expenseForm)
+      body: JSON.stringify(expenseForm)
     })
-      .then(response => {
-        const currentExpenseList = [...expenses.expenseList];
-        currentExpenseList.push(expenses.expenseForm);
 
-        setExpenses({
-          ...expenses,
-          expenseForm: {
-            From: '',
-            To: '',
-            Amount: '',
-            Date: '',
-            Comment: ''
-          }
-        });
-      })
-
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json')
+    // fetch accountList from server
+    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
       .then(response => response.json())
       .then(data => {
-        const fetchedExpenseList = [];
+
         for (let key in data) {
-          fetchedExpenseList.push({
+          fetchedAccountList.push({
             ...data[key],
             id: key
           })
         }
 
-        setExpenses({
-          ...expenses,
-          expenseList: fetchedExpenseList
-        });
+        console.log(fetchedAccountList);
       })
 
+      // update accountBalance after new expense
+      .then(response => {
+        const account = fetchedAccountList.filter(account => account.Name === expenseForm.From);
+        const updatedAccount = {
+          Name: 'Bank',
+          Category: 'Bank Account',
+          Balance: (account[0].Balance) - (expenseForm.Amount)
+        };
+        const accountId = account[0].id;
+
+        // post changed balance to server
+        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
+          method: "PATCH",
+          body: JSON.stringify(updatedAccount)
+        })
+          .then(response => {
+            setExpenseForm({
+              From: '',
+              To: '',
+              Amount: '',
+              Date: '',
+              Comment: ''
+            });
+          })
+      })
   };
 
   const accountFormSubmitHandler = (event) => {
@@ -106,21 +114,11 @@ function App() {
     console.log("Expense form submitted: ")
     console.log(accountForm);
 
-
     fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json', {
       method: "POST",
       body: JSON.stringify(accountForm)
     })
       .then(response => {
-        const currentAccounts = [...accountForm];
-        console.log(currentAccounts)
-
-        currentAccounts.push(accountForm);
-        console.log(currentAccounts)
-
-        setAccountForm(...accountForm, currentAccounts);
-        console.log(accountForm)
-
         setAccountForm({
           Name: '',
           Category: '',
@@ -136,7 +134,7 @@ function App() {
         <AccountForm accountForm={accountForm} accountFormSubmitHandler={accountFormSubmitHandler} setAccountForm={setAccountForm} />
       </Route>
       <Route path="/expenses">
-        <Expenses expenseForm={expenses.expenseForm} expenseFormSubmitHandler={addExpenseHandler} setExpenseForm={setExpenses} />
+        <Expenses expenseForm={expenseForm} expenseFormSubmitHandler={expenseFormSubmitHandler} setExpenseForm={setExpenseForm} />
       </Route>
       <Route path="/income" component={Income} />
       <Route path="/transfers" component={Transfers} />
