@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import SideBar from './SideBar';
-import MainContent from './MainContent';
+import Home from './Home';
 import Expenses from './Expenses';
 import Income from './Income';
 import Transfers from './Transfers';
@@ -262,7 +262,13 @@ function App() {
 
   let routes = (
     <Switch>
-      <Route path="/home" component={MainContent} />
+      <Route path="/home">
+        <Home
+          expenseForm={expenseForm} expenseFormSubmitHandler={expenseFormSubmitHandler} setExpenseForm={setExpenseForm}
+          incomeForm={incomeForm} inputFormSubmitHandler={inputFormSubmitHandler} setIncomeForm={setIncomeForm}
+          transferForm={transferForm} transferFormSubmitHandler={transferFormSubmitHandler} setTransferForm={setTransferForm}
+        />
+      </Route>
       <Route path="/accounts">
         <AccountForm accountForm={accountForm} accountFormSubmitHandler={accountFormSubmitHandler} setAccountForm={setAccountForm} />
       </Route>
