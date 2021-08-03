@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -7,8 +7,6 @@ import Form from './Forms/Form';
 
 
 const Expenses = (props) => {
-    
-
     const updateFormHandler = (event, formKey) => {
         props.setExpenseForm({
             ...props.expenseForm,

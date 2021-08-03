@@ -47,6 +47,14 @@ function App() {
     Comment: ''
   });
 
+  const [incomeForm, setIncomeForm] = useState({
+    From: '',
+    To: '',
+    Amount: 0,
+    Date: '',
+    Comment: ''
+  });
+
   const [accountForm, setAccountForm] = useState({
     Name: '',
     Category: '',
@@ -86,8 +94,6 @@ function App() {
       .then(response => {
         const account = fetchedAccountList.filter(account => account.Name === expenseForm.From);
         const updatedAccount = {
-          Name: 'Bank',
-          Category: 'Bank Account',
           Balance: (account[0].Balance) - (expenseForm.Amount)
         };
         const accountId = account[0].id;
@@ -101,7 +107,58 @@ function App() {
             setExpenseForm({
               From: '',
               To: '',
-              Amount: '',
+              Amount: 0,
+              Date: '',
+              Comment: ''
+            });
+          })
+      })
+  };
+
+  const inputFormSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log("Income form submitted: ")
+    console.log(incomeForm);
+
+    // post new incomeForm to server
+    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json', {
+      method: "POST",
+      body: JSON.stringify(incomeForm)
+    })
+
+    // fetch accountList from server
+    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
+      .then(response => response.json())
+      .then(data => {
+
+        for (let key in data) {
+          fetchedAccountList.push({
+            ...data[key],
+            id: key
+          })
+        }
+
+        console.log(fetchedAccountList);
+      })
+
+      // update accountBalance after new income
+      .then(response => {
+        const account = fetchedAccountList.filter(account => account.Name === incomeForm.To);
+        const updatedAccount = {
+          Balance: Number(account[0].Balance) + Number(incomeForm.Amount)
+        };
+        const accountId = account[0].id;
+
+        // post changed balance to server
+        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
+          method: "PATCH",
+          body: JSON.stringify(updatedAccount)
+        })
+          .then(response => {
+            setIncomeForm({
+              From: '',
+              To: '',
+              Amount: 0,
               Date: '',
               Comment: ''
             });
@@ -136,7 +193,9 @@ function App() {
       <Route path="/expenses">
         <Expenses expenseForm={expenseForm} expenseFormSubmitHandler={expenseFormSubmitHandler} setExpenseForm={setExpenseForm} />
       </Route>
-      <Route path="/income" component={Income} />
+      <Route path="/income">
+        <Income incomeForm={incomeForm} inputFormSubmitHandler={inputFormSubmitHandler} setIncomeForm={setIncomeForm} />
+      </Route>
       <Route path="/transfers" component={Transfers} />
       <Route path="/history" component={HistoryLog} />
     </Switch>
