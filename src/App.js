@@ -70,6 +70,8 @@ function App() {
 
   const fetchedAccountList = [];
 
+  const fetchedCategoryList = [];
+
   // add new expense
   const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
@@ -107,11 +109,11 @@ function App() {
           (account) => account.Name === expenseForm.From
         );
         const updatedAccount = {
-          Balance: account[0].Balance - expenseForm.Amount,
+          Balance: Number(account[0].Balance) - Number(expenseForm.Amount),
         };
         const accountId = account[0].id;
 
-        // post changed balance to server
+        // post changed accountBalance to server
         fetch(
           "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
             accountId +
@@ -119,6 +121,44 @@ function App() {
           {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
+          }
+        );
+      });
+
+    // fetch categoryList from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let key in data) {
+          fetchedCategoryList.push({
+            ...data[key],
+            id: key,
+          });
+        }
+
+        console.log(fetchedCategoryList);
+      })
+
+      // update categoryBalance after new expense
+      .then((response) => {
+        const category = fetchedCategoryList.filter(
+          (category) => category.Name === expenseForm.To
+        );
+        const updatedCategory = {
+          Balance: Number(category[0].Balance) + Number(expenseForm.Amount),
+        };
+        const categoryId = category[0].id;
+
+        // post changed categoryBalance to server
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
+            categoryId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedCategory),
           }
         ).then((response) => {
           setExpenseForm({
