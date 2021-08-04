@@ -278,6 +278,7 @@ function App() {
       });
   };
 
+  // add new account
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
     console.log("Expense form submitted: ");
@@ -298,11 +299,13 @@ function App() {
     });
   };
 
+  // add new category
   const categoryFormSubmitHandler = (event) => {
     event.preventDefault();
     console.log("Category form submitted: ");
     console.log(categoryForm);
 
+    //  post new categoryForm to server
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json",
       {
