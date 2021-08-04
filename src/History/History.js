@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -54,9 +54,8 @@ const History = (props) => {
                 </Typography>
               </Box>
             </CardContent>
-            <Button variant="contained" >
-              edit
-            </Button>
+            <Button variant="contained">edit</Button>
+            <Button variant="contained" onClick={() => props.deleteTransaction(transaction.id, transaction.Amount, transaction.From, transaction.To)}>delete</Button>
           </Card>
         </Grid>
       );
