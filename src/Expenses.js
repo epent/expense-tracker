@@ -14,6 +14,8 @@ const Expenses = (props) => {
 
   const fetchedAccountList = [];
 
+  const fetchedCategoryList = [];
+
   useEffect(() => {
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json"
@@ -43,7 +45,12 @@ const Expenses = (props) => {
     });
   };
 
-  const deleteExpenseHandler = (expenseId, expenseAmount, expenseFrom) => {
+  const deleteExpenseHandler = (
+    expenseId,
+    expenseAmount,
+    expenseFrom,
+    expenseTo
+  ) => {
     const updatedExpenseLog = expenseLog.expenseList.filter(
       (expense) => expense.id !== expenseId
     );
@@ -95,6 +102,42 @@ const Expenses = (props) => {
           {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
+          }
+        );
+      });
+
+    // fetch categoryList from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let key in data) {
+          fetchedCategoryList.push({
+            ...data[key],
+            id: key,
+          });
+        }
+      })
+
+      // update categoryBalance after new expense
+      .then((response) => {
+        const category = fetchedCategoryList.filter(
+          (category) => category.Name === expenseTo
+        );
+        const updatedCategory = {
+          Balance: Number(category[0].Balance) - Number(expenseAmount),
+        };
+        const categoryId = category[0].id;
+
+        // post changed categoryBalance to server
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
+            categoryId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedCategory),
           }
         );
       });
