@@ -60,7 +60,7 @@ const Categories = (props) => {
   if (!categoryLog.loading)
     categoryList = categoryLog.categoryList.map((category) => {
       return (
-        <ListItem>
+        <ListItem key={category.id}>
           <Grid item className={classes.root}>
             <Box pr={2}>
               <Typography color="textSecondary" variant="h6" align="left">

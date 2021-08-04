@@ -7,7 +7,7 @@ import Expenses from "./Expenses";
 import Income from "./Income";
 import Transfers from "./Transfers";
 import AccountForm from "./Forms/AccountForm";
-import HistoryLog from "./HistoryLog";
+import HistoryLog from "./History/HistoryLog";
 import Categories from "./Categories";
 
 import Grid from "@material-ui/core/Grid";
