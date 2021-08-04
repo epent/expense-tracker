@@ -1,72 +1,65 @@
-import React, { useState } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import SideBar from './SideBar';
-import Home from './Home';
-import Expenses from './Expenses';
-import Income from './Income';
-import Transfers from './Transfers';
-import AccountForm from './Forms/AccountForm';
-import HistoryLog from './HistoryLog';
+import SideBar from "./SideBar";
+import Home from "./Home";
+import Expenses from "./Expenses";
+import Income from "./Income";
+import Transfers from "./Transfers";
+import AccountForm from "./Forms/AccountForm";
+import HistoryLog from "./HistoryLog";
 
-
-import Grid from '@material-ui/core/Grid';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import Grid from "@material-ui/core/Grid";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#a5d6a7',
-      main: '#43a047',
-      dark: '#2e7d32'
+      light: "#a5d6a7",
+      main: "#43a047",
+      dark: "#2e7d32",
     },
     secondary: {
-      light: '#ce93d8',
-      main: '#ab47bc',
-      dark: '#2e7d32'
+      light: "#ce93d8",
+      main: "#ab47bc",
+      dark: "#2e7d32",
     },
     action: {
-      active: '#ce93d8',
-      hover: '#ce93d8'
-    }
-  }
+      active: "#ce93d8",
+      hover: "#ce93d8",
+    },
+  },
 });
-
-
 
 function App() {
   const [expenseForm, setExpenseForm] = useState({
-    From: '',
-    To: '',
+    From: "",
+    To: "",
     Amount: 0,
-    Date: '',
-    Comment: ''
+    Date: "",
+    Comment: "",
   });
 
   const [incomeForm, setIncomeForm] = useState({
-    From: '',
-    To: '',
+    From: "",
+    To: "",
     Amount: 0,
-    Date: '',
-    Comment: ''
+    Date: "",
+    Comment: "",
   });
 
   const [transferForm, setTransferForm] = useState({
-    From: '',
-    To: '',
+    From: "",
+    To: "",
     Amount: 0,
-    Date: '',
-    Comment: ''
+    Date: "",
+    Comment: "",
   });
 
   const [accountForm, setAccountForm] = useState({
-    Name: '',
-    Category: '',
-    Balance: 0
+    Name: "",
+    Category: "",
+    Balance: 0,
   });
 
   const fetchedAccountList = [];
@@ -74,212 +67,273 @@ function App() {
   // add new expense
   const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Expense form submitted: ")
+    console.log("Expense form submitted: ");
     console.log(expenseForm);
 
     // post new expenseForm to server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json', {
-      method: "POST",
-      body: JSON.stringify(expenseForm)
-    })
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json",
+      {
+        method: "POST",
+        body: JSON.stringify(expenseForm),
+      }
+    );
 
     // fetch accountList from server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
-      .then(response => response.json())
-      .then(data => {
-
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
         for (let key in data) {
           fetchedAccountList.push({
             ...data[key],
-            id: key
-          })
+            id: key,
+          });
         }
 
         console.log(fetchedAccountList);
       })
 
       // update accountBalance after new expense
-      .then(response => {
-        const account = fetchedAccountList.filter(account => account.Name === expenseForm.From);
+      .then((response) => {
+        const account = fetchedAccountList.filter(
+          (account) => account.Name === expenseForm.From
+        );
         const updatedAccount = {
-          Balance: (account[0].Balance) - (expenseForm.Amount)
+          Balance: account[0].Balance - expenseForm.Amount,
         };
         const accountId = account[0].id;
 
         // post changed balance to server
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
-          method: "PATCH",
-          body: JSON.stringify(updatedAccount)
-        })
-          .then(response => {
-            setExpenseForm({
-              From: '',
-              To: '',
-              Amount: 0,
-              Date: '',
-              Comment: ''
-            });
-          })
-      })
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+            accountId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedAccount),
+          }
+        ).then((response) => {
+          setExpenseForm({
+            From: "",
+            To: "",
+            Amount: 0,
+            Date: "",
+            Comment: "",
+          });
+        });
+      });
   };
 
   // add new income
   const inputFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Income form submitted: ")
+    console.log("Income form submitted: ");
     console.log(incomeForm);
 
     // post new incomeForm to server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json', {
-      method: "POST",
-      body: JSON.stringify(incomeForm)
-    })
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json",
+      {
+        method: "POST",
+        body: JSON.stringify(incomeForm),
+      }
+    );
 
     // fetch accountList from server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
-      .then(response => response.json())
-      .then(data => {
-
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
         for (let key in data) {
           fetchedAccountList.push({
             ...data[key],
-            id: key
-          })
+            id: key,
+          });
         }
 
         console.log(fetchedAccountList);
       })
 
       // update accountBalance after new income
-      .then(response => {
-        const account = fetchedAccountList.filter(account => account.Name === incomeForm.To);
+      .then((response) => {
+        const account = fetchedAccountList.filter(
+          (account) => account.Name === incomeForm.To
+        );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(incomeForm.Amount)
+          Balance: Number(account[0].Balance) + Number(incomeForm.Amount),
         };
         const accountId = account[0].id;
 
         // post changed balance to server
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
-          method: "PATCH",
-          body: JSON.stringify(updatedAccount)
-        })
-          .then(response => {
-            setIncomeForm({
-              From: '',
-              To: '',
-              Amount: 0,
-              Date: '',
-              Comment: ''
-            });
-          })
-      })
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+            accountId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedAccount),
+          }
+        ).then((response) => {
+          setIncomeForm({
+            From: "",
+            To: "",
+            Amount: 0,
+            Date: "",
+            Comment: "",
+          });
+        });
+      });
   };
 
   // add new transfer
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Transfer form submitted: ")
+    console.log("Transfer form submitted: ");
     console.log(transferForm);
 
     // post new transferForm to server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json', {
-      method: "POST",
-      body: JSON.stringify(transferForm)
-    })
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json",
+      {
+        method: "POST",
+        body: JSON.stringify(transferForm),
+      }
+    );
 
     // fetch accountList from server
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json')
-      .then(response => response.json())
-      .then(data => {
-
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
         for (let key in data) {
           fetchedAccountList.push({
             ...data[key],
-            id: key
-          })
+            id: key,
+          });
         }
 
         console.log(fetchedAccountList);
       })
 
       // update accountBalanceFrom after new transfer
-      .then(response => {
-        const account = fetchedAccountList.filter(account => account.Name === transferForm.From);
+      .then((response) => {
+        const account = fetchedAccountList.filter(
+          (account) => account.Name === transferForm.From
+        );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) - Number(transferForm.Amount)
+          Balance: Number(account[0].Balance) - Number(transferForm.Amount),
         };
         const accountId = account[0].id;
 
         // post changed balance to server
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
-          method: "PATCH",
-          body: JSON.stringify(updatedAccount)
-        })
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+            accountId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedAccount),
+          }
+        );
       })
 
       // update accountBalanceTo after new transfer
-      .then(response => {
-        const account = fetchedAccountList.filter(account => account.Name === transferForm.To);
+      .then((response) => {
+        const account = fetchedAccountList.filter(
+          (account) => account.Name === transferForm.To
+        );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(transferForm.Amount)
+          Balance: Number(account[0].Balance) + Number(transferForm.Amount),
         };
         const accountId = account[0].id;
 
         // post changed balance to server
-        fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/' + accountId + '.json', {
-          method: "PATCH",
-          body: JSON.stringify(updatedAccount)
-        })
-          .then(response => {
-            setTransferForm({
-              From: '',
-              To: '',
-              Amount: 0,
-              Date: '',
-              Comment: ''
-            });
-          })
-      })
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+            accountId +
+            ".json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedAccount),
+          }
+        ).then((response) => {
+          setTransferForm({
+            From: "",
+            To: "",
+            Amount: 0,
+            Date: "",
+            Comment: "",
+          });
+        });
+      });
   };
 
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Expense form submitted: ")
+    console.log("Expense form submitted: ");
     console.log(accountForm);
 
-    fetch('https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json', {
-      method: "POST",
-      body: JSON.stringify(accountForm)
-    })
-      .then(response => {
-        setAccountForm({
-          Name: '',
-          Category: '',
-          Balance: ''
-        });
-      })
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json",
+      {
+        method: "POST",
+        body: JSON.stringify(accountForm),
+      }
+    ).then((response) => {
+      setAccountForm({
+        Name: "",
+        Category: "",
+        Balance: "",
+      });
+    });
   };
 
   let routes = (
     <Switch>
       <Route path="/home">
         <Home
-          expenseForm={expenseForm} expenseFormSubmitHandler={expenseFormSubmitHandler} setExpenseForm={setExpenseForm}
-          incomeForm={incomeForm} inputFormSubmitHandler={inputFormSubmitHandler} setIncomeForm={setIncomeForm}
-          transferForm={transferForm} transferFormSubmitHandler={transferFormSubmitHandler} setTransferForm={setTransferForm}
+          expenseForm={expenseForm}
+          expenseFormSubmitHandler={expenseFormSubmitHandler}
+          setExpenseForm={setExpenseForm}
+          incomeForm={incomeForm}
+          inputFormSubmitHandler={inputFormSubmitHandler}
+          setIncomeForm={setIncomeForm}
+          transferForm={transferForm}
+          transferFormSubmitHandler={transferFormSubmitHandler}
+          setTransferForm={setTransferForm}
         />
       </Route>
       <Route path="/accounts">
-        <AccountForm accountForm={accountForm} accountFormSubmitHandler={accountFormSubmitHandler} setAccountForm={setAccountForm} />
+        <AccountForm
+          accountForm={accountForm}
+          accountFormSubmitHandler={accountFormSubmitHandler}
+          setAccountForm={setAccountForm}
+        />
       </Route>
       <Route path="/expenses">
-        <Expenses expenseForm={expenseForm} expenseFormSubmitHandler={expenseFormSubmitHandler} setExpenseForm={setExpenseForm} />
+        <Expenses
+          expenseForm={expenseForm}
+          expenseFormSubmitHandler={expenseFormSubmitHandler}
+          setExpenseForm={setExpenseForm}
+        />
       </Route>
       <Route path="/income">
-        <Income incomeForm={incomeForm} inputFormSubmitHandler={inputFormSubmitHandler} setIncomeForm={setIncomeForm} />
+        <Income
+          incomeForm={incomeForm}
+          inputFormSubmitHandler={inputFormSubmitHandler}
+          setIncomeForm={setIncomeForm}
+        />
       </Route>
       <Route path="/transfers">
-        <Transfers transferForm={transferForm} transferFormSubmitHandler={transferFormSubmitHandler} setTransferForm={setTransferForm} />
+        <Transfers
+          transferForm={transferForm}
+          transferFormSubmitHandler={transferFormSubmitHandler}
+          setTransferForm={setTransferForm}
+        />
       </Route>
       <Route path="/history" component={HistoryLog} />
     </Switch>
