@@ -8,6 +8,7 @@ import Income from "./Income";
 import Transfers from "./Transfers";
 import AccountForm from "./Forms/AccountForm";
 import HistoryLog from "./HistoryLog";
+import Categories from "./Categories";
 
 import Grid from "@material-ui/core/Grid";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -59,6 +60,11 @@ function App() {
   const [accountForm, setAccountForm] = useState({
     Name: "",
     Category: "",
+    Balance: 0,
+  });
+
+  const [categoryForm, setCategoryForm] = useState({
+    Name: "",
     Balance: 0,
   });
 
@@ -292,6 +298,25 @@ function App() {
     });
   };
 
+  const categoryFormSubmitHandler = (event) => {
+    event.preventDefault();
+    console.log("Category form submitted: ");
+    console.log(categoryForm);
+
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json",
+      {
+        method: "POST",
+        body: JSON.stringify(categoryForm),
+      }
+    ).then((response) => {
+      setCategoryForm({
+        Name: "",
+        Balance: 0,
+      });
+    });
+  };
+
   let routes = (
     <Switch>
       <Route path="/home">
@@ -336,6 +361,13 @@ function App() {
         />
       </Route>
       <Route path="/history" component={HistoryLog} />
+      <Route path="/categories">
+        <Categories
+          categoryForm={categoryForm}
+          categoryFormSubmitHandler={categoryFormSubmitHandler}
+          setCategoryForm={setCategoryForm}
+        />
+      </Route>
     </Switch>
   );
 
