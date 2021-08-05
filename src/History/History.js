@@ -1,7 +1,8 @@
 import React from "react";
 
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
@@ -54,8 +55,18 @@ const History = (props) => {
                 </Typography>
               </Box>
             </CardContent>
-            <Button variant="contained">edit</Button>
-            <Button variant="contained" onClick={() => props.deleteTransaction(transaction.id, transaction.Amount, transaction.From, transaction.To)}>delete</Button>
+            <IconButton>
+              <DeleteIcon
+                onClick={() =>
+                  props.deleteTransaction(
+                    transaction.id,
+                    transaction.Amount,
+                    transaction.From,
+                    transaction.To
+                  )
+                }
+              />
+            </IconButton>
           </Card>
         </Grid>
       );

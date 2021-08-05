@@ -7,7 +7,6 @@ import AccountHistory from "./AccountHistory";
 const AccountLog = () => {
   const [accountLog, setAccountLog] = useState({
     accountList: [],
-    loading: true,
   });
 
   useEffect(() => {
@@ -27,16 +26,39 @@ const AccountLog = () => {
         setAccountLog({
           ...accountLog,
           accountList: fetchedList,
-          loading: false,
         });
 
         console.log(fetchedList);
       });
   }, []);
 
+  const deleteAccountHandler = (accountId) => {
+    const updatedExpenseLog = accountLog.accountList.filter(
+      (expense) => expense.id !== accountId
+    );
+
+    setAccountLog({
+      ...accountLog,
+      accountList: updatedExpenseLog,
+    });
+
+    // delete account from db
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+        accountId +
+        ".json",
+      {
+        method: "DELETE",
+      }
+    );
+  };
+
   return (
     <Box>
-      <AccountHistory accounts={accountLog.accountList} />
+      <AccountHistory
+        accounts={accountLog.accountList}
+        deleteAccount={deleteAccountHandler}
+      />
     </Box>
   );
 };
