@@ -21,165 +21,130 @@ const AccountLog = () => {
     loading: true,
   });
 
-  const accountNames = [];
-  const fetchedAccountList = [];
-
   useEffect(() => {
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let accountName in data) {
-          accountNames.push(accountName);
+        const fetchedList = [];
+        for (let key in data) {
+          fetchedList.push({
+            ...data[key],
+            id: key,
+          });
         }
-        console.log(accountNames);
-      })
-      .then((response) => {
-        accountNames.map((accountName) => {
-          fetch(
-            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-              accountName +
-              ".json"
-          )
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
 
-
-              setAccountLog({
-                ...accountLog,
-                accountList: Array(data),
-                loading: false,
-              });
-            });
+        setAccountLog({
+          ...accountLog,
+          accountList: fetchedList,
+          loading: false,
         });
+
+        console.log(fetchedList);
       });
   }, []);
 
-  let accountList = <p>Loading...</p>;
+  let fetchedBankAccountList = <p>Loading...</p>;
 
-  // if (!accountLog.loading) {
-  //   accountList = accountLog.accountList
-  //     .map((category) => {
-  //       return (
-  //         [Array(category)].map((account) => {
-  //           return (
-  //             <Grid item key={account.id}>
-  //               <Card className={classes.root} variant="outlined">
-  //                 <CardContent>
-  //                   <Typography
-  //                     color="textSecondary"
-  //                     variant="h6"
-  //                     align="left"
-  //                   >{`${account.Name}`}</Typography>
-  //                   <Typography
-  //                     color="textSecondary"
-  //                     variant="h6"
-  //                     align="right"
-  //                   >{`${account.Balance} ILS`}</Typography>
-  //                 </CardContent>
-  //               </Card>
-  //             </Grid>
-  //           );
-  //         })
-  //       );
-  //     })
+  if (!accountLog.loading) {
+    fetchedBankAccountList = accountLog.accountList
+      .filter((account) => account.Category === "Bank account")
+      .map((account) => {
+        return (
+          <Grid item key={account.id}>
+            <Card className={classes.root} variant="outlined">
+              <CardContent>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="left"
+                >{`${account.Name}`}</Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="right"
+                >{`${account.Balance} ILS`}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      });
+  }
 
-  // }
+  let fetchedCreditCardList = <p>Loading...</p>;
 
-  //   <Typography color="textSecondary" variant="h6" align="left">
-  //   {category.Category}
-  // </Typography>
+  if (!accountLog.loading) {
+    fetchedCreditCardList = accountLog.accountList
+      .filter((account) => account.Category === "Credit Card")
+      .map((account) => {
+        return (
+          <Grid item key={account.id}>
+            <Card className={classes.root} variant="outlined">
+              <CardContent>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="left"
+                >{`${account.Name}`}</Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="right"
+                >{`${account.Balance} ILS`}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      });
+  }
 
-  // let fetchedBankAccountList = <p>Loading...</p>;
+  let fetchedCashList = <p>Loading...</p>;
 
-  // if (!accountLog.loading) {
-  //   fetchedBankAccountList = accountLog.accountList
-  //     .filter((account) => account.Category === "Bank account")
-  //     .map((account) => {
-  //       return (
-  //         <Grid item key={account.id}>
-  //           <Card className={classes.root} variant="outlined">
-  //             <CardContent>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="left"
-  //               >{`${account.Name}`}</Typography>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="right"
-  //               >{`${account.Balance} ILS`}</Typography>
-  //             </CardContent>
-  //           </Card>
-  //         </Grid>
-  //       );
-  //     });
-  // }
-
-  // let fetchedCreditCardList = <p>Loading...</p>;
-
-  // if (!accountLog.loading) {
-  //   fetchedCreditCardList = accountLog.accountList
-  //     .filter((account) => account.Category === "Credit Card")
-  //     .map((account) => {
-  //       return (
-  //         <Grid item key={account.id}>
-  //           <Card className={classes.root} variant="outlined">
-  //             <CardContent>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="left"
-  //               >{`${account.Name}`}</Typography>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="right"
-  //               >{`${account.Balance} ILS`}</Typography>
-  //             </CardContent>
-  //           </Card>
-  //         </Grid>
-  //       );
-  //     });
-  // }
-
-  // let fetchedCashList = <p>Loading...</p>;
-
-  // if (!accountLog.loading) {
-  //   fetchedCashList = accountLog.accountList
-  //     .filter((account) => account.Category === "Cash")
-  //     .map((account) => {
-  //       return (
-  //         <Grid item key={account.id}>
-  //           <Typography variant="h5" gutterBottom color="primary">
-  //             {account.Name}
-  //           </Typography>
-  //           <Card className={classes.root} variant="outlined">
-  //             <CardContent>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="left"
-  //               >{`${account.Name}`}</Typography>
-  //               <Typography
-  //                 color="textSecondary"
-  //                 variant="h6"
-  //                 align="right"
-  //               >{`${account.Balance} ILS`}</Typography>
-  //             </CardContent>
-  //           </Card>
-  //         </Grid>
-  //       );
-  //     });
-  // }
+  if (!accountLog.loading) {
+    fetchedCashList = accountLog.accountList
+      .filter((account) => account.Category === "Cash")
+      .map((account) => {
+        return (
+          <Grid item key={account.id}>
+            <Card className={classes.root} variant="outlined">
+              <CardContent>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="left"
+                >{`${account.Name}`}</Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="h6"
+                  align="right"
+                >{`${account.Balance} ILS`}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      });
+  }
 
   return (
     <Box>
+      <Typography variant="h5" gutterBottom color="primary">
+        Bank Accounts
+      </Typography>
       <Grid container spacing={2}>
-        {accountList}
+        {fetchedBankAccountList}
+      </Grid>
+      <Typography variant="h5" gutterBottom color="primary">
+        Credit Cards
+      </Typography>
+      <Grid container spacing={2}>
+        {fetchedCreditCardList}
+      </Grid>
+      <Typography variant="h5" gutterBottom color="primary">
+        Cash
+      </Typography>
+      <Grid container spacing={2}>
+        {fetchedCashList}
       </Grid>
     </Box>
   );

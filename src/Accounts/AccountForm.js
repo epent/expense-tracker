@@ -25,26 +25,17 @@ const AccountForm = (props) => {
     console.log("Expense form submitted: ");
     console.log(accountForm);
 
-    const accountCategory = accountForm.Category;
-
-    const submittedAccountForm = {
-      Name: accountForm.Name,
-      Balance: accountForm.Balance,
-    };
-
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-        accountCategory +
-        ".json",
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json",
       {
         method: "POST",
-        body: JSON.stringify(submittedAccountForm),
+        body: JSON.stringify(accountForm),
       }
     ).then((response) => {
       setAccountForm({
         Name: "",
         Category: "",
-        Balance: 0,
+        Balance: "",
       });
     });
   };
