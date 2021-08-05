@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import SideBar from "./SideBar";
-import Home from "./Home";
-import Expenses from "./Expenses";
-import Income from "./Income";
-import Transfers from "./Transfers";
-import Accounts from "./Accounts";
+import SideBar from "./components/SideBar/SideBar";
+import Home from "./components/Home";
+import Expenses from "./components/Expenses";
+import Income from "./components/Income";
+import Transfers from "./components/Transfers";
+import Accounts from "./components/Accounts";
 import HistoryLog from "./History/HistoryLog";
-import Categories from "./Categories";
+import Categories from "./components/Categories";
 
 import Grid from "@material-ui/core/Grid";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";

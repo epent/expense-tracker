@@ -3,8 +3,8 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 
-import IncomeForm from "./Income/IncomeForm";
-import IncomeLog from "./Income/IncomeLog";
+import IncomeForm from "../Income/IncomeForm";
+import IncomeLog from "../Income/IncomeLog";
 
 const Income = (props) => {
   return (
