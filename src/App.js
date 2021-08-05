@@ -6,7 +6,7 @@ import Home from "./Home";
 import Expenses from "./Expenses";
 import Income from "./Income";
 import Transfers from "./Transfers";
-import AccountForm from "./Forms/AccountForm";
+import Accounts from "./Accounts";
 import HistoryLog from "./History/HistoryLog";
 import Categories from "./Categories";
 
@@ -33,39 +33,10 @@ const theme = createTheme({
 });
 
 function App() {
-  const [accountForm, setAccountForm] = useState({
-    Name: "",
-    Category: "",
-    Balance: 0,
-  });
-
   const [categoryForm, setCategoryForm] = useState({
     Name: "",
     Balance: 0,
   });
-
-  const fetchedAccountList = [];
-
-  // add new account
-  const accountFormSubmitHandler = (event) => {
-    event.preventDefault();
-    console.log("Expense form submitted: ");
-    console.log(accountForm);
-
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json",
-      {
-        method: "POST",
-        body: JSON.stringify(accountForm),
-      }
-    ).then((response) => {
-      setAccountForm({
-        Name: "",
-        Category: "",
-        Balance: "",
-      });
-    });
-  };
 
   // add new category
   const categoryFormSubmitHandler = (event) => {
@@ -94,11 +65,7 @@ function App() {
         <Home />
       </Route>
       <Route path="/accounts">
-        <AccountForm
-          accountForm={accountForm}
-          accountFormSubmitHandler={accountFormSubmitHandler}
-          setAccountForm={setAccountForm}
-        />
+        <Accounts />
       </Route>
       <Route path="/expenses">
         <Expenses />
