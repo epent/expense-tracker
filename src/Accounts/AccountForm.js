@@ -35,7 +35,7 @@ const AccountForm = (props) => {
       setAccountForm({
         Name: "",
         Category: "",
-        Balance: "",
+        Balance: 0,
       });
     });
   };
