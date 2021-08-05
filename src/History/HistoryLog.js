@@ -10,7 +10,7 @@ import TransferLog from "../Transfers/TransferLog";
 const HistoryLog = (props) => {
   return (
     <Box>
-      <Typography variant="h3" gutterBottom color="textSecondary">
+      <Typography variant="h5" gutterBottom color="textSecondary">
         History
       </Typography>
       <ExpenseLog />

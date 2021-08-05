@@ -9,7 +9,7 @@ import CategoryLog from "../Categories/CategoryLog";
 const Categories = () => {
   return (
     <Box>
-      <Typography variant="h3" gutterBottom color="secondary">
+      <Typography variant="h5" gutterBottom color="secondary">
         Categories
       </Typography>
       <CategoryForm />

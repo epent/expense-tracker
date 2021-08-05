@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 500,
+    width: 400,
   },
 });
 
@@ -38,14 +38,14 @@ const History = (props) => {
               <Box display="inline" pr={3}>
                 <Typography
                   color={props.transactionColor}
-                  variant="h6"
+                  variant="body1"
                   display="inline"
                 >{`${transaction.From} --> ${transaction.To}`}</Typography>
               </Box>
               <Box display="inline" pr={3}>
                 <Typography
                   color={props.amountColor}
-                  variant="h6"
+                  variant="body1"
                   display="inline"
                 >{`${props.sign}${transaction.Amount} ILS`}</Typography>
               </Box>
@@ -55,17 +55,17 @@ const History = (props) => {
                 </Typography>
               </Box>
             </CardContent>
-            <IconButton>
-              <DeleteIcon
-                onClick={() =>
-                  props.deleteTransaction(
-                    transaction.id,
-                    transaction.Amount,
-                    transaction.From,
-                    transaction.To
-                  )
-                }
-              />
+            <IconButton
+              onClick={() =>
+                props.deleteTransaction(
+                  transaction.id,
+                  transaction.Amount,
+                  transaction.From,
+                  transaction.To
+                )
+              }
+            >
+              <DeleteIcon />
             </IconButton>
           </Card>
         </Grid>

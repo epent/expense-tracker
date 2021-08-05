@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 400,
+    width: 300,
   },
 });
 
@@ -26,25 +26,25 @@ const CategoryList = (props) => {
         <ListItem key={category.id}>
           <Grid item className={classes.root}>
             <Box pr={2}>
-              <Typography color="textSecondary" variant="h6" align="left">
+              <Typography color="textSecondary" variant="body1" align="left">
                 {category.Name}
               </Typography>
             </Box>
           </Grid>
           <Grid item>
-            <Typography color="textSecondary" variant="h6" align="right">
+            <Typography color="textSecondary" variant="body1" align="right">
               {category.Balance} ILS
             </Typography>
           </Grid>
-          <IconButton>
-            <DeleteIcon onClick={() => props.deleteCategory(category.id)} />
+          <IconButton onClick={() => props.deleteCategory(category.id)}>
+            <DeleteIcon />
           </IconButton>
         </ListItem>
       );
     });
 
   return (
-    <Box mt={8}>
+    <Box mt={3}>
       <Grid container spacing={2}>
         <List>{categoryList}</List>
       </Grid>

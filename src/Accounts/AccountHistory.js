@@ -27,17 +27,17 @@ const AccountHistory = (props) => {
             <CardContent>
               <Typography
                 color="textSecondary"
-                variant="h6"
+                variant="body1"
                 align="left"
               >{`${account.Name}`}</Typography>
               <Typography
                 color="textSecondary"
-                variant="h6"
+                variant="body1"
                 align="right"
               >{`${account.Balance} ILS`}</Typography>
             </CardContent>
-            <IconButton>
-              <DeleteIcon onClick={() => props.deleteAccount(account.id)} />
+            <IconButton onClick={() => props.deleteAccount(account.id)}>
+              <DeleteIcon />
             </IconButton>
           </Card>
         </Grid>
@@ -45,7 +45,7 @@ const AccountHistory = (props) => {
     });
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {accountList}
     </Grid>
   );

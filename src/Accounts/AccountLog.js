@@ -56,7 +56,7 @@ const AccountLog = () => {
 
   return (
     <Box>
-      <Typography variant="h3" gutterBottom color="textSecondary">
+      <Typography variant="h5" gutterBottom color="textSecondary">
         Accounts
       </Typography>
       <AccountHistory

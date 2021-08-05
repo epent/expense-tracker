@@ -12,7 +12,7 @@ const Home = (props) => {
   return (
     <Box>
       <AccountLog />
-      <Typography variant="h3" gutterBottom color="textSecondary">
+      <Typography variant="h5" gutterBottom color="textSecondary">
         Categories
       </Typography>
       <CategoryLog />
