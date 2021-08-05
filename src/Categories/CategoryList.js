@@ -1,10 +1,13 @@
 import React from "react";
 
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
@@ -34,6 +37,9 @@ const CategoryList = (props) => {
               {category.Balance} ILS
             </Typography>
           </Grid>
+          <IconButton>
+            <DeleteIcon onClick={() => props.deleteCategory(category.id)} />
+          </IconButton>
         </ListItem>
       );
     });

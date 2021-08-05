@@ -7,7 +7,6 @@ import CategoryList from "./CategoryList";
 const CategoryLog = () => {
   const [categoryLog, setCategoryLog] = useState({
     categoryList: [],
-    loading: true,
   });
 
   useEffect(() => {
@@ -28,16 +27,39 @@ const CategoryLog = () => {
         setCategoryLog({
           ...categoryLog,
           categoryList: fetchedCategoryList,
-          loading: false,
         });
 
         console.log(fetchedCategoryList);
       });
   }, []);
 
+  const deleteCategoryHandler = (categoryId) => {
+    const updatedCategoryLog = categoryLog.categoryList.filter(
+      (category) => category.id !== categoryId
+    );
+
+    setCategoryLog({
+      ...categoryLog,
+      categoryList: updatedCategoryLog,
+    });
+
+    // delete category from db
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
+        categoryId +
+        ".json",
+      {
+        method: "DELETE",
+      }
+    );
+  };
+
   return (
     <Box>
-      <CategoryList categoryList={categoryLog.categoryList} />
+      <CategoryList
+        categoryList={categoryLog.categoryList}
+        deleteCategory={deleteCategoryHandler}
+      />
     </Box>
   );
 };
