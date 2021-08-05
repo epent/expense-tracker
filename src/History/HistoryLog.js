@@ -2,20 +2,35 @@ import React from "react";
 
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import { makeStyles } from "@material-ui/core/styles";
 
 import ExpenseLog from "../Expenses/ExpenseLog";
 import IncomeLog from "../Income/IncomeLog";
 import TransferLog from "../Transfers/TransferLog";
 
+const useStyles = makeStyles({
+  root: {
+    width: 550,
+  },
+});
+
 const HistoryLog = (props) => {
+  const classes = useStyles();
+
   return (
     <Box>
       <Typography variant="h5" gutterBottom color="textSecondary">
         History
       </Typography>
-      <ExpenseLog />
-      <IncomeLog />
-      <TransferLog />
+      <Card className={classes.root}>
+        <CardContent>
+          <ExpenseLog />
+          <IncomeLog />
+          <TransferLog />
+        </CardContent>
+      </Card>
     </Box>
   );
 };

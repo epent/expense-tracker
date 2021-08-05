@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 300,
+    width: 250,
   },
 });
 
@@ -24,15 +24,13 @@ const CategoryList = (props) => {
     categoryList = props.categoryList.map((category) => {
       return (
         <ListItem key={category.id}>
-          <Grid item className={classes.root}>
-            <Box pr={2}>
-              <Typography color="textSecondary" variant="body1" align="left">
-                {category.Name}
-              </Typography>
-            </Box>
+          <Grid item className={classes.root} xs={6}>
+            <Typography color="textSecondary" variant="body1" align="left">
+              {category.Name}
+            </Typography>
           </Grid>
-          <Grid item>
-            <Typography color="textSecondary" variant="body1" align="right">
+          <Grid item xs={6}>
+            <Typography color="textSecondary" variant="body2" align="right">
               {category.Balance} ILS
             </Typography>
           </Grid>
