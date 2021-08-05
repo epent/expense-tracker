@@ -7,7 +7,6 @@ import History from "../History/History";
 const ExpenseLog = () => {
   const [expenseLog, setExpenseLog] = useState({
     expenseList: [],
-    loading: true,
   });
 
   const fetchedAccountList = [];
@@ -31,7 +30,6 @@ const ExpenseLog = () => {
         setExpenseLog({
           ...expenseLog,
           expenseList: fetchedList,
-          loading: false,
         });
       });
   }, []);

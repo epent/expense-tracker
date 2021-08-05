@@ -7,7 +7,6 @@ import History from "../History/History";
 const TransferLog = () => {
   const [transferLog, setTransferLog] = useState({
     transferList: [],
-    loading: true,
   });
 
   const fetchedAccountList = [];
@@ -30,7 +29,6 @@ const TransferLog = () => {
         setTransferLog({
           ...transferLog,
           transferList: fetchedList,
-          loading: false,
         });
       });
   }, []);

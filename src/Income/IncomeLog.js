@@ -7,12 +7,9 @@ import History from "../History/History";
 const IncomeLog = () => {
   const [incomeLog, setIncomeLog] = useState({
     incomeList: [],
-    loading: true,
   });
 
   const fetchedAccountList = [];
-
-  const fetchedCategoryList = [];
 
   useEffect(() => {
     fetch(
@@ -32,7 +29,6 @@ const IncomeLog = () => {
         setIncomeLog({
           ...incomeLog,
           incomeList: fetchedList,
-          loading: false,
         });
       });
   }, []);
