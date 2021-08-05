@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
 import AccountHistory from "./AccountHistory";
 
@@ -55,6 +56,9 @@ const AccountLog = () => {
 
   return (
     <Box>
+      <Typography variant="h3" gutterBottom color="textSecondary">
+        Accounts
+      </Typography>
       <AccountHistory
         accounts={accountLog.accountList}
         deleteAccount={deleteAccountHandler}
