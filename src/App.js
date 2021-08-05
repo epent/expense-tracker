@@ -33,32 +33,6 @@ const theme = createTheme({
 });
 
 function App() {
-  const [categoryForm, setCategoryForm] = useState({
-    Name: "",
-    Balance: 0,
-  });
-
-  // add new category
-  const categoryFormSubmitHandler = (event) => {
-    event.preventDefault();
-    console.log("Category form submitted: ");
-    console.log(categoryForm);
-
-    //  post new categoryForm to server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json",
-      {
-        method: "POST",
-        body: JSON.stringify(categoryForm),
-      }
-    ).then((response) => {
-      setCategoryForm({
-        Name: "",
-        Balance: 0,
-      });
-    });
-  };
-
   let routes = (
     <Switch>
       <Route path="/home">
@@ -78,11 +52,7 @@ function App() {
       </Route>
       <Route path="/history" component={HistoryLog} />
       <Route path="/categories">
-        <Categories
-          categoryForm={categoryForm}
-          categoryFormSubmitHandler={categoryFormSubmitHandler}
-          setCategoryForm={setCategoryForm}
-        />
+        <Categories />
       </Route>
     </Switch>
   );
