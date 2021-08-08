@@ -5,14 +5,18 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 
 const Form = (props) => {
-  let form = Object.keys(props.form).map((formKey) => {
+  let formValues = props.form;
+  // if we edit any transaction, shown form changes
+  if (props.showEditedForm) formValues = props.editedForm;
+
+  let form = Object.keys(formValues).map((formKey) => {
     return (
       <Grid item key={formKey}>
         <TextField
           label={formKey}
           variant="outlined"
           margin="normal"
-          value={props.form[formKey]}
+          value={formValues[formKey]}
           onChange={(e) => props.updateForm(e, formKey)}
         />
       </Grid>

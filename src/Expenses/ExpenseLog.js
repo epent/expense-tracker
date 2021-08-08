@@ -3,11 +3,26 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import History from "../History/History";
+import ExpenseForm from "./ExpenseForm";
 
-const ExpenseLog = () => {
+const ExpenseLog = (props) => {
   const [expenseLog, setExpenseLog] = useState({
     expenseList: [],
   });
+
+  const [expenseForm, setExpenseForm] = useState({
+    From: "",
+    To: "",
+    Amount: "",
+    Date: "",
+    Comment: "",
+  });
+
+  //  id of the expense we want to edit
+  const [editedExpenseId, setEditedExpenseId] = useState("");
+
+  // if want to edit transaction, need to show the form again
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
 
   const fetchedAccountList = [];
 
@@ -95,6 +110,20 @@ const ExpenseLog = () => {
         );
       });
 
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let key in data) {
+          fetchedAccountList.push({
+            ...data[key],
+            id: key,
+          });
+        }
+        console.log(fetchedAccountList);
+      });
+
     // fetch categoryList from server
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
@@ -109,7 +138,7 @@ const ExpenseLog = () => {
         }
       })
 
-      // update categoryBalance after new expense
+      // update categoryBalance after deleting expense
       .then((response) => {
         const category = fetchedCategoryList.filter(
           (category) => category.Name === expenseTo
@@ -132,6 +161,27 @@ const ExpenseLog = () => {
       });
   };
 
+  const editExpenseHandler = (
+    expenseId,
+    expenseFrom,
+    expenseTo,
+    expenseAmount,
+    expenseDate,
+    expenseComment
+  ) => {
+    setShowExpenseForm((prevState) => !prevState);
+
+    setExpenseForm({
+      From: expenseFrom,
+      To: expenseTo,
+      Amount: expenseAmount,
+      Date: expenseDate,
+      Comment: expenseComment,
+    });
+
+    setEditedExpenseId(expenseId);
+  };
+
   return (
     <Box>
       <History
@@ -140,7 +190,17 @@ const ExpenseLog = () => {
         amountColor="secondary"
         sign="-"
         deleteTransaction={deleteExpenseHandler}
+        editTransaction={editExpenseHandler}
       />
+      {showExpenseForm && (
+        <ExpenseForm
+          editedExpenseForm={expenseForm}
+          showEditedForm={showExpenseForm}
+          editedExpenseId={editedExpenseId}
+          deleteOldExpense={deleteExpenseHandler}
+          setShowExpenseForm={setShowExpenseForm}
+        />
+      )}
     </Box>
   );
 };

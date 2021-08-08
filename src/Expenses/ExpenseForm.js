@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import Form from "../Forms/Form";
 
-const ExpenseForm = () => {
+const ExpenseForm = (props) => {
   const [expenseForm, setExpenseForm] = useState({
     From: "",
     To: "",
@@ -13,15 +13,29 @@ const ExpenseForm = () => {
     Comment: "",
   });
 
+  // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
+  const [showEditedForm, setShowEditedForm] = useState(false);
+
   const fetchedAccountList = [];
 
   const fetchedCategoryList = [];
 
+  // update empty form
   const updateFormHandler = (event, formKey) => {
     setExpenseForm({
       ...expenseForm,
       [formKey]: event.target.value,
     });
+  };
+
+  // edit pre-filled form
+  const editFormHandler = (event, formKey) => {
+    setExpenseForm({
+      ...props.editedExpenseForm,
+      [formKey]: event.target.value,
+    });
+
+    setShowEditedForm(true);
   };
 
   // add new expense
@@ -124,17 +138,175 @@ const ExpenseForm = () => {
       });
   };
 
-  return (
-    <Box>
+  // edit selected expense
+  const expenseFormUpdateHandler = (event) => {
+    event.preventDefault();
+
+    console.log(expenseForm);
+
+    // post edited expenseForm to server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/" +
+        props.editedExpenseId +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(expenseForm),
+      }
+    );
+
+    if (props.editedExpenseForm.Amount !== expenseForm.Amount) {
+      // fetch accountList from server
+      fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          for (let key in data) {
+            fetchedAccountList.push({
+              ...data[key],
+              id: key,
+            });
+          }
+
+          console.log(fetchedAccountList);
+        })
+
+        // update accountBalance after edited expense
+        .then((response) => {
+          const account = fetchedAccountList.filter(
+            (account) => account.Name === expenseForm.From
+          );
+
+          let updatedAccount;
+          let accountId;
+
+          if (props.editedExpenseForm.Amount > expenseForm.Amount) {
+            updatedAccount = {
+              Balance:
+                Number(account[0].Balance) +
+                (Number(props.editedExpenseForm.Amount) -
+                  Number(expenseForm.Amount)),
+            };
+            accountId = account[0].id;
+          }
+
+          if (props.editedExpenseForm.Amount < expenseForm.Amount) {
+            updatedAccount = {
+              Balance:
+                Number(account[0].Balance) -
+                (Number(expenseForm.Amount) -
+                  Number(props.editedExpenseForm.Amount)),
+            };
+            accountId = account[0].id;
+          }
+
+          // post changed accountBalance to server
+          fetch(
+            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
+              accountId +
+              ".json",
+            {
+              method: "PATCH",
+              body: JSON.stringify(updatedAccount),
+            }
+          );
+        });
+    }
+
+    if (props.editedExpenseForm.Amount !== expenseForm.Amount) {
+      // fetch categoryList from server
+      fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          for (let key in data) {
+            fetchedCategoryList.push({
+              ...data[key],
+              id: key,
+            });
+          }
+        })
+
+        // update categoryBalance after edited expense
+        .then((response) => {
+          const category = fetchedCategoryList.filter(
+            (category) => category.Name === expenseForm.To
+          );
+
+          let updatedCategory;
+          let categoryId;
+
+          if (props.editedExpenseForm.Amount > expenseForm.Amount) {
+            updatedCategory = {
+              Balance:
+                Number(category[0].Balance) -
+                (Number(props.editedExpenseForm.Amount) -
+                  Number(expenseForm.Amount)),
+            };
+            categoryId = category[0].id;
+          }
+
+          if (props.editedExpenseForm.Amount < expenseForm.Amount) {
+            updatedCategory = {
+              Balance:
+                Number(category[0].Balance) +
+                (Number(expenseForm.Amount) -
+                  Number(props.editedExpenseForm.Amount)),
+            };
+            categoryId = category[0].id;
+          }
+
+          // post changed categoryBalance to server
+          fetch(
+            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
+              categoryId +
+              ".json",
+            {
+              method: "PATCH",
+              body: JSON.stringify(updatedCategory),
+            }
+          ).then((response) => {
+            setExpenseForm({
+              From: "",
+              To: "",
+              Amount: 0,
+              Date: "",
+              Comment: "",
+            });
+          });
+        });
+    }
+    // close the editable form
+    props.setShowExpenseForm();
+  };
+
+  let form = (
+    <Form
+      form={expenseForm}
+      updateForm={updateFormHandler}
+      formSubmitHandler={expenseFormSubmitHandler}
+      btnName="add expense"
+      btnColor="secondary"
+    />
+  );
+
+  // if we want to edit expense, the form is pre-filled
+  if (props.showEditedForm)
+    form = (
       <Form
-        form={expenseForm}
-        updateForm={updateFormHandler}
-        formSubmitHandler={expenseFormSubmitHandler}
-        btnName="add expense"
+        form={props.editedExpenseForm}
+        editedForm={expenseForm}
+        updateForm={editFormHandler}
+        formSubmitHandler={expenseFormUpdateHandler}
+        showEditedForm={showEditedForm}
+        btnName="edit expense"
         btnColor="secondary"
       />
-    </Box>
-  );
+    );
+
+  return <Box>{form}</Box>;
 };
 
 export default ExpenseForm;
