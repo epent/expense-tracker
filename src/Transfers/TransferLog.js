@@ -9,6 +9,20 @@ const TransferLog = () => {
     transferList: [],
   });
 
+  const [transferForm, setTransferForm] = useState({
+    From: "",
+    To: "",
+    Amount: 0,
+    Date: "",
+    Comment: "",
+  });
+
+  //  id of the expense we want to edit
+  const [editedTransferId, setEditedTransferId] = useState("");
+
+  // if want to edit transaction, need to show the form again
+  const [showTransferForm, setShowTransferForm] = useState(false);
+
   const fetchedAccountList = [];
 
   useEffect(() => {
@@ -117,6 +131,29 @@ const TransferLog = () => {
       });
   };
 
+  const editTransferHandler = (
+    transferId,
+    transferFrom,
+    transferTo,
+    transferAmount,
+    transferDate,
+    transferComment
+  ) => {
+    setTransferForm({
+      From: transferFrom,
+      To: transferTo,
+      Amount: transferAmount,
+      Date: transferDate,
+      Comment: transferComment,
+    });
+
+    setEditedTransferId(transferId);
+
+    if (editedTransferId === transferId) {
+      setShowTransferForm((prevState) => !prevState);
+    }
+  };
+
   return (
     <Box>
       <History
@@ -125,6 +162,11 @@ const TransferLog = () => {
         amountColor="textSecondary"
         sign=""
         deleteTransaction={deleteTransferHandler}
+        editTransaction={editTransferHandler}
+        transferForm={transferForm}
+        showTransferForm={showTransferForm}
+        editedTransferId={editedTransferId}
+        setShowTransferForm={setShowTransferForm}
       />
     </Box>
   );

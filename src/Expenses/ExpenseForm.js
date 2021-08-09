@@ -142,8 +142,6 @@ const ExpenseForm = (props) => {
   const expenseFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    console.log(expenseForm);
-
     // post edited expenseForm to server
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/" +

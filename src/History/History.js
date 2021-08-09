@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import ExpenseForm from "../Expenses/ExpenseForm";
 import IncomeForm from "../Income/IncomeForm";
+import TransferForm from "../Transfers/TransferForm";
 
 const useStyles = makeStyles({
   root: {
@@ -102,6 +103,17 @@ const History = (props) => {
                   showEditedForm={props.showIncomeForm}
                   editedIncomeId={props.editedIncomeId}
                   setShowIncomeForm={props.setShowIncomeForm}
+                />
+              )}
+          </Grid>
+          <Grid item xs={12}>
+            {props.showTransferForm &&
+              transaction.id === props.editedTransferId && (
+                <TransferForm
+                  editedTransferForm={props.transferForm}
+                  showEditedForm={props.showTransferForm}
+                  editedTransferId={props.editedTransferId}
+                  setShowTransferForm={props.setShowTransferForm}
                 />
               )}
           </Grid>
