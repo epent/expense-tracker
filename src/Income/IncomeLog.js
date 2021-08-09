@@ -137,6 +137,7 @@ const IncomeLog = () => {
       <History
         transactions={incomeLog.incomeList}
         transactionColor="primary"
+        arrowColor="primary"
         amountColor="primary"
         sign="+"
         deleteTransaction={deleteIncomeHandler}

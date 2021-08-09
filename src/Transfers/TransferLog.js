@@ -159,6 +159,7 @@ const TransferLog = () => {
       <History
         transactions={transferLog.transferList}
         transactionColor="textSecondary"
+        arrowColor="disabled"
         amountColor="textSecondary"
         sign=""
         deleteTransaction={deleteTransferHandler}

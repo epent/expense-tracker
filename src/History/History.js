@@ -2,6 +2,7 @@ import React from "react";
 
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import List from "@material-ui/core/List";
@@ -38,11 +39,20 @@ const History = (props) => {
                   {`${day} ${month}`}
                 </Typography>
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={2}>
                 <Typography
                   color={props.transactionColor}
                   variant="body1"
-                >{`${transaction.From} --> ${transaction.To}`}</Typography>
+                >{`${transaction.From}`}</Typography>
+              </Grid>
+              <Grid item xs={1}>
+                <ArrowRightAltIcon color={props.arrowColor} />
+              </Grid>
+              <Grid item xs={2}>
+                <Typography
+                  color={props.transactionColor}
+                  variant="body1"
+                >{`${transaction.To}`}</Typography>
               </Grid>
               <Grid item xs={3}>
                 <Typography

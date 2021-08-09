@@ -188,6 +188,7 @@ const ExpenseLog = (props) => {
       <History
         transactions={expenseLog.expenseList}
         transactionColor="secondary"
+        arrowColor="secondary"
         amountColor="secondary"
         sign="-"
         deleteTransaction={deleteExpenseHandler}
