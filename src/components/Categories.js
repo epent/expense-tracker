@@ -1,20 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import CategoryForm from "../Categories/CategoryForm";
 import CategoryLog from "../Categories/CategoryLog";
 
 const Categories = () => {
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+
+  const showCategoryFormHandler = () => {
+    setShowCategoryForm((prevState) => !prevState);
+  };
+
   return (
-    <Box>
-      <Typography variant="h5" gutterBottom color="secondary">
-        Categories
-      </Typography>
-      <CategoryForm />
-      <CategoryLog />
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<AddBoxIcon />}
+          onClick={showCategoryFormHandler}
+        >
+          Categories
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        {showCategoryForm && <CategoryForm />}
+      </Grid>
+      <Grid item xs={12}>
+        <CategoryLog />
+      </Grid>
+    </Grid>
   );
 };
 

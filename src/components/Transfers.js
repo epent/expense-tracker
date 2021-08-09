@@ -1,20 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import TransferForm from "../Transfers/TransferForm";
 import TransferLog from "../Transfers/TransferLog";
 
 const Transfers = () => {
+  const [showTransferForm, setShowTransferForm] = useState(false);
+
+  const showTransferFormHandler = () => {
+    setShowTransferForm((prevState) => !prevState);
+  };
+
   return (
-    <Box>
-      <Typography variant="h3" gutterBottom color="textSecondary">
-        Transfer
-      </Typography>
-      <TransferForm />
-      <TransferLog />
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          startIcon={<AddBoxIcon />}
+          onClick={showTransferFormHandler}
+        >
+          Transfers
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        {showTransferForm && <TransferForm />}
+      </Grid>
+      <Grid item xs={12}>
+        <TransferLog />
+      </Grid>
+    </Grid>
   );
 };
 

@@ -1,20 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import ExpenseForm from "../Expenses/ExpenseForm";
 import ExpenseLog from "../Expenses/ExpenseLog";
 
 const Expenses = () => {
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+
+  const showExpenseFormHandler = () => {
+    setShowExpenseForm((prevState) => !prevState);
+  };
+
   return (
-    <Box>
-      <Typography variant="h3" gutterBottom color="secondary">
-        Expenses
-      </Typography>
-      <ExpenseForm />
-      <ExpenseLog />
-    </Box>
+    <Grid container>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          color="secondary"
+          startIcon={<AddBoxIcon />}
+          onClick={showExpenseFormHandler}
+        >
+          Expenses
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        {showExpenseForm && <ExpenseForm />}
+      </Grid>
+      <Grid item xs={12}>
+        <ExpenseLog />
+      </Grid>
+    </Grid>
   );
 };
 

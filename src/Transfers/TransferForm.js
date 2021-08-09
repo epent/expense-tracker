@@ -113,7 +113,7 @@ const TransferForm = () => {
         updateForm={updateFormHandler}
         formSubmitHandler={transferFormSubmitHandler}
         btnName="add transfer"
-        btnColor="primary"
+        btnColor="default"
       />
     </Box>
   );

@@ -16,6 +16,7 @@ const Form = (props) => {
           label={formKey}
           variant="outlined"
           margin="normal"
+          size="small"
           value={formValues[formKey]}
           onChange={(e) => props.updateForm(e, formKey)}
         />
