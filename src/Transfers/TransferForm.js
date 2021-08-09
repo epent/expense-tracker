@@ -16,6 +16,8 @@ const TransferForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const fetchedAccountList = [];
 
   useEffect(() => {
@@ -42,6 +44,10 @@ const TransferForm = (props) => {
     });
 
     setShowEditedForm(true);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
   // add new transfer
@@ -258,7 +264,9 @@ const TransferForm = (props) => {
     <Form
       form={transferForm}
       updateForm={updateFormHandler}
+      selectedDate={selectedDate}
       formSubmitHandler={transferFormSubmitHandler}
+      handleDateChange={handleDateChange}
       btnName="add transfer"
       btnColor="default"
     />
@@ -270,7 +278,9 @@ const TransferForm = (props) => {
         form={props.editedTransferForm}
         editedForm={transferForm}
         updateForm={editFormHandler}
+        selectedDate={selectedDate}
         formSubmitHandler={transferFormUpdateHandler}
+        handleDateChange={handleDateChange}
         showEditedForm={showEditedForm}
         btnName="add transfer"
         btnColor="default"
