@@ -7,7 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import ExpenseForm from "../Expenses/ExpenseForm";
 import ExpenseLog from "../Expenses/ExpenseLog";
 
-const Expenses = () => {
+const Expenses = (props) => {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
 
   const showExpenseFormHandler = () => {
@@ -30,7 +30,7 @@ const Expenses = () => {
         {showExpenseForm && <ExpenseForm />}
       </Grid>
       <Grid item xs={12}>
-        <ExpenseLog />
+        {props.showExpenseLog && <ExpenseLog />}
       </Grid>
     </Grid>
   );

@@ -35,24 +35,24 @@ const theme = createTheme({
 function App() {
   let routes = (
     <Switch>
-      <Route path="/home">
-        <Home />
-      </Route>
       <Route path="/accounts">
         <Accounts />
       </Route>
       <Route path="/expenses">
-        <Expenses />
+        <Expenses showExpenseLog />
       </Route>
       <Route path="/income">
-        <Income />
+        <Income showIncomeLog />
       </Route>
       <Route path="/transfers">
-        <Transfers />
+        <Transfers showTransferLog />
       </Route>
       <Route path="/history" component={HistoryLog} />
       <Route path="/categories">
         <Categories />
+      </Route>
+      <Route path="/">
+        <Home />
       </Route>
     </Switch>
   );
@@ -61,10 +61,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <SideBar />
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={10}>
             {routes}
           </Grid>
         </Grid>

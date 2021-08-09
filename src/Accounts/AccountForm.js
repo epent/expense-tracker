@@ -42,9 +42,6 @@ const AccountForm = (props) => {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom color="secondary">
-        New Account
-      </Typography>
       <Form
         form={accountForm}
         updateForm={updateFormHandler}

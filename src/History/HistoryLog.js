@@ -12,7 +12,7 @@ import TransferLog from "../Transfers/TransferLog";
 
 const useStyles = makeStyles({
   root: {
-    width: 550,
+    width: 600,
   },
 });
 

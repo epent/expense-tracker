@@ -7,7 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import IncomeForm from "../Income/IncomeForm";
 import IncomeLog from "../Income/IncomeLog";
 
-const Income = () => {
+const Income = (props) => {
   const [showIncomeForm, setShowIncomeForm] = useState(false);
 
   const showIncomeFormHandler = () => {
@@ -30,7 +30,7 @@ const Income = () => {
         {showIncomeForm && <IncomeForm />}
       </Grid>
       <Grid item xs={12}>
-        <IncomeLog />
+        {props.showIncomeLog && <IncomeLog />}
       </Grid>
     </Grid>
   );

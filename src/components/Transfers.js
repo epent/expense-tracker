@@ -7,7 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import TransferForm from "../Transfers/TransferForm";
 import TransferLog from "../Transfers/TransferLog";
 
-const Transfers = () => {
+const Transfers = (props) => {
   const [showTransferForm, setShowTransferForm] = useState(false);
 
   const showTransferFormHandler = () => {
@@ -29,7 +29,7 @@ const Transfers = () => {
         {showTransferForm && <TransferForm />}
       </Grid>
       <Grid item xs={12}>
-        <TransferLog />
+        {props.showTransferLog && <TransferLog />}
       </Grid>
     </Grid>
   );

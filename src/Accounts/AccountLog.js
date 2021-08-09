@@ -56,9 +56,6 @@ const AccountLog = () => {
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom color="textSecondary">
-        Accounts
-      </Typography>
       <AccountHistory
         accounts={accountLog.accountList}
         deleteAccount={deleteAccountHandler}

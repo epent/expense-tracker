@@ -17,7 +17,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import MoneyIcon from "@material-ui/icons/Money";
 
-const drawerWidth = 200;
+const drawerWidth = 250;
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -60,7 +60,7 @@ const SideBar = () => {
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <Link href="/home" variant="body1" underline="none">
+            <Link href="/" variant="body1" underline="none">
               Home
             </Link>
           </ListItem>
