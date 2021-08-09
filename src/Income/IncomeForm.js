@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
@@ -18,6 +18,14 @@ const IncomeForm = (props) => {
 
   const fetchedAccountList = [];
 
+  useEffect(() => {
+    if (props.editedIncomeForm) {
+      setIncomeForm({
+        ...props.editedIncomeForm,
+      });
+    }
+  }, []);
+
   // update empty form
   const updateFormHandler = (event, formKey) => {
     setIncomeForm({
@@ -29,7 +37,7 @@ const IncomeForm = (props) => {
   // edit pre-filled form
   const editFormHandler = (event, formKey) => {
     setIncomeForm({
-      ...props.editedIncomeForm,
+      ...incomeForm,
       [formKey]: event.target.value,
     });
 

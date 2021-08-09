@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
@@ -18,6 +18,14 @@ const TransferForm = (props) => {
 
   const fetchedAccountList = [];
 
+  useEffect(() => {
+    if (props.editedTransferForm) {
+      setTransferForm({
+        ...props.editedTransferForm,
+      });
+    }
+  }, []);
+
   // update empty form
   const updateFormHandler = (event, formKey) => {
     setTransferForm({
@@ -29,7 +37,7 @@ const TransferForm = (props) => {
   // edit pre-filled form
   const editFormHandler = (event, formKey) => {
     setTransferForm({
-      ...props.editedTransferForm,
+      ...transferForm,
       [formKey]: event.target.value,
     });
 
