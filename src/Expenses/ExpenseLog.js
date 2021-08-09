@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import History from "../History/History";
-import ExpenseForm from "./ExpenseForm";
 
 const ExpenseLog = (props) => {
   const [expenseLog, setExpenseLog] = useState({
@@ -196,7 +195,6 @@ const ExpenseLog = (props) => {
         expenseForm={expenseForm}
         showExpenseForm={showExpenseForm}
         editedExpenseId={editedExpenseId}
-        deleteExpenseHandler={deleteExpenseHandler}
         setShowExpenseForm={setShowExpenseForm}
       />
     </Box>

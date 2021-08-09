@@ -9,6 +9,20 @@ const IncomeLog = () => {
     incomeList: [],
   });
 
+  const [incomeForm, setIncomeForm] = useState({
+    From: "",
+    To: "",
+    Amount: 0,
+    Date: "",
+    Comment: "",
+  });
+
+  //  id of the expense we want to edit
+  const [editedIncomeId, setEditedIncomeId] = useState("");
+
+  // if want to edit transaction, need to show the form again
+  const [showIncomeForm, setShowIncomeForm] = useState(false);
+
   const fetchedAccountList = [];
 
   useEffect(() => {
@@ -95,6 +109,29 @@ const IncomeLog = () => {
       });
   };
 
+  const editIncomeHandler = (
+    incomeId,
+    incomeFrom,
+    incomeTo,
+    incomeAmount,
+    incomeDate,
+    incomeComment
+  ) => {
+    setIncomeForm({
+      From: incomeFrom,
+      To: incomeTo,
+      Amount: incomeAmount,
+      Date: incomeDate,
+      Comment: incomeComment,
+    });
+
+    setEditedIncomeId(incomeId);
+
+    if (editedIncomeId === incomeId) {
+      setShowIncomeForm((prevState) => !prevState);
+    }
+  };
+
   return (
     <Box>
       <History
@@ -103,6 +140,11 @@ const IncomeLog = () => {
         amountColor="primary"
         sign="+"
         deleteTransaction={deleteIncomeHandler}
+        editTransaction={editIncomeHandler}
+        incomeForm={incomeForm}
+        showIncomeForm={showIncomeForm}
+        editedIncomeId={editedIncomeId}
+        setShowIncomeForm={setShowIncomeForm}
       />
     </Box>
   );
