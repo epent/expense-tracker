@@ -13,7 +13,7 @@ const TransferLog = () => {
     From: "",
     To: "",
     Amount: 0,
-    Date: "",
+    Date: new Date(),
     Comment: "",
   });
 

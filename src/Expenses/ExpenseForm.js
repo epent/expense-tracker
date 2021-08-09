@@ -9,14 +9,12 @@ const ExpenseForm = (props) => {
     From: "",
     To: "",
     Amount: 0,
-    Date: "",
+    Date: new Date(),
     Comment: "",
   });
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const fetchedAccountList = [];
 
@@ -49,7 +47,10 @@ const ExpenseForm = (props) => {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setExpenseForm({
+      ...expenseForm,
+      Date: date.toDateString(),
+    });
   };
 
   // add new expense
@@ -145,7 +146,7 @@ const ExpenseForm = (props) => {
             From: "",
             To: "",
             Amount: 0,
-            Date: "",
+            Date: new Date(),
             Comment: "",
           });
         });
@@ -284,7 +285,7 @@ const ExpenseForm = (props) => {
               From: "",
               To: "",
               Amount: 0,
-              Date: "",
+              Date: new Date(),
               Comment: "",
             });
           });
@@ -298,7 +299,7 @@ const ExpenseForm = (props) => {
     <Form
       form={expenseForm}
       updateForm={updateFormHandler}
-      selectedDate={selectedDate}
+      selectedDate={expenseForm.Date}
       formSubmitHandler={expenseFormSubmitHandler}
       handleDateChange={handleDateChange}
       btnName="add expense"
@@ -313,7 +314,7 @@ const ExpenseForm = (props) => {
         form={props.editedExpenseForm}
         editedForm={expenseForm}
         updateForm={editFormHandler}
-        selectedDate={selectedDate}
+        selectedDate={expenseForm.Date}
         formSubmitHandler={expenseFormUpdateHandler}
         handleDateChange={handleDateChange}
         showEditedForm={showEditedForm}

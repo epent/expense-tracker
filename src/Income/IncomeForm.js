@@ -9,14 +9,12 @@ const IncomeForm = (props) => {
     From: "",
     To: "",
     Amount: 0,
-    Date: "",
+    Date: new Date(),
     Comment: "",
   });
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const fetchedAccountList = [];
 
@@ -47,7 +45,10 @@ const IncomeForm = (props) => {
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setIncomeForm({
+      ...incomeForm,
+      Date: date.toDateString(),
+    });
   };
 
   // add new income
@@ -105,7 +106,7 @@ const IncomeForm = (props) => {
             From: "",
             To: "",
             Amount: 0,
-            Date: "",
+            Date: new Date(),
             Comment: "",
           });
         });
@@ -186,7 +187,7 @@ const IncomeForm = (props) => {
               From: "",
               To: "",
               Amount: 0,
-              Date: "",
+              Date: new Date(),
               Comment: "",
             });
           });
@@ -201,7 +202,7 @@ const IncomeForm = (props) => {
     <Form
       form={incomeForm}
       updateForm={updateFormHandler}
-      selectedDate={selectedDate}
+      selectedDate={incomeForm.Date}
       formSubmitHandler={incomeFormSubmitHandler}
       handleDateChange={handleDateChange}
       btnName="add income"
@@ -216,7 +217,7 @@ const IncomeForm = (props) => {
         form={props.editedIncomeForm}
         editedForm={incomeForm}
         updateForm={editFormHandler}
-        selectedDate={selectedDate}
+        selectedDate={incomeForm.Date}
         formSubmitHandler={incomeFormUpdateHandler}
         handleDateChange={handleDateChange}
         showEditedForm={showEditedForm}

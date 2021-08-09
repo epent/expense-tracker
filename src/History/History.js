@@ -27,13 +27,15 @@ const History = (props) => {
 
   if (props.transactions.length > 0)
     transactions = props.transactions.map((transaction) => {
+      const [weekday, month, day, year] = transaction.Date.split(" ");
+
       return (
         <Box key={transaction.id}>
           <Grid item xs={12} className={classes.root}>
             <ListItem>
               <Grid item xs={2}>
                 <Typography color="textSecondary" variant="body1">
-                  {transaction.Date}
+                  {`${day} ${month}`}
                 </Typography>
               </Grid>
               <Grid item xs={5}>

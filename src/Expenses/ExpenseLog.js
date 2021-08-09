@@ -13,7 +13,7 @@ const ExpenseLog = (props) => {
     From: "",
     To: "",
     Amount: "",
-    Date: "",
+    Date: new Date(),
     Comment: "",
   });
 
