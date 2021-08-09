@@ -169,8 +169,6 @@ const ExpenseLog = (props) => {
     expenseDate,
     expenseComment
   ) => {
-    setShowExpenseForm((prevState) => !prevState);
-
     setExpenseForm({
       From: expenseFrom,
       To: expenseTo,
@@ -180,6 +178,10 @@ const ExpenseLog = (props) => {
     });
 
     setEditedExpenseId(expenseId);
+
+    if (editedExpenseId === expenseId) {
+      setShowExpenseForm((prevState) => !prevState);
+    }
   };
 
   return (
@@ -191,16 +193,12 @@ const ExpenseLog = (props) => {
         sign="-"
         deleteTransaction={deleteExpenseHandler}
         editTransaction={editExpenseHandler}
+        expenseForm={expenseForm}
+        showExpenseForm={showExpenseForm}
+        editedExpenseId={editedExpenseId}
+        deleteExpenseHandler={deleteExpenseHandler}
+        setShowExpenseForm={setShowExpenseForm}
       />
-      {showExpenseForm && (
-        <ExpenseForm
-          editedExpenseForm={expenseForm}
-          showEditedForm={showExpenseForm}
-          editedExpenseId={editedExpenseId}
-          deleteOldExpense={deleteExpenseHandler}
-          setShowExpenseForm={setShowExpenseForm}
-        />
-      )}
     </Box>
   );
 };

@@ -4,13 +4,13 @@ import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+
+import ExpenseForm from "../Expenses/ExpenseForm";
 
 const useStyles = makeStyles({
   root: {
@@ -81,6 +81,18 @@ const History = (props) => {
             <Typography color="textSecondary" variant="body2">
               {transaction.Comment}
             </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            {props.showExpenseForm &&
+              transaction.id === props.editedExpenseId && (
+                <ExpenseForm
+                  editedExpenseForm={props.expenseForm}
+                  showEditedForm={props.showExpenseForm}
+                  editedExpenseId={props.editedExpenseId}
+                  deleteOldExpense={props.deleteExpenseHandler}
+                  setShowExpenseForm={props.setShowExpenseForm}
+                />
+              )}
           </Grid>
         </Box>
       );
