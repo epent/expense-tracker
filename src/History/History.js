@@ -17,7 +17,7 @@ import TransferForm from "../Transfers/TransferForm";
 
 const useStyles = makeStyles({
   root: {
-    width: 580,
+    width: 500,
   },
 });
 

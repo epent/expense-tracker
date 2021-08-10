@@ -50,8 +50,19 @@ const Home = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={3}>
-        <CategoryLog />
+      <Grid container item direction="column" xs={3}>
+        <Grid item>
+          <Typography variant="h5" gutterBottom color="textSecondary">
+            Accounts
+          </Typography>
+          <AccountLog />
+        </Grid>
+        <Grid item>
+          <Typography variant="h5" gutterBottom color="textSecondary">
+            Categories
+          </Typography>
+          <CategoryLog />
+        </Grid>
       </Grid>
     </Grid>
   );
