@@ -40,6 +40,9 @@ const ExpenseLog = (props) => {
             id: key,
           });
         }
+        fetchedList.sort(
+          (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
+        );
 
         setExpenseLog({
           ...expenseLog,

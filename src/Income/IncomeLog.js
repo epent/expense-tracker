@@ -40,6 +40,10 @@ const IncomeLog = () => {
           });
         }
 
+        fetchedList.sort(
+          (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
+        );
+
         setIncomeLog({
           ...incomeLog,
           incomeList: fetchedList,

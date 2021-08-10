@@ -40,6 +40,10 @@ const TransferLog = () => {
           });
         }
 
+        fetchedList.sort(
+          (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
+        );
+
         setTransferLog({
           ...transferLog,
           transferList: fetchedList,
