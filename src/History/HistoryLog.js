@@ -13,10 +13,11 @@ import TransferLog from "../Transfers/TransferLog";
 const useStyles = makeStyles({
   root: {
     width: 530,
+    backgroundColor: "#fafafa",
   },
 });
 
-const HistoryLog = (props) => {
+const HistoryLog = () => {
   const classes = useStyles();
 
   return (

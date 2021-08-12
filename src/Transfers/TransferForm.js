@@ -9,7 +9,7 @@ const TransferForm = (props) => {
     From: "",
     To: "",
     Amount: 0,
-    Date: new Date(),
+    Date: new Date().toDateString(),
     Comment: "",
   });
 
@@ -28,27 +28,40 @@ const TransferForm = (props) => {
 
   // update empty form
   const updateFormHandler = (event, formKey) => {
-    setTransferForm({
-      ...transferForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setTransferForm({
+          ...transferForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setTransferForm({
+          ...transferForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setTransferForm({
+          ...transferForm,
+          [formKey]: event.target.value,
+        });
   };
 
   // edit pre-filled form
   const editFormHandler = (event, formKey) => {
-    setTransferForm({
-      ...transferForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setTransferForm({
+          ...transferForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setTransferForm({
+          ...transferForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setTransferForm({
+          ...transferForm,
+          [formKey]: event.target.value,
+        });
 
     setShowEditedForm(true);
-  };
-
-  const handleDateChange = (date) => {
-    setTransferForm({
-      ...transferForm,
-      Date: date.toDateString(),
-    });
   };
 
   // add new transfer
@@ -128,7 +141,7 @@ const TransferForm = (props) => {
             From: "",
             To: "",
             Amount: 0,
-            Date: new Date(),
+            Date: new Date().toDateString(),
             Comment: "",
           });
         });
@@ -251,7 +264,7 @@ const TransferForm = (props) => {
               From: "",
               To: "",
               Amount: 0,
-              Date: new Date(),
+              Date: new Date().toDateString(),
               Comment: "",
             });
           });
@@ -267,7 +280,7 @@ const TransferForm = (props) => {
       updateForm={updateFormHandler}
       selectedDate={transferForm.Date}
       formSubmitHandler={transferFormSubmitHandler}
-      handleDateChange={handleDateChange}
+      handleDateChange={updateFormHandler}
       btnName="add transfer"
       btnColor="default"
     />
@@ -281,7 +294,7 @@ const TransferForm = (props) => {
         updateForm={editFormHandler}
         selectedDate={transferForm.Date}
         formSubmitHandler={transferFormUpdateHandler}
-        handleDateChange={handleDateChange}
+        handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         btnName="add transfer"
         btnColor="default"

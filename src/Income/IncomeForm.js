@@ -9,7 +9,7 @@ const IncomeForm = (props) => {
     From: "",
     To: "",
     Amount: 0,
-    Date: new Date(),
+    Date: new Date().toDateString(),
     Comment: "",
   });
 
@@ -28,27 +28,39 @@ const IncomeForm = (props) => {
 
   // update empty form
   const updateFormHandler = (event, formKey) => {
-    setIncomeForm({
-      ...incomeForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setIncomeForm({
+          ...incomeForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setIncomeForm({
+          ...incomeForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setIncomeForm({
+          ...incomeForm,
+          [formKey]: event.target.value,
+        });
   };
 
   // edit pre-filled form
   const editFormHandler = (event, formKey) => {
-    setIncomeForm({
-      ...incomeForm,
-      [formKey]: event.target.value,
-    });
-
+    formKey === "Date"
+      ? setIncomeForm({
+          ...incomeForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setIncomeForm({
+          ...incomeForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setIncomeForm({
+          ...incomeForm,
+          [formKey]: event.target.value,
+        });
     setShowEditedForm(true);
-  };
-
-  const handleDateChange = (date) => {
-    setIncomeForm({
-      ...incomeForm,
-      Date: date.toDateString(),
-    });
   };
 
   // add new income
@@ -106,7 +118,7 @@ const IncomeForm = (props) => {
             From: "",
             To: "",
             Amount: 0,
-            Date: new Date(),
+            Date: new Date().toDateString(),
             Comment: "",
           });
         });
@@ -187,7 +199,7 @@ const IncomeForm = (props) => {
               From: "",
               To: "",
               Amount: 0,
-              Date: new Date(),
+              Date: new Date().toDateString(),
               Comment: "",
             });
           });
@@ -204,7 +216,7 @@ const IncomeForm = (props) => {
       updateForm={updateFormHandler}
       selectedDate={incomeForm.Date}
       formSubmitHandler={incomeFormSubmitHandler}
-      handleDateChange={handleDateChange}
+      handleDateChange={updateFormHandler}
       btnName="add income"
       btnColor="primary"
     />
@@ -219,7 +231,7 @@ const IncomeForm = (props) => {
         updateForm={editFormHandler}
         selectedDate={incomeForm.Date}
         formSubmitHandler={incomeFormUpdateHandler}
-        handleDateChange={handleDateChange}
+        handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         btnName="edit income"
         btnColor="primary"

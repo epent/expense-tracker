@@ -11,10 +11,15 @@ const CategoryForm = () => {
   });
 
   const updateFormHandler = (event, formKey) => {
-    setCategoryForm({
-      ...categoryForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Balance"
+      ? setCategoryForm({
+          ...categoryForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setCategoryForm({
+          ...categoryForm,
+          [formKey]: event.target.value,
+        });
   };
 
   // add new category

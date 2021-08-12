@@ -9,7 +9,7 @@ const ExpenseForm = (props) => {
     From: "",
     To: "",
     Amount: 0,
-    Date: new Date(),
+    Date: new Date().toDateString(),
     Comment: "",
   });
 
@@ -30,27 +30,40 @@ const ExpenseForm = (props) => {
 
   // update empty form
   const updateFormHandler = (event, formKey) => {
-    setExpenseForm({
-      ...expenseForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setExpenseForm({
+          ...expenseForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setExpenseForm({
+          ...expenseForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setExpenseForm({
+          ...expenseForm,
+          [formKey]: event.target.value,
+        });
   };
 
   // edit pre-filled form
   const editFormHandler = (event, formKey) => {
-    setExpenseForm({
-      ...expenseForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setExpenseForm({
+          ...expenseForm,
+          Date: event.toDateString(),
+        })
+      : formKey === "Amount"
+      ? setExpenseForm({
+          ...expenseForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setExpenseForm({
+          ...expenseForm,
+          [formKey]: event.target.value,
+        });
 
     setShowEditedForm(true);
-  };
-
-  const handleDateChange = (date) => {
-    setExpenseForm({
-      ...expenseForm,
-      Date: date.toDateString(),
-    });
   };
 
   // add new expense
@@ -146,7 +159,7 @@ const ExpenseForm = (props) => {
             From: "",
             To: "",
             Amount: 0,
-            Date: new Date(),
+            Date: new Date().toDateString(),
             Comment: "",
           });
         });
@@ -285,7 +298,7 @@ const ExpenseForm = (props) => {
               From: "",
               To: "",
               Amount: 0,
-              Date: new Date(),
+              Date: new Date().toDateString(),
               Comment: "",
             });
           });
@@ -301,7 +314,7 @@ const ExpenseForm = (props) => {
       updateForm={updateFormHandler}
       selectedDate={expenseForm.Date}
       formSubmitHandler={expenseFormSubmitHandler}
-      handleDateChange={handleDateChange}
+      handleDateChange={updateFormHandler}
       btnName="add expense"
       btnColor="secondary"
     />
@@ -316,7 +329,7 @@ const ExpenseForm = (props) => {
         updateForm={editFormHandler}
         selectedDate={expenseForm.Date}
         formSubmitHandler={expenseFormUpdateHandler}
-        handleDateChange={handleDateChange}
+        handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         btnName="edit expense"
         btnColor="secondary"

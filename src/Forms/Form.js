@@ -12,7 +12,7 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles({
   root: {
-    width: 200,
+    width: 190,
   },
 });
 
@@ -38,7 +38,7 @@ const Form = (props) => {
             size="small"
             className={classes.root}
             value={props.selectedDate}
-            onChange={(date) => props.handleDateChange(date)}
+            onChange={(e) => props.handleDateChange(e, formKey)}
           />
         </MuiPickersUtilsProvider>
       </Grid>
