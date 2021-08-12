@@ -76,10 +76,13 @@ const CategoryLog = (props) => {
     }
   };
 
+  let categoryList = categoryLog.categoryList;
+  if (props.sliceLog) categoryList = categoryLog.categoryList.slice(0, 8);
+
   return (
     <Box>
       <CategoryList
-        categoryList={categoryLog.categoryList}
+        categoryList={categoryList}
         deleteCategory={deleteCategoryHandler}
         editCategory={editCategoryHandler}
         categoryForm={categoryForm}

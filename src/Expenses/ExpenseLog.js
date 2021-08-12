@@ -186,10 +186,13 @@ const ExpenseLog = (props) => {
     }
   };
 
+  let transactions = expenseLog.expenseList;
+  if (props.sliceLog) transactions = expenseLog.expenseList.slice(0, 4);
+
   return (
     <Box>
       <History
-        transactions={expenseLog.expenseList}
+        transactions={transactions}
         transactionColor="secondary"
         arrowColor="secondary"
         amountColor="secondary"

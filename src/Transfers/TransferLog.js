@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import History from "../History/History";
 
-const TransferLog = () => {
+const TransferLog = (props) => {
   const [transferLog, setTransferLog] = useState({
     transferList: [],
   });
@@ -158,10 +158,13 @@ const TransferLog = () => {
     }
   };
 
+  let transactions = transferLog.transferList;
+  if (props.sliceLog) transactions = transferLog.transferList.slice(0, 32);
+
   return (
     <Box>
       <History
-        transactions={transferLog.transferList}
+        transactions={transactions}
         transactionColor="textSecondary"
         arrowColor="disabled"
         amountColor="textSecondary"

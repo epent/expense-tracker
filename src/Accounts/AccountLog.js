@@ -82,10 +82,13 @@ const AccountLog = (props) => {
     }
   };
 
+  let accounts = accountLog.accountList;
+  if (props.sliceLog) accounts = accountLog.accountList.slice(0, 8);
+
   return (
     <Box>
       <AccountHistory
-        accounts={accountLog.accountList}
+        accounts={accounts}
         deleteAccount={deleteAccountHandler}
         editAccount={editAccountHandler}
         accountForm={accountForm}

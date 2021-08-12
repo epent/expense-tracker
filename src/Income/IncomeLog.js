@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import History from "../History/History";
 
-const IncomeLog = () => {
+const IncomeLog = (props) => {
   const [incomeLog, setIncomeLog] = useState({
     incomeList: [],
   });
@@ -136,10 +136,13 @@ const IncomeLog = () => {
     }
   };
 
+  let transactions = incomeLog.incomeList;
+  if (props.sliceLog) transactions = incomeLog.incomeList.slice(0, 2);
+
   return (
     <Box>
       <History
-        transactions={incomeLog.incomeList}
+        transactions={transactions}
         transactionColor="primary"
         arrowColor="primary"
         amountColor="primary"

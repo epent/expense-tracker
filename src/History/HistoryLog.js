@@ -17,19 +17,21 @@ const useStyles = makeStyles({
   },
 });
 
-const HistoryLog = () => {
+const HistoryLog = (props) => {
   const classes = useStyles();
 
   return (
     <Box>
-      <Typography variant="h5" gutterBottom color="textSecondary">
-        History
-      </Typography>
+      <Box mb={3}>
+        <Typography variant="h5" gutterBottom color="textSecondary">
+          History
+        </Typography>
+      </Box>
       <Card className={classes.root}>
         <CardContent>
-          <ExpenseLog />
-          <IncomeLog />
-          <TransferLog />
+          <ExpenseLog sliceLog={props.sliceLog} />
+          <IncomeLog sliceLog={props.sliceLog} />
+          <TransferLog sliceLog={props.sliceLog} />
         </CardContent>
       </Card>
     </Box>
