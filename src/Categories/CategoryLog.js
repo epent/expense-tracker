@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import CategoryList from "./CategoryList";
 
-const CategoryLog = () => {
+const CategoryLog = (props) => {
   const [categoryLog, setCategoryLog] = useState({
     categoryList: [],
   });
@@ -86,6 +86,8 @@ const CategoryLog = () => {
         showCategoryForm={showCategoryForm}
         editedCategoryId={editedCategoryId}
         setShowCategoryForm={setShowCategoryForm}
+        showEditBtn={props.showEditBtn}
+        showDeleteBtn={props.showDeleteBtn}
       />
     </Box>
   );

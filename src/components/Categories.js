@@ -30,7 +30,7 @@ const Categories = () => {
         {showCategoryForm && <CategoryForm />}
       </Grid>
       <Grid item xs={12}>
-        <CategoryLog />
+        <CategoryLog showEditBtn={true} showDeleteBtn={true} />
       </Grid>
     </Grid>
   );

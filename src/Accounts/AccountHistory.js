@@ -43,21 +43,25 @@ const AccountHistory = (props) => {
                   align="right"
                 >{`${account.Balance} ILS`}</Typography>
               </Grid>
-              <IconButton
-                onClick={() =>
-                  props.editAccount(
-                    account.id,
-                    account.Name,
-                    account.Category,
-                    account.Balance
-                  )
-                }
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => props.deleteAccount(account.id)}>
-                <DeleteIcon />
-              </IconButton>
+              {props.showEditBtn && (
+                <IconButton
+                  onClick={() =>
+                    props.editAccount(
+                      account.id,
+                      account.Name,
+                      account.Category,
+                      account.Balance
+                    )
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+              {props.showDeleteBtn && (
+                <IconButton onClick={() => props.deleteAccount(account.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
             </ListItem>
           </Grid>
           <Grid item xs={12}>

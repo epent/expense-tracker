@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import AccountHistory from "./AccountHistory";
 
-const AccountLog = () => {
+const AccountLog = (props) => {
   const [accountLog, setAccountLog] = useState({
     accountList: [],
   });
@@ -92,6 +92,8 @@ const AccountLog = () => {
         showAccountForm={showAccountForm}
         editedAccountId={editedAccountId}
         setShowAccountForm={setShowAccountForm}
+        showEditBtn={props.showEditBtn}
+        showDeleteBtn={props.showDeleteBtn}
       />
     </Box>
   );

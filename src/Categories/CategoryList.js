@@ -39,20 +39,24 @@ const CategoryList = (props) => {
                   {category.Balance} ILS
                 </Typography>
               </Grid>
-              <IconButton
-                onClick={() =>
-                  props.editCategory(
-                    category.id,
-                    category.Name,
-                    category.Balance
-                  )
-                }
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => props.deleteCategory(category.id)}>
-                <DeleteIcon />
-              </IconButton>
+              {props.showEditBtn && (
+                <IconButton
+                  onClick={() =>
+                    props.editCategory(
+                      category.id,
+                      category.Name,
+                      category.Balance
+                    )
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+              {props.showDeleteBtn && (
+                <IconButton onClick={() => props.deleteCategory(category.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
             </ListItem>
           </Grid>
           <Grid item xs={12}>

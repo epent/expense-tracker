@@ -31,7 +31,7 @@ const Accounts = () => {
         {showAccountForm && <AccountForm />}
       </Grid>
       <Grid item xs={12}>
-        <AccountLog />
+        <AccountLog showEditBtn={true} showDeleteBtn={true} />
       </Grid>
     </Grid>
   );
