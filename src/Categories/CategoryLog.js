@@ -9,6 +9,17 @@ const CategoryLog = () => {
     categoryList: [],
   });
 
+  const [categoryForm, setCategoryForm] = useState({
+    Name: "",
+    Balance: 0,
+  });
+
+  //  id of the expense we want to edit
+  const [editedCategoryId, setEditedCategoryId] = useState("");
+
+  // if want to edit transaction, need to show the form again
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
+
   useEffect(() => {
     // fetch categoryList from server
     fetch(
@@ -28,8 +39,6 @@ const CategoryLog = () => {
           ...categoryLog,
           categoryList: fetchedCategoryList,
         });
-
-        console.log(fetchedCategoryList);
       });
   }, []);
 
@@ -54,11 +63,29 @@ const CategoryLog = () => {
     );
   };
 
+  const editCategoryHandler = (categoryId, categoryName, categoryBalance) => {
+    setCategoryForm({
+      Name: categoryName,
+      Balance: categoryBalance,
+    });
+
+    setEditedCategoryId(categoryId);
+
+    if (editedCategoryId === categoryId) {
+      setShowCategoryForm((prevState) => !prevState);
+    }
+  };
+
   return (
     <Box>
       <CategoryList
         categoryList={categoryLog.categoryList}
         deleteCategory={deleteCategoryHandler}
+        editCategory={editCategoryHandler}
+        categoryForm={categoryForm}
+        showCategoryForm={showCategoryForm}
+        editedCategoryId={editedCategoryId}
+        setShowCategoryForm={setShowCategoryForm}
       />
     </Box>
   );

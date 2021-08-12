@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 
 import AccountHistory from "./AccountHistory";
 
@@ -9,6 +8,18 @@ const AccountLog = () => {
   const [accountLog, setAccountLog] = useState({
     accountList: [],
   });
+
+  const [accountForm, setAccountForm] = useState({
+    Name: "",
+    Category: "",
+    Balance: 0,
+  });
+
+  //  id of the expense we want to edit
+  const [editedAccountId, setEditedAccountId] = useState("");
+
+  // if want to edit transaction, need to show the form again
+  const [showAccountForm, setShowAccountForm] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -28,8 +39,6 @@ const AccountLog = () => {
           ...accountLog,
           accountList: fetchedList,
         });
-
-        console.log(fetchedList);
       });
   }, []);
 
@@ -54,11 +63,35 @@ const AccountLog = () => {
     );
   };
 
+  const editAccountHandler = (
+    accountId,
+    accountName,
+    accountCategory,
+    accountBalance
+  ) => {
+    setAccountForm({
+      Name: accountName,
+      Category: accountCategory,
+      Balance: accountBalance,
+    });
+
+    setEditedAccountId(accountId);
+
+    if (editedAccountId === accountId) {
+      setShowAccountForm((prevState) => !prevState);
+    }
+  };
+
   return (
     <Box>
       <AccountHistory
         accounts={accountLog.accountList}
         deleteAccount={deleteAccountHandler}
+        editAccount={editAccountHandler}
+        accountForm={accountForm}
+        showAccountForm={showAccountForm}
+        editedAccountId={editedAccountId}
+        setShowAccountForm={setShowAccountForm}
       />
     </Box>
   );

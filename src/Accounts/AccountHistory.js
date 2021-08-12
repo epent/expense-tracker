@@ -7,7 +7,10 @@ import ListItem from "@material-ui/core/ListItem";
 import Grid from "@material-ui/core/Grid";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
+
+import AccountForm from "./AccountForm";
 
 const useStyles = makeStyles({
   root: {
@@ -23,25 +26,51 @@ const AccountHistory = (props) => {
   if (props.accounts.length > 0)
     accountList = props.accounts.map((account) => {
       return (
-        <ListItem key={account.id}>
-          <Grid item className={classes.root} xs={6}>
-            <Typography
-              color="textSecondary"
-              variant="body1"
-              align="left"
-            >{`${account.Name}`}</Typography>
+        <Box key={account.id}>
+          <Grid item xs={12}>
+            <ListItem>
+              <Grid item className={classes.root} xs={6}>
+                <Typography
+                  color="textSecondary"
+                  variant="body1"
+                  align="left"
+                >{`${account.Name}`}</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                  align="right"
+                >{`${account.Balance} ILS`}</Typography>
+              </Grid>
+              <IconButton
+                onClick={() =>
+                  props.editAccount(
+                    account.id,
+                    account.Name,
+                    account.Category,
+                    account.Balance
+                  )
+                }
+              >
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={() => props.deleteAccount(account.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </ListItem>
           </Grid>
-          <Grid item xs={6}>
-            <Typography
-              color="textSecondary"
-              variant="body2"
-              align="right"
-            >{`${account.Balance} ILS`}</Typography>
+          <Grid item xs={12}>
+            {props.showAccountForm && account.id === props.editedAccountId && (
+              <AccountForm
+                editedAccountForm={props.accountForm}
+                showEditedForm={props.showAccountForm}
+                editedAccountId={props.editedAccountId}
+                setShowAccountForm={props.setShowAccountForm}
+              />
+            )}
           </Grid>
-          <IconButton onClick={() => props.deleteAccount(account.id)}>
-            <DeleteIcon />
-          </IconButton>
-        </ListItem>
+        </Box>
       );
     });
 
