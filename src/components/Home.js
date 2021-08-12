@@ -2,6 +2,7 @@ import React from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
 import HistoryLog from "../History/HistoryLog";
@@ -27,7 +28,7 @@ const Home = () => {
             <Typography variant="h5" gutterBottom color="textSecondary">
               Accounts
             </Typography>
-            <AccountLog sliceLog={true}/>
+            <AccountLog sliceLog={true} />
           </Box>
         </Grid>
         <Grid item>
@@ -35,7 +36,7 @@ const Home = () => {
             <Typography variant="h5" gutterBottom color="textSecondary">
               Categories
             </Typography>
-            <CategoryLog sliceLog={true}/>
+            <CategoryLog sliceLog={true} />
           </Box>
         </Grid>
       </Grid>
@@ -56,29 +57,53 @@ const Home = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Box my={2}>
+          <Box mt={1}>
             <Grid container item direction="column" xs={12}>
               <Grid item xs={12}>
-                <HistoryLog sliceLog={true}/>
+                <HistoryLog sliceLog={true} />
               </Grid>
             </Grid>
           </Box>
         </Grid>
       </Grid>
-      {/* <Grid container item direction="column" xs={3}>
+      <Grid
+        container
+        item
+        direction="column"
+        justifyContent="space-around"
+        xs={3}
+      >
         <Grid item>
-          <Typography variant="h5" gutterBottom color="textSecondary">
-            Accounts
-          </Typography>
-          <AccountLog />
+          <Paper elevation={3}>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              Total balance
+            </Typography>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              33500 ILS
+            </Typography>
+          </Paper>
         </Grid>
         <Grid item>
-          <Typography variant="h5" gutterBottom color="textSecondary">
-            Categories
-          </Typography>
-          <CategoryLog />
+          <Paper elevation={3}>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              Total income
+            </Typography>
+            <Typography variant="h5" gutterBottom color="primary">
+              44000 ILS
+            </Typography>
+          </Paper>
         </Grid>
-      </Grid> */}
+        <Grid item>
+          <Paper elevation={3}>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              Total expenses
+            </Typography>
+            <Typography variant="h5" gutterBottom color="secondary">
+              10500 ILS
+            </Typography>
+          </Paper>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };
