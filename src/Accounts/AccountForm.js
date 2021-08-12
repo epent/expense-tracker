@@ -13,10 +13,15 @@ const AccountForm = (props) => {
   });
 
   const updateFormHandler = (event, formKey) => {
-    setAccountForm({
-      ...accountForm,
-      [formKey]: event.target.value,
-    });
+    formKey === "Balance"
+      ? setAccountForm({
+          ...accountForm,
+          [formKey]: Number(event.target.value),
+        })
+      : setAccountForm({
+          ...accountForm,
+          [formKey]: event.target.value,
+        });
   };
 
   // add new account
