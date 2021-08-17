@@ -76,7 +76,9 @@ const IncomeForm = (props) => {
         method: "POST",
         body: JSON.stringify(incomeForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated incomeLog
+      .then((response) => props.updateIncomeLog());
 
     // fetch accountList from server
     fetch(
@@ -137,7 +139,9 @@ const IncomeForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(incomeForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated incomeLog
+      .then((response) => props.updateIncomeLog());
 
     if (props.editedIncomeForm.Amount !== incomeForm.Amount) {
       // fetch accountList from server

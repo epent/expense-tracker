@@ -49,7 +49,7 @@ const ExpenseLog = (props) => {
           expenseList: fetchedList,
         });
       });
-  }, []);
+  }, [props.updatedExpenseLog]);
 
   const deleteExpenseHandler = (
     expenseId,
@@ -203,6 +203,7 @@ const ExpenseLog = (props) => {
         showExpenseForm={showExpenseForm}
         editedExpenseId={editedExpenseId}
         setShowExpenseForm={setShowExpenseForm}
+        updateExpenseLog={props.updateExpenseLog}
       />
     </Box>
   );

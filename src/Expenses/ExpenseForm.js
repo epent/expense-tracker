@@ -79,7 +79,9 @@ const ExpenseForm = (props) => {
         method: "POST",
         body: JSON.stringify(expenseForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated expenseLog
+      .then((response) => props.updateExpenseLog());
 
     // fetch accountList from server
     fetch(
@@ -179,7 +181,9 @@ const ExpenseForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(expenseForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated expenseLog
+      .then((response) => props.updateExpenseLog());
 
     if (props.editedExpenseForm.Amount !== expenseForm.Amount) {
       // fetch accountList from server

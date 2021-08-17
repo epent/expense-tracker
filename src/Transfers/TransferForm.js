@@ -77,7 +77,9 @@ const TransferForm = (props) => {
         method: "POST",
         body: JSON.stringify(transferForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated expenseLog
+      .then((response) => props.updateTransferLog());
 
     // fetch accountList from server
     fetch(
@@ -161,7 +163,9 @@ const TransferForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(transferForm),
       }
-    );
+    )
+      // trigger the page to rerender with updated expenseLog
+      .then((response) => props.updateTransferLog());
 
     if (props.editedTransferForm.Amount !== transferForm.Amount) {
       // fetch accountList from server

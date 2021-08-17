@@ -49,7 +49,7 @@ const TransferLog = (props) => {
           transferList: fetchedList,
         });
       });
-  }, []);
+  }, [props.updatedTransferLog]);
 
   const deleteTransferHandler = (
     transferId,
@@ -175,6 +175,7 @@ const TransferLog = (props) => {
         showTransferForm={showTransferForm}
         editedTransferId={editedTransferId}
         setShowTransferForm={setShowTransferForm}
+        updateTransferLog={props.updateTransferLog}
       />
     </Box>
   );

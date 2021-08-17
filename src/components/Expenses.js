@@ -10,8 +10,14 @@ import ExpenseLog from "../Expenses/ExpenseLog";
 const Expenses = (props) => {
   const [showExpenseForm, setShowExpenseForm] = useState(false);
 
+  const [updatedExpenseLog, setUpdatedExpenseLog] = useState(false);
+
   const showExpenseFormHandler = () => {
     setShowExpenseForm((prevState) => !prevState);
+  };
+
+  const updateExpenseLogHandler = () => {
+    setUpdatedExpenseLog((prevState) => !prevState);
   };
 
   return (
@@ -27,10 +33,17 @@ const Expenses = (props) => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showExpenseForm && <ExpenseForm />}
+        {showExpenseForm && (
+          <ExpenseForm updateExpenseLog={updateExpenseLogHandler} />
+        )}
       </Grid>
       <Grid item xs={12}>
-        {props.showExpenseLog && <ExpenseLog />}
+        {props.showExpenseLog && (
+          <ExpenseLog
+            updatedExpenseLog={updatedExpenseLog}
+            updateExpenseLog={updateExpenseLogHandler}
+          />
+        )}
       </Grid>
     </Grid>
   );

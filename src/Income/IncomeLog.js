@@ -49,7 +49,7 @@ const IncomeLog = (props) => {
           incomeList: fetchedList,
         });
       });
-  }, []);
+  }, [props.updatedIncomeLog]);
 
   const deleteIncomeHandler = (
     incomeId,
@@ -153,6 +153,7 @@ const IncomeLog = (props) => {
         showIncomeForm={showIncomeForm}
         editedIncomeId={editedIncomeId}
         setShowIncomeForm={setShowIncomeForm}
+        updateIncomeLog={props.updateIncomeLog}
       />
     </Box>
   );
