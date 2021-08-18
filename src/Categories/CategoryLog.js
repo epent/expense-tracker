@@ -40,7 +40,7 @@ const CategoryLog = (props) => {
           categoryList: fetchedCategoryList,
         });
       });
-  }, []);
+  }, [props.updatedCategoryLog]);
 
   const deleteCategoryHandler = (categoryId) => {
     const updatedCategoryLog = categoryLog.categoryList.filter(
@@ -91,6 +91,7 @@ const CategoryLog = (props) => {
         setShowCategoryForm={setShowCategoryForm}
         showEditBtn={props.showEditBtn}
         showDeleteBtn={props.showDeleteBtn}
+        updateCategoryLog={props.updateCategoryLog}
       />
     </Box>
   );

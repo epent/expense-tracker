@@ -159,7 +159,7 @@ const TransferLog = (props) => {
   };
 
   let transactions = transferLog.transferList;
-  if (props.sliceLog) transactions = transferLog.transferList.slice(0, 32);
+  if (props.sliceLog) transactions = transferLog.transferList.slice(0, 2);
 
   return (
     <Box>

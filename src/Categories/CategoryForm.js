@@ -60,12 +60,16 @@ const CategoryForm = (props) => {
         method: "POST",
         body: JSON.stringify(categoryForm),
       }
-    ).then((response) => {
-      setCategoryForm({
-        Name: "",
-        Balance: 0,
+    )
+      // trigger the page to rerender with updated categoryLog
+      .then((response) => props.updateCategoryLog())
+
+      .then((response) => {
+        setCategoryForm({
+          Name: "",
+          Balance: 0,
+        });
       });
-    });
   };
 
   const categoryFormUpdateHandler = (event) => {
@@ -80,12 +84,16 @@ const CategoryForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(categoryForm),
       }
-    ).then((response) => {
-      setCategoryForm({
-        Name: "",
-        Balance: 0,
+    )
+      // trigger the page to rerender with updated categoryLog
+      .then((response) => props.updateCategoryLog())
+
+      .then((response) => {
+        setCategoryForm({
+          Name: "",
+          Balance: 0,
+        });
       });
-    });
 
     // close the editable form
     props.setShowCategoryForm();

@@ -67,6 +67,7 @@ const CategoryList = (props) => {
                   showEditedForm={props.showCategoryForm}
                   editedCategoryId={props.editedCategoryId}
                   setShowCategoryForm={props.setShowCategoryForm}
+                  updateCategoryLog={props.updateCategoryLog}
                 />
               )}
           </Grid>

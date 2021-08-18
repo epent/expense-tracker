@@ -11,8 +11,14 @@ import AccountLog from "../Accounts/AccountLog";
 const Accounts = () => {
   const [showAccountForm, setShowAccountForm] = useState(false);
 
+  const [updatedAccountLog, setUpdatedAccountLog] = useState(false);
+
   const showAccountFormHandler = () => {
     setShowAccountForm((prevState) => !prevState);
+  };
+
+  const updateAccountLogHandler = () => {
+    setUpdatedAccountLog((prevState) => !prevState);
   };
 
   return (
@@ -28,10 +34,17 @@ const Accounts = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showAccountForm && <AccountForm />}
+        {showAccountForm && (
+          <AccountForm updateAccountLog={updateAccountLogHandler} />
+        )}
       </Grid>
       <Grid item xs={12}>
-        <AccountLog showEditBtn={true} showDeleteBtn={true} />
+        <AccountLog
+          showEditBtn={true}
+          showDeleteBtn={true}
+          updatedAccountLog={updatedAccountLog}
+          updateAccountLog={updateAccountLogHandler}
+        />
       </Grid>
     </Grid>
   );

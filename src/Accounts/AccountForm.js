@@ -59,15 +59,18 @@ const AccountForm = (props) => {
         method: "POST",
         body: JSON.stringify(accountForm),
       }
-    ).then((response) => {
-      setAccountForm({
-        Name: "",
-        Category: "",
-        Balance: 0,
-      });
-    });
-  };
+    )
+      // trigger the page to rerender with updated accountLog
+      .then((response) => props.updateAccountLog())
 
+      .then((response) => {
+        setAccountForm({
+          Name: "",
+          Category: "",
+          Balance: 0,
+        });
+      });
+  };
 
   const accountFormUpdateHandler = (event) => {
     event.preventDefault();
@@ -81,13 +84,17 @@ const AccountForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(accountForm),
       }
-    ).then((response) => {
-      setAccountForm({
-        Name: "",
-        Category: "",
-        Balance: 0,
+    )
+      // trigger the page to rerender with updated accountLog
+      .then((response) => props.updateAccountLog())
+
+      .then((response) => {
+        setAccountForm({
+          Name: "",
+          Category: "",
+          Balance: 0,
+        });
       });
-    });
 
     // close the editable form
     props.setShowAccountForm();

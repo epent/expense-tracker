@@ -10,8 +10,14 @@ import CategoryLog from "../Categories/CategoryLog";
 const Categories = () => {
   const [showCategoryForm, setShowCategoryForm] = useState(false);
 
+  const [updatedCategoryLog, setUpdatedCategoryLog] = useState(false);
+
   const showCategoryFormHandler = () => {
     setShowCategoryForm((prevState) => !prevState);
+  };
+
+  const updateCategoryLogHandler = () => {
+    setUpdatedCategoryLog((prevState) => !prevState);
   };
 
   return (
@@ -27,10 +33,17 @@ const Categories = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showCategoryForm && <CategoryForm />}
+        {showCategoryForm && (
+          <CategoryForm updateCategoryLog={updateCategoryLogHandler} />
+        )}
       </Grid>
       <Grid item xs={12}>
-        <CategoryLog showEditBtn={true} showDeleteBtn={true} />
+        <CategoryLog
+          showEditBtn={true}
+          showDeleteBtn={true}
+          updatedCategoryLog={updatedCategoryLog}
+          updateCategoryLog={updateCategoryLogHandler}
+        />
       </Grid>
     </Grid>
   );

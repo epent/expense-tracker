@@ -71,6 +71,7 @@ const AccountHistory = (props) => {
                 showEditedForm={props.showAccountForm}
                 editedAccountId={props.editedAccountId}
                 setShowAccountForm={props.setShowAccountForm}
+                updateAccountLog={props.updateAccountLog}
               />
             )}
           </Grid>

@@ -40,7 +40,7 @@ const AccountLog = (props) => {
           accountList: fetchedList,
         });
       });
-  }, []);
+  }, [props.updatedAccountLog]);
 
   const deleteAccountHandler = (accountId) => {
     const updatedExpenseLog = accountLog.accountList.filter(
@@ -97,6 +97,7 @@ const AccountLog = (props) => {
         setShowAccountForm={setShowAccountForm}
         showEditBtn={props.showEditBtn}
         showDeleteBtn={props.showDeleteBtn}
+        updateAccountLog={props.updateAccountLog}
       />
     </Box>
   );
