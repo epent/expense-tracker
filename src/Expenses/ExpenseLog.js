@@ -27,6 +27,10 @@ const ExpenseLog = (props) => {
 
   const fetchedCategoryList = [];
 
+  // needed for modal when deleting transaction
+  const [showModal, setShowModal] = useState(false);
+  const [expenseToDelete, setExpenseToDelete] = useState("");
+
   useEffect(() => {
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json"
@@ -65,6 +69,8 @@ const ExpenseLog = (props) => {
       ...expenseLog,
       expenseList: updatedExpenseLog,
     });
+
+    setShowModal(false);
 
     // delete expense from db
     fetch(
@@ -186,6 +192,15 @@ const ExpenseLog = (props) => {
     }
   };
 
+  const openModalHandler = (transaction) => {
+    setShowModal(true);
+    setExpenseToDelete(transaction);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
   let transactions = expenseLog.expenseList;
   if (props.sliceLog) transactions = expenseLog.expenseList.slice(0, 4);
 
@@ -204,6 +219,10 @@ const ExpenseLog = (props) => {
         editedExpenseId={editedExpenseId}
         setShowExpenseForm={setShowExpenseForm}
         updateExpenseLog={props.updateExpenseLog}
+        openModal={openModalHandler}
+        closeModal={closeModalHandler}
+        showModal={showModal}
+        transactionToDelete={expenseToDelete}
       />
     </Box>
   );
