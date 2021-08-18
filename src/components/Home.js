@@ -19,59 +19,9 @@ const Home = () => {
       <Grid
         container
         item
-        direction="column"
-        justifyContent="space-between"
-        xs={3}
-      >
-        <Grid item>
-          <Box mt={2}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Accounts
-            </Typography>
-            <AccountLog sliceLog={true} />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mb={2}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Categories
-            </Typography>
-            <CategoryLog sliceLog={true} />
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid container item direction="column" xs={6}>
-        <Grid item>
-          <Box my={2}>
-            <Grid container item direction="row" xs={12}>
-              <Grid item xs={4}>
-                <Expenses showExpenseLog={false} />
-              </Grid>
-              <Grid item xs={4}>
-                <Income showIncomeLog={false} />
-              </Grid>
-              <Grid item xs={4}>
-                <Transfers showTransferLog={false} />
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={1}>
-            <Grid container item direction="column" xs={12}>
-              <Grid item xs={12}>
-                <HistoryLog sliceLog={true} />
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        item
-        direction="column"
+        direction="row"
         justifyContent="space-around"
-        xs={3}
+        xs={12}
       >
         <Grid item>
           <Paper elevation={3}>
@@ -102,6 +52,63 @@ const Home = () => {
               10500 ILS
             </Typography>
           </Paper>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        item
+        direction="column"
+        justifyContent="space-between"
+        xs={3}
+      >
+        <Grid item>
+          <Box mt={1}>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              Accounts
+            </Typography>
+            <AccountLog sliceLog={true} />
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box mb={2}>
+            <Typography variant="h5" gutterBottom color="textSecondary">
+              Categories
+            </Typography>
+            <CategoryLog sliceLog={true} />
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid container item direction="column" xs={6}>
+        <Grid item>
+          <Box mt={1}>
+            <Grid item xs={12}>
+              <HistoryLog sliceLog={true} />
+            </Grid>
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid
+        container
+        item
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        xs={3}
+      >
+        <Grid item>
+          <Box mt={8} mb={4} mr={5}>
+            <Expenses showExpenseLog={false} />
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box my={4} mr={5}>
+            <Income showIncomeLog={false} />
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box my={4} mr={5}>
+            <Transfers showTransferLog={false} />
+          </Box>
         </Grid>
       </Grid>
     </Grid>
