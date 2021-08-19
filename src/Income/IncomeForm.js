@@ -127,7 +127,7 @@ const IncomeForm = (props) => {
           // trigger the page to rerender with updated incomeLog
           .then((response) => props.updateIncomeLog())
           // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => props.updateHome());
+          .then((response) => props.updateHomeHandler());
       });
   };
 
@@ -214,7 +214,7 @@ const IncomeForm = (props) => {
             // trigger the page to rerender with updated incomeLog
             .then((response) => props.updateIncomeLog())
             // trigger Home to rerender with updated accountLog/categoryLog
-            .then((response) => props.updateHome());
+            .then((response) => props.updateHomeHandler());
         });
     }
 

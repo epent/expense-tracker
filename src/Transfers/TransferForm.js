@@ -150,7 +150,7 @@ const TransferForm = (props) => {
           // trigger the page to rerender with updated expenseLog
           .then((response) => props.updateTransferLog())
           // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => props.updateHome());
+          .then((response) => props.updateHomeHandler());
       });
   };
 
@@ -279,7 +279,7 @@ const TransferForm = (props) => {
             // trigger the page to rerender with updated expenseLog
             .then((response) => props.updateTransferLog())
             // trigger Home to rerender with updated accountLog/categoryLog
-            .then((response) => props.updateHome());
+            .then((response) => props.updateHomeHandler());
         });
     }
     // close the editable form
