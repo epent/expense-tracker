@@ -18,6 +18,8 @@ const IncomeForm = (props) => {
 
   const fetchedAccountList = [];
 
+  const fetchedBalanceList = [];
+
   useEffect(() => {
     if (props.editedIncomeForm) {
       setIncomeForm({
@@ -113,6 +115,42 @@ const IncomeForm = (props) => {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
           }
+        );
+      });
+
+    // fetch totalBalances from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let index in data) {
+          fetchedBalanceList.push({
+            [index]: data[index],
+            id: index,
+          });
+        }
+        console.log(fetchedBalanceList);
+      })
+
+      // update totalBalances after new income
+      .then((response) => {
+        const totalIncome = fetchedBalanceList.filter((total) => {
+          return total.id === "income";
+        });
+        console.log(totalIncome);
+
+        const updatedTotals = {
+          income: Number(totalIncome[0].income) + Number(incomeForm.Amount),
+        };
+
+        // post changed totalBalances to server
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedTotals),
+          }
         )
           .then((response) => {
             setIncomeForm({
@@ -199,6 +237,57 @@ const IncomeForm = (props) => {
             {
               method: "PATCH",
               body: JSON.stringify(updatedAccount),
+            }
+          );
+        });
+
+      // fetch totalBalances from server
+      fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          for (let index in data) {
+            fetchedBalanceList.push({
+              [index]: data[index],
+              id: index,
+            });
+          }
+          console.log(fetchedBalanceList);
+        })
+
+        // update totalBalances after new income
+        .then((response) => {
+          const totalIncome = fetchedBalanceList.filter((total) => {
+            return total.id === "income";
+          });
+
+          let updatedTotals;
+
+          if (props.editedIncomeForm.Amount > incomeForm.Amount) {
+            updatedTotals = {
+              income:
+                Number(totalIncome[0].income) -
+                (Number(props.editedIncomeForm.Amount) -
+                  Number(incomeForm.Amount)),
+            };
+          }
+
+          if (props.editedIncomeForm.Amount < incomeForm.Amount) {
+            updatedTotals = {
+              income:
+                Number(totalIncome[0].income) +
+                (Number(incomeForm.Amount) -
+                  Number(props.editedIncomeForm.Amount)),
+            };
+          }
+
+          // post changed totalBalances to server
+          fetch(
+            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
+            {
+              method: "PATCH",
+              body: JSON.stringify(updatedTotals),
             }
           )
             .then((response) => {

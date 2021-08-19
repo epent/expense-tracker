@@ -25,6 +25,8 @@ const IncomeLog = (props) => {
 
   const fetchedAccountList = [];
 
+  const fetchedBalanceList = [];
+
   // needed for modal when deleting transaction
   const [showModal, setShowModal] = useState(false);
   const [incomeToDelete, setIncomeToDelete] = useState("");
@@ -118,8 +120,44 @@ const IncomeLog = (props) => {
         )
           // trigger Home to rerender with updated accountLog/categoryLog
           .then((response) => {
-            if (props.updateHomeHandler) props.updateHomeHandler()
+            if (props.updateHomeHandler) props.updateHomeHandler();
           });
+      });
+
+    // fetch totalBalances from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let index in data) {
+          fetchedBalanceList.push({
+            [index]: data[index],
+            id: index,
+          });
+        }
+        console.log(fetchedBalanceList);
+      })
+
+      // update totalBalances after new income
+      .then((response) => {
+        const totalIncome = fetchedBalanceList.filter((total) => {
+          return total.id === "income";
+        });
+        console.log(totalIncome);
+
+        const updatedTotals = {
+          income: Number(totalIncome[0].income) - Number(incomeAmount),
+        };
+
+        // post changed totalBalances to server
+        fetch(
+          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
+          {
+            method: "PATCH",
+            body: JSON.stringify(updatedTotals),
+          }
+        );
       });
   };
 

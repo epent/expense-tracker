@@ -16,9 +16,32 @@ import Transfers from "./Transfers";
 const Home = () => {
   const [updateHome, setUpdateHome] = useState(false);
 
+  const [total, setTotal] = useState({
+    expenses: 0,
+    income: 0,
+    balance: 0,
+  });
+
   const updateHomeHandler = () => {
     setUpdateHome((prevState) => !prevState);
   };
+
+  useEffect(() => {
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+
+        setTotal({
+          ...total,
+          expenses: data.expenses,
+          income: data.income,
+          balance: data.balance,
+        });
+      });
+  }, [updateHome]);
 
   return (
     <Grid container spacing={3}>
@@ -30,27 +53,21 @@ const Home = () => {
         xs={12}
       >
         <Grid item>
-          <Paper elevation={3}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Total balance
-            </Typography>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              33500 ILS
-            </Typography>
-          </Paper>
+          <Balance
+            title="Balance"
+            amount={total.balance}
+            amountColor="textSecondary"
+          />
         </Grid>
         <Grid item>
-          <Paper elevation={3}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Total income
-            </Typography>
-            <Typography variant="h5" gutterBottom color="primary">
-              44000 ILS
-            </Typography>
-          </Paper>
+          <Balance title="Income" amount={total.income} amountColor="primary" />
         </Grid>
         <Grid item>
-          <Balance title="Expenses" amount="10000" amountColor="secondary" />
+          <Balance
+            title="Expenses"
+            amount={total.expenses}
+            amountColor="secondary"
+          />
         </Grid>
       </Grid>
       <Grid
