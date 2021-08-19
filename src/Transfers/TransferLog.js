@@ -137,7 +137,9 @@ const TransferLog = (props) => {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
           }
-        );
+        )
+          // trigger Home to rerender with updated accountLog/categoryLog
+          .then((response) => props.updateHomeHandler());
       });
   };
 

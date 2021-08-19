@@ -165,7 +165,9 @@ const ExpenseLog = (props) => {
             method: "PATCH",
             body: JSON.stringify(updatedCategory),
           }
-        );
+        )
+          // trigger Home to rerender with updated accountLog/categoryLog
+          .then((response) => props.updateHomeHandler());
       });
   };
 
