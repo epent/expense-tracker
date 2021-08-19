@@ -40,7 +40,7 @@ const CategoryLog = (props) => {
           categoryList: fetchedCategoryList,
         });
       });
-  }, [props.updatedCategoryLog]);
+  }, [props.updatedCategoryLog, props.updateHome]);
 
   const deleteCategoryHandler = (categoryId) => {
     const updatedCategoryLog = categoryLog.categoryList.filter(

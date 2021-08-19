@@ -36,7 +36,7 @@ const Income = (props) => {
         {incomeFormShow && (
           <IncomeForm
             updateIncomeLog={updateIncomeLogHandler}
-            updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
         )}
       </Grid>
@@ -53,6 +53,7 @@ const Income = (props) => {
             updatedIncomeLog={updatedIncomeLog}
             updateIncomeLog={updateIncomeLogHandler}
             updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
         )}
       </Grid>

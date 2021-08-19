@@ -223,6 +223,7 @@ const ExpenseLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={expenseToDelete}
+        updateHomeHandler={props.updateHomeHandler}
       />
     </Box>
   );

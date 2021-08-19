@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -8,21 +7,21 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import AccountForm from "../Accounts/AccountForm";
 import AccountLog from "../Accounts/AccountLog";
 
-const Accounts = () => {
-  const [showAccountForm, setShowAccountForm] = useState(false);
+const Accounts = (props) => {
+  const [accountFormShow, setAccountFormShow] = useState(false);
 
   const [updatedAccountLog, setUpdatedAccountLog] = useState(false);
 
   const showAccountFormHandler = () => {
-    setShowAccountForm((prevState) => !prevState);
+    setAccountFormShow((prevState) => !prevState);
   };
 
   const updateAccountLogHandler = () => {
     setUpdatedAccountLog((prevState) => !prevState);
   };
 
-  return (
-    <Grid container>
+  const accountForm = (
+    <Grid item xs={12}>
       <Grid item xs={12}>
         <Button
           variant="contained"
@@ -34,16 +33,25 @@ const Accounts = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showAccountForm && (
+        {accountFormShow && (
           <AccountForm updateAccountLog={updateAccountLogHandler} />
         )}
       </Grid>
+    </Grid>
+  );
+
+  return (
+    <Grid container>
+      {props.showAccountForm && accountForm}
       <Grid item xs={12}>
         <AccountLog
-          showEditBtn={true}
-          showDeleteBtn={true}
+          sliceLog={props.sliceLog}
+          showEditBtn={props.showEditBtn}
+          showDeleteBtn={props.showDeleteBtn}
           updatedAccountLog={updatedAccountLog}
           updateAccountLog={updateAccountLogHandler}
+          updateHome={props.updateHome}
+
         />
       </Grid>
     </Grid>

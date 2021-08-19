@@ -77,11 +77,7 @@ const TransferForm = (props) => {
         method: "POST",
         body: JSON.stringify(transferForm),
       }
-    )
-      // trigger the page to rerender with updated expenseLog
-      .then((response) => props.updateTransferLog())
-
-      .then((response) => props.updateHome());
+    );
 
     // fetch accountList from server
     fetch(
@@ -140,15 +136,21 @@ const TransferForm = (props) => {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
           }
-        ).then((response) => {
-          setTransferForm({
-            From: "",
-            To: "",
-            Amount: 0,
-            Date: new Date().toDateString(),
-            Comment: "",
-          });
-        });
+        )
+          .then((response) => {
+            setTransferForm({
+              From: "",
+              To: "",
+              Amount: 0,
+              Date: new Date().toDateString(),
+              Comment: "",
+            });
+          })
+
+          // trigger the page to rerender with updated expenseLog
+          .then((response) => props.updateTransferLog())
+          // trigger Home to rerender with updated accountLog/categoryLog
+          .then((response) => props.updateHome());
       });
   };
 
@@ -165,9 +167,7 @@ const TransferForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(transferForm),
       }
-    )
-      // trigger the page to rerender with updated expenseLog
-      .then((response) => props.updateTransferLog());
+    );
 
     if (props.editedTransferForm.Amount !== transferForm.Amount) {
       // fetch accountList from server
@@ -265,15 +265,21 @@ const TransferForm = (props) => {
               method: "PATCH",
               body: JSON.stringify(updatedAccount),
             }
-          ).then((response) => {
-            setTransferForm({
-              From: "",
-              To: "",
-              Amount: 0,
-              Date: new Date().toDateString(),
-              Comment: "",
-            });
-          });
+          )
+            .then((response) => {
+              setTransferForm({
+                From: "",
+                To: "",
+                Amount: 0,
+                Date: new Date().toDateString(),
+                Comment: "",
+              });
+            })
+
+            // trigger the page to rerender with updated expenseLog
+            .then((response) => props.updateTransferLog())
+            // trigger Home to rerender with updated accountLog/categoryLog
+            .then((response) => props.updateHome());
         });
     }
     // close the editable form

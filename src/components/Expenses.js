@@ -34,7 +34,10 @@ const Expenses = (props) => {
       </Grid>
       <Grid item xs={12}>
         {expenseFormShow && (
-          <ExpenseForm updateExpenseLog={updateExpenseLogHandler} updateHome={props.updateHome}/>
+          <ExpenseForm
+            updateExpenseLog={updateExpenseLogHandler}
+            updateHomeHandler={props.updateHomeHandler}
+          />
         )}
       </Grid>
     </Grid>
@@ -50,6 +53,7 @@ const Expenses = (props) => {
             updatedExpenseLog={updatedExpenseLog}
             updateExpenseLog={updateExpenseLogHandler}
             updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
         )}
       </Grid>

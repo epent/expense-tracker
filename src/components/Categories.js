@@ -7,21 +7,21 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import CategoryForm from "../Categories/CategoryForm";
 import CategoryLog from "../Categories/CategoryLog";
 
-const Categories = () => {
-  const [showCategoryForm, setShowCategoryForm] = useState(false);
+const Categories = (props) => {
+  const [categoryFormShow, setCategoryFormShow] = useState(false);
 
   const [updatedCategoryLog, setUpdatedCategoryLog] = useState(false);
 
   const showCategoryFormHandler = () => {
-    setShowCategoryForm((prevState) => !prevState);
+    setCategoryFormShow((prevState) => !prevState);
   };
 
   const updateCategoryLogHandler = () => {
     setUpdatedCategoryLog((prevState) => !prevState);
   };
 
-  return (
-    <Grid container>
+  const categoryForm = (
+    <Grid item xs={12}>
       <Grid item xs={12}>
         <Button
           variant="contained"
@@ -33,16 +33,24 @@ const Categories = () => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showCategoryForm && (
+        {categoryFormShow && (
           <CategoryForm updateCategoryLog={updateCategoryLogHandler} />
         )}
       </Grid>
+    </Grid>
+  );
+
+  return (
+    <Grid container>
+      {props.showCategoryForm && categoryForm}
       <Grid item xs={12}>
         <CategoryLog
-          showEditBtn={true}
-          showDeleteBtn={true}
+          sliceLog={props.sliceLog}
+          showEditBtn={props.showEditBtn}
+          showDeleteBtn={props.showDeleteBtn}
           updatedCategoryLog={updatedCategoryLog}
           updateCategoryLog={updateCategoryLogHandler}
+          updateHome={props.updateHome}
         />
       </Grid>
     </Grid>

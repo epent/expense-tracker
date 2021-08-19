@@ -195,6 +195,7 @@ const TransferLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={transferToDelete}
+        updateHomeHandler={props.updateHomeHandler}
       />
     </Box>
   );

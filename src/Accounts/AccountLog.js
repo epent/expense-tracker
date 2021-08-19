@@ -40,7 +40,7 @@ const AccountLog = (props) => {
           accountList: fetchedList,
         });
       });
-  }, [props.updatedAccountLog]);
+  }, [props.updatedAccountLog, props.updateHome]);
 
   const deleteAccountHandler = (accountId) => {
     const updatedExpenseLog = accountLog.accountList.filter(

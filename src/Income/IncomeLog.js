@@ -173,6 +173,7 @@ const IncomeLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={incomeToDelete}
+        updateHomeHandler={props.updateHomeHandler}
       />
     </Box>
   );

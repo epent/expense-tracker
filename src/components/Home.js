@@ -5,20 +5,19 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
+import Balance from "../Balance";
 import HistoryLog from "../History/HistoryLog";
-import AccountLog from "../Accounts/AccountLog";
-import CategoryLog from "../Categories/CategoryLog";
-
+import Accounts from "./Accounts";
+import Categories from "./Categories";
 import Expenses from "./Expenses";
 import Income from "./Income";
 import Transfers from "./Transfers";
-import Balance from "../Balance";
 
 const Home = () => {
   const [updateHome, setUpdateHome] = useState(false);
 
   const updateHomeHandler = () => {
-    setUpdateHome(true);
+    setUpdateHome((prevState) => !prevState);
   };
 
   return (
@@ -66,7 +65,13 @@ const Home = () => {
             <Typography variant="h5" gutterBottom color="textSecondary">
               Accounts
             </Typography>
-            <AccountLog sliceLog={true} />
+            <Accounts
+              sliceLog={true}
+              showAccountForm={false}
+              showEditBtn={false}
+              showDeleteBtn={false}
+              updateHome={updateHome}
+            />
           </Box>
         </Grid>
         <Grid item>
@@ -74,7 +79,13 @@ const Home = () => {
             <Typography variant="h5" gutterBottom color="textSecondary">
               Categories
             </Typography>
-            <CategoryLog sliceLog={true} />
+            <Categories
+              sliceLog={true}
+              showCategoryForm={false}
+              showEditBtn={false}
+              showDeleteBtn={false}
+              updateHome={updateHome}
+            />
           </Box>
         </Grid>
       </Grid>
@@ -82,7 +93,11 @@ const Home = () => {
         <Grid item>
           <Box mt={1}>
             <Grid item xs={12}>
-              <HistoryLog sliceLog={true} updateHome={updateHome} />
+              <HistoryLog
+                sliceLog={true}
+                updateHome={updateHome}
+                updateHomeHandler={updateHomeHandler}
+              />
             </Grid>
           </Box>
         </Grid>
@@ -100,7 +115,7 @@ const Home = () => {
             <Expenses
               showExpenseLog={false}
               showExpenseForm={true}
-              updateHome={updateHomeHandler}
+              updateHomeHandler={updateHomeHandler}
             />
           </Box>
         </Grid>
@@ -109,7 +124,7 @@ const Home = () => {
             <Income
               showIncomeLog={false}
               showIncomeForm={true}
-              updateHome={updateHomeHandler}
+              updateHomeHandler={updateHomeHandler}
             />
           </Box>
         </Grid>
@@ -118,7 +133,7 @@ const Home = () => {
             <Transfers
               showTransferLog={false}
               showTransferForm={true}
-              updateHome={updateHomeHandler}
+              updateHomeHandler={updateHomeHandler}
             />
           </Box>
         </Grid>

@@ -6,10 +6,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 
-import ExpenseLog from "../Expenses/ExpenseLog";
-import IncomeLog from "../Income/IncomeLog";
-import TransferLog from "../Transfers/TransferLog";
-
 import Expenses from "../components/Expenses";
 import Income from "../components/Income";
 import Transfers from "../components/Transfers";
@@ -38,18 +34,21 @@ const HistoryLog = (props) => {
             showExpenseLog={true}
             showExpenseForm={false}
             updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
           <Income
             sliceLog={props.sliceLog}
             showIncomeLog={true}
             showIncomeForm={false}
             updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
           <Transfers
             sliceLog={props.sliceLog}
             showTransferLog={true}
             showTransferForm={false}
             updateHome={props.updateHome}
+            updateHomeHandler={props.updateHomeHandler}
           />
         </CardContent>
       </Card>

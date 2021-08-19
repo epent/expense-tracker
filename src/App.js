@@ -36,7 +36,7 @@ function App() {
   let routes = (
     <Switch>
       <Route path="/accounts">
-        <Accounts />
+        <Accounts showAccountForm showEditBtn showDeleteBtn/>
       </Route>
       <Route path="/expenses">
         <Expenses showExpenseLog showExpenseForm />
@@ -49,7 +49,7 @@ function App() {
       </Route>
       <Route path="/history" component={HistoryLog} />
       <Route path="/categories">
-        <Categories />
+        <Categories showCategoryForm showEditBtn showDeleteBtn />
       </Route>
       <Route path="/">
         <Home />

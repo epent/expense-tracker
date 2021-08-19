@@ -76,11 +76,7 @@ const IncomeForm = (props) => {
         method: "POST",
         body: JSON.stringify(incomeForm),
       }
-    )
-      // trigger the page to rerender with updated incomeLog
-      .then((response) => props.updateIncomeLog())
-
-      .then((response) => props.updateHome());
+    );
 
     // fetch accountList from server
     fetch(
@@ -117,15 +113,21 @@ const IncomeForm = (props) => {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
           }
-        ).then((response) => {
-          setIncomeForm({
-            From: "",
-            To: "",
-            Amount: 0,
-            Date: new Date().toDateString(),
-            Comment: "",
-          });
-        });
+        )
+          .then((response) => {
+            setIncomeForm({
+              From: "",
+              To: "",
+              Amount: 0,
+              Date: new Date().toDateString(),
+              Comment: "",
+            });
+          })
+
+          // trigger the page to rerender with updated incomeLog
+          .then((response) => props.updateIncomeLog())
+          // trigger Home to rerender with updated accountLog/categoryLog
+          .then((response) => props.updateHome());
       });
   };
 
@@ -141,9 +143,7 @@ const IncomeForm = (props) => {
         method: "PATCH",
         body: JSON.stringify(incomeForm),
       }
-    )
-      // trigger the page to rerender with updated incomeLog
-      .then((response) => props.updateIncomeLog());
+    );
 
     if (props.editedIncomeForm.Amount !== incomeForm.Amount) {
       // fetch accountList from server
@@ -200,15 +200,21 @@ const IncomeForm = (props) => {
               method: "PATCH",
               body: JSON.stringify(updatedAccount),
             }
-          ).then((response) => {
-            setIncomeForm({
-              From: "",
-              To: "",
-              Amount: 0,
-              Date: new Date().toDateString(),
-              Comment: "",
-            });
-          });
+          )
+            .then((response) => {
+              setIncomeForm({
+                From: "",
+                To: "",
+                Amount: 0,
+                Date: new Date().toDateString(),
+                Comment: "",
+              });
+            })
+
+            // trigger the page to rerender with updated incomeLog
+            .then((response) => props.updateIncomeLog())
+            // trigger Home to rerender with updated accountLog/categoryLog
+            .then((response) => props.updateHome());
         });
     }
 
