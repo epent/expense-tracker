@@ -78,7 +78,9 @@ const IncomeForm = (props) => {
       }
     )
       // trigger the page to rerender with updated incomeLog
-      .then((response) => props.updateIncomeLog());
+      .then((response) => props.updateIncomeLog())
+
+      .then((response) => props.updateHome());
 
     // fetch accountList from server
     fetch(

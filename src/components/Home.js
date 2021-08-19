@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -12,8 +12,15 @@ import CategoryLog from "../Categories/CategoryLog";
 import Expenses from "./Expenses";
 import Income from "./Income";
 import Transfers from "./Transfers";
+import Balance from "../Balance";
 
 const Home = () => {
+  const [updateHome, setUpdateHome] = useState(false);
+
+  const updateHomeHandler = () => {
+    setUpdateHome(true);
+  };
+
   return (
     <Grid container spacing={3}>
       <Grid
@@ -44,14 +51,7 @@ const Home = () => {
           </Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Total expenses
-            </Typography>
-            <Typography variant="h5" gutterBottom color="secondary">
-              10500 ILS
-            </Typography>
-          </Paper>
+          <Balance title="Expenses" amount="10000" amountColor="secondary" />
         </Grid>
       </Grid>
       <Grid
@@ -82,7 +82,7 @@ const Home = () => {
         <Grid item>
           <Box mt={1}>
             <Grid item xs={12}>
-              <HistoryLog sliceLog={true} />
+              <HistoryLog sliceLog={true} updateHome={updateHome} />
             </Grid>
           </Box>
         </Grid>
@@ -97,17 +97,29 @@ const Home = () => {
       >
         <Grid item>
           <Box mt={8} mb={4} mr={5}>
-            <Expenses showExpenseLog={false} />
+            <Expenses
+              showExpenseLog={false}
+              showExpenseForm={true}
+              updateHome={updateHomeHandler}
+            />
           </Box>
         </Grid>
         <Grid item>
           <Box my={4} mr={5}>
-            <Income showIncomeLog={false} />
+            <Income
+              showIncomeLog={false}
+              showIncomeForm={true}
+              updateHome={updateHomeHandler}
+            />
           </Box>
         </Grid>
         <Grid item>
           <Box my={4} mr={5}>
-            <Transfers showTransferLog={false} />
+            <Transfers
+              showTransferLog={false}
+              showTransferForm={true}
+              updateHome={updateHomeHandler}
+            />
           </Box>
         </Grid>
       </Grid>

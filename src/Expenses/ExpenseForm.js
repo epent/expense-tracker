@@ -81,7 +81,9 @@ const ExpenseForm = (props) => {
       }
     )
       // trigger the page to rerender with updated expenseLog
-      .then((response) => props.updateExpenseLog());
+      .then((response) => props.updateExpenseLog())
+
+      .then(response => props.updateHome());
 
     // fetch accountList from server
     fetch(

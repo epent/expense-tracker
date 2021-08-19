@@ -53,7 +53,7 @@ const TransferLog = (props) => {
           transferList: fetchedList,
         });
       });
-  }, [props.updatedTransferLog]);
+  }, [props.updatedTransferLog, props.updateHome]);
 
   const deleteTransferHandler = (
     transferId,

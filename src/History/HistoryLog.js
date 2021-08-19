@@ -37,16 +37,19 @@ const HistoryLog = (props) => {
             sliceLog={props.sliceLog}
             showExpenseLog={true}
             showExpenseForm={false}
+            updateHome={props.updateHome}
           />
           <Income
             sliceLog={props.sliceLog}
             showIncomeLog={true}
             showIncomeForm={false}
+            updateHome={props.updateHome}
           />
           <Transfers
             sliceLog={props.sliceLog}
             showTransferLog={true}
             showTransferForm={false}
+            updateHome={props.updateHome}
           />
         </CardContent>
       </Card>

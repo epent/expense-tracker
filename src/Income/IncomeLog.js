@@ -53,7 +53,7 @@ const IncomeLog = (props) => {
           incomeList: fetchedList,
         });
       });
-  }, [props.updatedIncomeLog]);
+  }, [props.updatedIncomeLog, props.updateHome]);
 
   const deleteIncomeHandler = (
     incomeId,

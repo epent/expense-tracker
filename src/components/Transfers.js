@@ -33,7 +33,10 @@ const Transfers = (props) => {
       </Grid>
       <Grid item xs={12}>
         {transferFormShow && (
-          <TransferForm updateTransferLog={updateTransferLogHandler} />
+          <TransferForm
+            updateTransferLog={updateTransferLogHandler}
+            updateHome={props.updateHome}
+          />
         )}
       </Grid>
     </Grid>
@@ -45,8 +48,10 @@ const Transfers = (props) => {
       <Grid item xs={12}>
         {props.showTransferLog && (
           <TransferLog
+            sliceLog={props.sliceLog}
             updatedTransferLog={updatedTransferLog}
             updateTransferLog={updateTransferLogHandler}
+            updateHome={props.updateHome}
           />
         )}
       </Grid>

@@ -79,7 +79,9 @@ const TransferForm = (props) => {
       }
     )
       // trigger the page to rerender with updated expenseLog
-      .then((response) => props.updateTransferLog());
+      .then((response) => props.updateTransferLog())
+
+      .then((response) => props.updateHome());
 
     // fetch accountList from server
     fetch(

@@ -53,7 +53,7 @@ const ExpenseLog = (props) => {
           expenseList: fetchedList,
         });
       });
-  }, [props.updatedExpenseLog]);
+  }, [props.updatedExpenseLog, props.updateHome]);
 
   const deleteExpenseHandler = (
     expenseId,
