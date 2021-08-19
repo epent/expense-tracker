@@ -8,20 +8,20 @@ import ExpenseForm from "../Expenses/ExpenseForm";
 import ExpenseLog from "../Expenses/ExpenseLog";
 
 const Expenses = (props) => {
-  const [showExpenseForm, setShowExpenseForm] = useState(false);
+  const [expenseFormShow, setExpenseFormShow] = useState(false);
 
   const [updatedExpenseLog, setUpdatedExpenseLog] = useState(false);
 
   const showExpenseFormHandler = () => {
-    setShowExpenseForm((prevState) => !prevState);
+    setExpenseFormShow((prevState) => !prevState);
   };
 
   const updateExpenseLogHandler = () => {
     setUpdatedExpenseLog((prevState) => !prevState);
   };
 
-  return (
-    <Grid container>
+  const expenseForm = (
+    <Grid item xs={12}>
       <Grid item xs={12}>
         <Button
           variant="contained"
@@ -33,13 +33,20 @@ const Expenses = (props) => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showExpenseForm && (
+        {expenseFormShow && (
           <ExpenseForm updateExpenseLog={updateExpenseLogHandler} />
         )}
       </Grid>
+    </Grid>
+  );
+
+  return (
+    <Grid container>
+      {props.showExpenseForm && expenseForm}
       <Grid item xs={12}>
         {props.showExpenseLog && (
           <ExpenseLog
+            sliceLog={props.sliceLog}
             updatedExpenseLog={updatedExpenseLog}
             updateExpenseLog={updateExpenseLogHandler}
           />

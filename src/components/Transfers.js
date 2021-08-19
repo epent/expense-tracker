@@ -8,20 +8,20 @@ import TransferForm from "../Transfers/TransferForm";
 import TransferLog from "../Transfers/TransferLog";
 
 const Transfers = (props) => {
-  const [showTransferForm, setShowTransferForm] = useState(false);
+  const [transferFormShow, setTransferFormShow] = useState(false);
 
   const [updatedTransferLog, setUpdatedTransferLog] = useState(false);
 
   const showTransferFormHandler = () => {
-    setShowTransferForm((prevState) => !prevState);
+    setTransferFormShow((prevState) => !prevState);
   };
 
   const updateTransferLogHandler = () => {
     setUpdatedTransferLog((prevState) => !prevState);
   };
 
-  return (
-    <Grid container>
+  const transferForm = (
+    <Grid item xs={12}>
       <Grid item xs={12}>
         <Button
           variant="contained"
@@ -32,10 +32,16 @@ const Transfers = (props) => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showTransferForm && (
+        {transferFormShow && (
           <TransferForm updateTransferLog={updateTransferLogHandler} />
         )}
       </Grid>
+    </Grid>
+  );
+
+  return (
+    <Grid container>
+      {props.showTransferForm && transferForm}
       <Grid item xs={12}>
         {props.showTransferLog && (
           <TransferLog

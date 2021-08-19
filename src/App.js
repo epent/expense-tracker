@@ -39,13 +39,13 @@ function App() {
         <Accounts />
       </Route>
       <Route path="/expenses">
-        <Expenses showExpenseLog />
+        <Expenses showExpenseLog showExpenseForm />
       </Route>
       <Route path="/income">
-        <Income showIncomeLog />
+        <Income showIncomeLog showIncomeForm />
       </Route>
       <Route path="/transfers">
-        <Transfers showTransferLog />
+        <Transfers showTransferLog showTransferForm />
       </Route>
       <Route path="/history" component={HistoryLog} />
       <Route path="/categories">

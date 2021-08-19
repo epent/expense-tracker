@@ -10,6 +10,10 @@ import ExpenseLog from "../Expenses/ExpenseLog";
 import IncomeLog from "../Income/IncomeLog";
 import TransferLog from "../Transfers/TransferLog";
 
+import Expenses from "../components/Expenses";
+import Income from "../components/Income";
+import Transfers from "../components/Transfers";
+
 const useStyles = makeStyles({
   root: {
     width: 530,
@@ -29,9 +33,21 @@ const HistoryLog = (props) => {
       </Box>
       <Card className={classes.root}>
         <CardContent>
-          <ExpenseLog sliceLog={props.sliceLog} />
-          <IncomeLog sliceLog={props.sliceLog} />
-          <TransferLog sliceLog={props.sliceLog} />
+          <Expenses
+            sliceLog={props.sliceLog}
+            showExpenseLog={true}
+            showExpenseForm={false}
+          />
+          <Income
+            sliceLog={props.sliceLog}
+            showIncomeLog={true}
+            showIncomeForm={false}
+          />
+          <Transfers
+            sliceLog={props.sliceLog}
+            showTransferLog={true}
+            showTransferForm={false}
+          />
         </CardContent>
       </Card>
     </Box>

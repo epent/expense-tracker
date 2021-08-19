@@ -8,20 +8,20 @@ import IncomeForm from "../Income/IncomeForm";
 import IncomeLog from "../Income/IncomeLog";
 
 const Income = (props) => {
-  const [showIncomeForm, setShowIncomeForm] = useState(false);
+  const [incomeFormShow, setIncomeFormShow] = useState(false);
 
   const [updatedIncomeLog, setUpdatedIncomeLog] = useState(false);
 
   const showIncomeFormHandler = () => {
-    setShowIncomeForm((prevState) => !prevState);
+    setIncomeFormShow((prevState) => !prevState);
   };
 
   const updateIncomeLogHandler = () => {
     setUpdatedIncomeLog((prevState) => !prevState);
   };
 
-  return (
-    <Grid container>
+  const incomeForm = (
+    <Grid item xs={12}>
       <Grid item xs={12}>
         <Button
           variant="contained"
@@ -33,10 +33,16 @@ const Income = (props) => {
         </Button>
       </Grid>
       <Grid item xs={12}>
-        {showIncomeForm && (
+        {incomeFormShow && (
           <IncomeForm updateIncomeLog={updateIncomeLogHandler} />
         )}
       </Grid>
+    </Grid>
+  );
+
+  return (
+    <Grid container>
+      {props.showIncomeForm && incomeForm}
       <Grid item xs={12}>
         {props.showIncomeLog && (
           <IncomeLog
