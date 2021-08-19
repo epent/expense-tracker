@@ -117,7 +117,9 @@ const IncomeLog = (props) => {
           }
         )
           // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => props.updateHomeHandler());
+          .then((response) => {
+            if (props.updateHomeHandler) props.updateHomeHandler()
+          });
       });
   };
 
