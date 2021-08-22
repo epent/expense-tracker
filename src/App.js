@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import Appbar from "./Appbar";
 import SideBar from "./components/SideBar/SideBar";
 import Home from "./components/Home";
 import Expenses from "./components/Expenses";
@@ -10,15 +11,9 @@ import Accounts from "./components/Accounts";
 import HistoryLog from "./History/HistoryLog";
 import Categories from "./components/Categories";
 
-import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import {
-  createTheme,
-  ThemeProvider,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 const theme = createTheme({
   palette: {
@@ -39,15 +34,7 @@ const theme = createTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-}));
-
 function App() {
-  const classes = useStyles();
-
   let routes = (
     <Switch>
       <Route path="/accounts">
@@ -74,13 +61,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Expense Tracker
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Appbar />
       <Router>
         <Grid container>
           <Grid item xs={2}>
