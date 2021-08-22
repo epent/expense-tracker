@@ -319,6 +319,8 @@ const IncomeForm = (props) => {
       formSubmitHandler={incomeFormSubmitHandler}
       handleDateChange={updateFormHandler}
       income
+      accountList={props.accountList}
+      categoryList={props.categoryList}
       accountsLabel="To"
       btnName="add income"
       btnColor="primary"
@@ -337,6 +339,8 @@ const IncomeForm = (props) => {
         handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         income
+        accountList={props.accountList}
+        categoryList={props.categoryList}
         accountsLabel="To"
         btnName="edit income"
         btnColor="primary"

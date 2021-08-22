@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
@@ -11,6 +11,54 @@ const Income = (props) => {
   const [incomeFormShow, setIncomeFormShow] = useState(false);
 
   const [updatedIncomeLog, setUpdatedIncomeLog] = useState(false);
+
+  const [accountList, setAccountList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+
+  const fetchedAccountList = [];
+  const fetchedCategoryList = [];
+
+  useEffect(() => {
+    // fetch accountList from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let key in data) {
+          fetchedAccountList.push({
+            ...data[key],
+            id: key,
+          });
+        }
+
+        const accountList = fetchedAccountList.map((account) => {
+          return account.Name;
+        });
+
+        setAccountList(accountList);
+      });
+
+    // fetch categoryList from server
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        for (let key in data) {
+          fetchedCategoryList.push({
+            ...data[key],
+            id: key,
+          });
+        }
+
+        const categoryList = fetchedCategoryList.map((category) => {
+          return category.Name;
+        });
+
+        setCategoryList(categoryList);
+      });
+  }, [incomeFormShow]);
 
   const showIncomeFormHandler = () => {
     setIncomeFormShow((prevState) => !prevState);
@@ -37,6 +85,8 @@ const Income = (props) => {
           <IncomeForm
             updateIncomeLog={updateIncomeLogHandler}
             updateHomeHandler={props.updateHomeHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

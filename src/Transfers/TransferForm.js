@@ -294,6 +294,8 @@ const TransferForm = (props) => {
       formSubmitHandler={transferFormSubmitHandler}
       handleDateChange={updateFormHandler}
       transfers
+      accountList={props.accountList}
+      categoryList={props.categoryList}
       accountsLabel="From"
       accountsLabelTransferTo="To"
       btnName="add transfer"
@@ -312,6 +314,8 @@ const TransferForm = (props) => {
         handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         transfers
+        accountList={props.accountList}
+        categoryList={props.categoryList}
         accountsLabel="From"
         accountsLabelTransferTo="To"
         btnName="add transfer"

@@ -432,6 +432,8 @@ const ExpenseForm = (props) => {
       formSubmitHandler={expenseFormSubmitHandler}
       handleDateChange={updateFormHandler}
       expenses
+      accountList={props.accountList}
+      categoryList={props.categoryList}
       accountsLabel="From"
       btnName="add expense"
       btnColor="secondary"
@@ -450,6 +452,8 @@ const ExpenseForm = (props) => {
         handleDateChange={editFormHandler}
         showEditedForm={showEditedForm}
         expenses
+        accountList={props.accountList}
+        categoryList={props.categoryList}
         accountsLabel="From"
         btnName="edit expense"
         btnColor="secondary"

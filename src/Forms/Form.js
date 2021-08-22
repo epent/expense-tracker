@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
@@ -23,62 +23,13 @@ const useStyles = makeStyles({
 const Form = (props) => {
   const classes = useStyles();
 
-  const fetchedAccountList = [];
-
-  const fetchedCategoryList = [];
-
-  const [accountList, setAccountList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-
-  useEffect(() => {
-    // fetch accountList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const accountList = fetchedAccountList.map((account) => {
-          return account.Name;
-        });
-
-        setAccountList(accountList);
-      });
-
-    // fetch categoryList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const categoryList = fetchedCategoryList.map((category) => {
-          return category.Name;
-        });
-
-        setCategoryList(categoryList);
-      });
-  }, []);
-
   let formValues = props.form;
   // if we edit any transaction, shown form changes
   if (props.showEditedForm) formValues = props.editedForm;
 
   let accountsToChoose = <p>Loading...</p>;
-  if (accountList.length > 0)
-    accountsToChoose = accountList.map((account) => {
+  if (props.accountList.length > 0)
+    accountsToChoose = props.accountList.map((account) => {
       return (
         <MenuItem key={account} value={account}>
           {account}
@@ -87,8 +38,8 @@ const Form = (props) => {
     });
 
   let categoriesToChoose = <p>Loading...</p>;
-  if (categoryList.length > 0)
-    categoriesToChoose = categoryList.map((category) => {
+  if (props.categoryList.length > 0)
+    categoriesToChoose = props.categoryList.map((category) => {
       return (
         <MenuItem key={category} value={category}>
           {category}
