@@ -30,26 +30,8 @@ const ExpenseForm = (props) => {
     }
   }, []);
 
-  // update empty form
+  // update/edit the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Date"
-      ? setExpenseForm({
-          ...expenseForm,
-          Date: event.toDateString(),
-        })
-      : formKey === "Amount"
-      ? setExpenseForm({
-          ...expenseForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setExpenseForm({
-          ...expenseForm,
-          [formKey]: event.target.value,
-        });
-  };
-
-  // edit pre-filled form
-  const editFormHandler = (event, formKey) => {
     formKey === "Date"
       ? setExpenseForm({
           ...expenseForm,
@@ -446,10 +428,10 @@ const ExpenseForm = (props) => {
       <Form
         form={props.editedExpenseForm}
         editedForm={expenseForm}
-        updateForm={editFormHandler}
+        updateForm={updateFormHandler}
         selectedDate={expenseForm.Date}
         formSubmitHandler={expenseFormUpdateHandler}
-        handleDateChange={editFormHandler}
+        handleDateChange={updateFormHandler}
         showEditedForm={showEditedForm}
         expenses
         accountList={props.accountList}
