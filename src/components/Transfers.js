@@ -10,6 +10,8 @@ import TransferLog from "../Transfers/TransferLog";
 const Transfers = (props) => {
   const [transferFormShow, setTransferFormShow] = useState(false);
 
+  const [editTransferFormShow, setEditTransferFormShow] = useState(false);
+
   const [updatedTransferLog, setUpdatedTransferLog] = useState(false);
 
   const [accountList, setAccountList] = useState([]);
@@ -58,11 +60,16 @@ const Transfers = (props) => {
 
         setCategoryList(categoryList);
       });
-  }, [transferFormShow]);
+  }, [transferFormShow, editTransferFormShow]);
 
   // show the form when toggle "+Transfers" button
   const showTransferFormHandler = () => {
     setTransferFormShow((prevState) => !prevState);
+  };
+
+  // trigger fetch of acocunts and categories (useEffect) for the edit form
+  const editTransferFormShowHandler = () => {
+    setEditTransferFormShow((prevState) => !prevState);
   };
 
   // update the list of transfers
@@ -86,8 +93,6 @@ const Transfers = (props) => {
           <TransferForm
             updateTransferLog={updateTransferLogHandler}
             updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
           />
         )}
       </Grid>
@@ -105,6 +110,9 @@ const Transfers = (props) => {
             updateTransferLog={updateTransferLogHandler}
             updateHome={props.updateHome}
             updateHomeHandler={props.updateHomeHandler}
+            setEditExpenseFormShow={editTransferFormShowHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

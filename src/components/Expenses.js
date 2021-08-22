@@ -10,6 +10,8 @@ import ExpenseLog from "../Expenses/ExpenseLog";
 const Expenses = (props) => {
   const [expenseFormShow, setExpenseFormShow] = useState(false);
 
+  const [editExpenseFormShow, setEditExpenseFormShow] = useState(false);
+
   const [updatedExpenseLog, setUpdatedExpenseLog] = useState(false);
 
   const [accountList, setAccountList] = useState([]);
@@ -58,11 +60,16 @@ const Expenses = (props) => {
 
         setCategoryList(categoryList);
       });
-  }, [expenseFormShow]);
+  }, [expenseFormShow, editExpenseFormShow]);
 
   // show the form when toggle "+Expenses" button
   const showExpenseFormHandler = () => {
     setExpenseFormShow((prevState) => !prevState);
+  };
+
+  // trigger fetch of acocunts and categories (useEffect) for the edit form
+  const editExpenseFormShowHandler = () => {
+    setEditExpenseFormShow((prevState) => !prevState);
   };
 
   // update the list of expenses
@@ -87,8 +94,6 @@ const Expenses = (props) => {
           <ExpenseForm
             updateExpenseLog={updateExpenseLogHandler}
             updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
           />
         )}
       </Grid>
@@ -106,6 +111,9 @@ const Expenses = (props) => {
             updateExpenseLog={updateExpenseLogHandler}
             updateHome={props.updateHome}
             updateHomeHandler={props.updateHomeHandler}
+            setEditExpenseFormShow={editExpenseFormShowHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

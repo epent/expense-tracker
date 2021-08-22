@@ -181,6 +181,7 @@ const IncomeLog = (props) => {
 
     if (editedIncomeId === incomeId) {
       setShowIncomeForm((prevState) => !prevState);
+      props.setEditIncomeFormShow();
     }
   };
 
@@ -216,6 +217,8 @@ const IncomeLog = (props) => {
         showModal={showModal}
         transactionToDelete={incomeToDelete}
         updateHomeHandler={props.updateHomeHandler}
+        accountList={props.accountList}
+        categoryList={props.categoryList}
       />
     </Box>
   );

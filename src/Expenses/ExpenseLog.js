@@ -50,7 +50,6 @@ const ExpenseLog = (props) => {
           (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
         );
 
-        console.log(fetchedList)
         setExpenseLog({
           ...expenseLog,
           expenseList: fetchedList,
@@ -239,6 +238,7 @@ const ExpenseLog = (props) => {
 
     if (editedExpenseId === expenseId) {
       setShowExpenseForm((prevState) => !prevState);
+      props.setEditExpenseFormShow();
     }
   };
 
@@ -274,6 +274,8 @@ const ExpenseLog = (props) => {
         showModal={showModal}
         transactionToDelete={expenseToDelete}
         updateHomeHandler={props.updateHomeHandler}
+        accountList={props.accountList}
+        categoryList={props.categoryList}
       />
     </Box>
   );

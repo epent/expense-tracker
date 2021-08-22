@@ -200,6 +200,8 @@ const TransferLog = (props) => {
         showModal={showModal}
         transactionToDelete={transferToDelete}
         updateHomeHandler={props.updateHomeHandler}
+        accountList={props.accountList}
+        categoryList={props.categoryList}
       />
     </Box>
   );

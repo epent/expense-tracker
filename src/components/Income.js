@@ -10,6 +10,8 @@ import IncomeLog from "../Income/IncomeLog";
 const Income = (props) => {
   const [incomeFormShow, setIncomeFormShow] = useState(false);
 
+  const [editIncomeFormShow, setEditIncomeFormShow] = useState(false);
+
   const [updatedIncomeLog, setUpdatedIncomeLog] = useState(false);
 
   const [accountList, setAccountList] = useState([]);
@@ -58,11 +60,16 @@ const Income = (props) => {
 
         setCategoryList(categoryList);
       });
-  }, [incomeFormShow]);
+  }, [incomeFormShow, editIncomeFormShow]);
 
   // show the form when toggle "+Income" button
   const showIncomeFormHandler = () => {
     setIncomeFormShow((prevState) => !prevState);
+  };
+
+  // trigger fetch of acocunts and categories (useEffect) for the edit form
+  const editIncomeFormShowHandler = () => {
+    setEditIncomeFormShow((prevState) => !prevState);
   };
 
   // update the list of income
@@ -87,8 +94,6 @@ const Income = (props) => {
           <IncomeForm
             updateIncomeLog={updateIncomeLogHandler}
             updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
           />
         )}
       </Grid>
@@ -106,6 +111,9 @@ const Income = (props) => {
             updateIncomeLog={updateIncomeLogHandler}
             updateHome={props.updateHome}
             updateHomeHandler={props.updateHomeHandler}
+            setEditIncomeFormShow={editIncomeFormShowHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

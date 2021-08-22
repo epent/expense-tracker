@@ -163,6 +163,8 @@ const History = (props) => {
                   setShowExpenseForm={props.setShowExpenseForm}
                   updateExpenseLog={props.updateExpenseLog}
                   updateHomeHandler={props.updateHomeHandler}
+                  accountList={props.accountList}
+                  categoryList={props.categoryList}
                 />
               )}
           </Grid>
@@ -176,6 +178,8 @@ const History = (props) => {
                   setShowIncomeForm={props.setShowIncomeForm}
                   updateIncomeLog={props.updateIncomeLog}
                   updateHomeHandler={props.updateHomeHandler}
+                  accountList={props.accountList}
+                  categoryList={props.categoryList}
                 />
               )}
           </Grid>
@@ -189,6 +193,8 @@ const History = (props) => {
                   setShowTransferForm={props.setShowTransferForm}
                   updateTransferLog={props.updateTransferLog}
                   updateHomeHandler={props.updateHomeHandler}
+                  accountList={props.accountList}
+                  categoryList={props.categoryList}
                 />
               )}
           </Grid>
