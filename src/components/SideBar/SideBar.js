@@ -1,7 +1,9 @@
 import React from "react";
-// import { Link } from "react-router-dom";
 
-import Divider from "@material-ui/core/Divider";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
 import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
@@ -20,17 +22,19 @@ import MoneyIcon from "@material-ui/icons/Money";
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+  },
   drawer: {
     width: drawerWidth,
+    flexShrink: 0,
   },
   drawerPaper: {
     width: drawerWidth,
   },
-  appBar: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
+  drawerContainer: {
+    overflow: "auto",
   },
-  toolbar: theme.mixins.toolbar,
 }));
 
 const SideBar = () => {
@@ -58,83 +62,20 @@ const SideBar = () => {
   });
 
   return (
-    <div>
-      {/* <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Expense Tracker
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
+    <div className={classes.root}>
+      <CssBaseline />
+
       <Drawer
         className={classes.drawer}
         variant="permanent"
         classes={{
           paper: classes.drawerPaper,
         }}
-        anchor="left"
       >
-        <div className={classes.toolbar} />
-        <Divider />
-        <List component="nav">
-          {pages}
-          {/* <ListItem button>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <Link href="/" variant="body1" underline="none">
-              Home
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <AccountBalanceIcon />
-            </ListItemIcon>
-            <Link href="/accounts" variant="body1" underline="none">
-              Accounts
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <CreditCardIcon />
-            </ListItemIcon>
-            <Link href="/expenses" variant="body1" underline="none">
-              Expenses
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <MoneyIcon />
-            </ListItemIcon>
-            <Link href="/income" variant="body1" underline="none">
-              Income
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <ImportExportIcon />
-            </ListItemIcon>
-            <Link href="/transfers" variant="body1" underline="none">
-              Transfers
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <HistoryIcon />
-            </ListItemIcon>
-            <Link href="/history" variant="body1" underline="none">
-              History
-            </Link>
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <CategoryIcon />
-            </ListItemIcon>
-            <Link href="/categories" variant="body1" underline="none">
-              Categories
-            </Link>
-          </ListItem> */}
-        </List>
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <List component="nav">{pages}</List>
+        </div>
       </Drawer>
     </div>
   );
