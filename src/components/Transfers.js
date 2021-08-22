@@ -93,6 +93,8 @@ const Transfers = (props) => {
           <TransferForm
             updateTransferLog={updateTransferLogHandler}
             updateHomeHandler={props.updateHomeHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

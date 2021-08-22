@@ -94,6 +94,8 @@ const Expenses = (props) => {
           <ExpenseForm
             updateExpenseLog={updateExpenseLogHandler}
             updateHomeHandler={props.updateHomeHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>

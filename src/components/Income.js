@@ -94,6 +94,8 @@ const Income = (props) => {
           <IncomeForm
             updateIncomeLog={updateIncomeLogHandler}
             updateHomeHandler={props.updateHomeHandler}
+            accountList={accountList}
+            categoryList={categoryList}
           />
         )}
       </Grid>
