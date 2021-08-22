@@ -12,10 +12,12 @@ const Accounts = (props) => {
 
   const [updatedAccountLog, setUpdatedAccountLog] = useState(false);
 
+  // show the form when toggle "+Accounts" button
   const showAccountFormHandler = () => {
     setAccountFormShow((prevState) => !prevState);
   };
 
+  // update the list of accounts
   const updateAccountLogHandler = () => {
     setUpdatedAccountLog((prevState) => !prevState);
   };
@@ -51,7 +53,6 @@ const Accounts = (props) => {
           updatedAccountLog={updatedAccountLog}
           updateAccountLog={updateAccountLogHandler}
           updateHome={props.updateHome}
-
         />
       </Grid>
     </Grid>

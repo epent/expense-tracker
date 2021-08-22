@@ -19,7 +19,7 @@ const Expenses = (props) => {
   const fetchedCategoryList = [];
 
   useEffect(() => {
-    // fetch accountList from server
+    // fetch accountList from server when form is opened
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
     )
@@ -39,7 +39,7 @@ const Expenses = (props) => {
         setAccountList(accountList);
       });
 
-    // fetch categoryList from server
+    // fetch categoryList from server when form is opened
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
     )
@@ -60,10 +60,12 @@ const Expenses = (props) => {
       });
   }, [expenseFormShow]);
 
+  // show the form when toggle "+Expenses" button
   const showExpenseFormHandler = () => {
     setExpenseFormShow((prevState) => !prevState);
   };
 
+  // update the list of expenses
   const updateExpenseLogHandler = () => {
     setUpdatedExpenseLog((prevState) => !prevState);
   };

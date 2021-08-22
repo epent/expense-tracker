@@ -19,7 +19,7 @@ const Transfers = (props) => {
   const fetchedCategoryList = [];
 
   useEffect(() => {
-    // fetch accountList from server
+    // fetch accountList from server when form is opened
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
     )
@@ -39,7 +39,7 @@ const Transfers = (props) => {
         setAccountList(accountList);
       });
 
-    // fetch categoryList from server
+    // fetch categoryList from server when form is opened
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
     )
@@ -60,10 +60,12 @@ const Transfers = (props) => {
       });
   }, [transferFormShow]);
 
+  // show the form when toggle "+Transfers" button
   const showTransferFormHandler = () => {
     setTransferFormShow((prevState) => !prevState);
   };
 
+  // update the list of transfers
   const updateTransferLogHandler = () => {
     setUpdatedTransferLog((prevState) => !prevState);
   };

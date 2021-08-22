@@ -50,6 +50,7 @@ const ExpenseLog = (props) => {
           (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
         );
 
+        console.log(fetchedList)
         setExpenseLog({
           ...expenseLog,
           expenseList: fetchedList,

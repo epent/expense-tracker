@@ -12,10 +12,12 @@ const Categories = (props) => {
 
   const [updatedCategoryLog, setUpdatedCategoryLog] = useState(false);
 
+  // show the form when toggle "+Categories" button
   const showCategoryFormHandler = () => {
     setCategoryFormShow((prevState) => !prevState);
   };
 
+  // update the list of categories
   const updateCategoryLogHandler = () => {
     setUpdatedCategoryLog((prevState) => !prevState);
   };

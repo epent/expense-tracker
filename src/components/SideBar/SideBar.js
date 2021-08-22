@@ -36,15 +36,36 @@ const useStyles = makeStyles((theme) => ({
 const SideBar = () => {
   const classes = useStyles();
 
+  const listOfPages = [
+    { name: "Home", icon: <HomeIcon />, link: "/" },
+    { name: "Accounts", icon: <AccountBalanceIcon />, link: "/accounts" },
+    { name: "Expenses", icon: <CreditCardIcon />, link: "/expenses" },
+    { name: "Income", icon: <MoneyIcon />, link: "/income" },
+    { name: "Transfers", icon: <ImportExportIcon />, link: "/transfers" },
+    { name: "History", icon: <HistoryIcon />, link: "/history" },
+    { name: "Categories", icon: <CategoryIcon />, link: "/categories" },
+  ];
+
+  const pages = listOfPages.map((page) => {
+    return (
+      <ListItem button>
+        <ListItemIcon>{page.icon}</ListItemIcon>
+        <Link href={page.link} variant="body1" underline="none">
+          {page.name}
+        </Link>
+      </ListItem>
+    );
+  });
+
   return (
-    <div className={classes.root}>
+    <div>
       {/* <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap>
-                        Expense Tracker
-                    </Typography>
-                </Toolbar>
-            </AppBar> */}
+        <Toolbar>
+          <Typography variant="h6" noWrap>
+            Expense Tracker
+          </Typography>
+        </Toolbar>
+      </AppBar> */}
       <Drawer
         className={classes.drawer}
         variant="permanent"
@@ -56,7 +77,8 @@ const SideBar = () => {
         <div className={classes.toolbar} />
         <Divider />
         <List component="nav">
-          <ListItem button>
+          {pages}
+          {/* <ListItem button>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -111,7 +133,7 @@ const SideBar = () => {
             <Link href="/categories" variant="body1" underline="none">
               Categories
             </Link>
-          </ListItem>
+          </ListItem> */}
         </List>
       </Drawer>
     </div>
