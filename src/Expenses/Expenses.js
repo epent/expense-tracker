@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -78,28 +79,30 @@ const Expenses = (props) => {
   };
 
   const expenseForm = (
-    <Grid item xs={12}>
+    <Box mt={3}>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<AddBoxIcon />}
-          onClick={showExpenseFormHandler}
-        >
-          Expenses
-        </Button>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<AddBoxIcon />}
+            onClick={showExpenseFormHandler}
+          >
+            Expenses
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {expenseFormShow && (
+            <ExpenseForm
+              updateExpenseLog={updateExpenseLogHandler}
+              updateHomeHandler={props.updateHomeHandler}
+              accountList={accountList}
+              categoryList={categoryList}
+            />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {expenseFormShow && (
-          <ExpenseForm
-            updateExpenseLog={updateExpenseLogHandler}
-            updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
-          />
-        )}
-      </Grid>
-    </Grid>
+    </Box>
   );
 
   return (

@@ -78,7 +78,7 @@ const Home = () => {
         xs={3}
       >
         <Grid item>
-          <Box mt={1}>
+          <Box>
             <Typography variant="h5" gutterBottom color="textSecondary">
               Accounts
             </Typography>
@@ -108,7 +108,7 @@ const Home = () => {
       </Grid>
       <Grid container item direction="column" xs={6}>
         <Grid item>
-          <Box mt={1}>
+          <Box>
             <Grid item xs={12}>
               <HistoryLog
                 sliceLog={true}
@@ -128,7 +128,7 @@ const Home = () => {
         xs={3}
       >
         <Grid item>
-          <Box mt={8} mb={4} mr={5}>
+          <Box mt={5} mb={4} mr={5}>
             <Expenses
               showExpenseLog={false}
               showExpenseForm={true}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -78,27 +79,29 @@ const Transfers = (props) => {
   };
 
   const transferForm = (
-    <Grid item xs={12}>
+    <Box mt={3}>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          startIcon={<AddBoxIcon />}
-          onClick={showTransferFormHandler}
-        >
-          Transfers
-        </Button>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            startIcon={<AddBoxIcon />}
+            onClick={showTransferFormHandler}
+          >
+            Transfers
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {transferFormShow && (
+            <TransferForm
+              updateTransferLog={updateTransferLogHandler}
+              updateHomeHandler={props.updateHomeHandler}
+              accountList={accountList}
+              categoryList={categoryList}
+            />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {transferFormShow && (
-          <TransferForm
-            updateTransferLog={updateTransferLogHandler}
-            updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
-          />
-        )}
-      </Grid>
-    </Grid>
+    </Box>
   );
 
   return (

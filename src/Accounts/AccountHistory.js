@@ -80,7 +80,7 @@ const AccountHistory = (props) => {
     });
 
   return (
-    <Box mt={3}>
+    <Box mt={2} mb={4}>
       <Grid container spacing={2}>
         <List>{accountList}</List>
       </Grid>

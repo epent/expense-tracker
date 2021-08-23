@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -78,28 +79,30 @@ const Income = (props) => {
   };
 
   const incomeForm = (
-    <Grid item xs={12}>
+    <Box mt={3}>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddBoxIcon />}
-          onClick={showIncomeFormHandler}
-        >
-          Income
-        </Button>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddBoxIcon />}
+            onClick={showIncomeFormHandler}
+          >
+            Income
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {incomeFormShow && (
+            <IncomeForm
+              updateIncomeLog={updateIncomeLogHandler}
+              updateHomeHandler={props.updateHomeHandler}
+              accountList={accountList}
+              categoryList={categoryList}
+            />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {incomeFormShow && (
-          <IncomeForm
-            updateIncomeLog={updateIncomeLogHandler}
-            updateHomeHandler={props.updateHomeHandler}
-            accountList={accountList}
-            categoryList={categoryList}
-          />
-        )}
-      </Grid>
-    </Grid>
+    </Box>
   );
 
   return (

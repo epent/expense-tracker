@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
@@ -23,23 +24,25 @@ const Accounts = (props) => {
   };
 
   const accountForm = (
-    <Grid item xs={12}>
+    <Box mt={3}>
       <Grid item xs={12}>
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<AddBoxIcon />}
-          onClick={showAccountFormHandler}
-        >
-          Accounts
-        </Button>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="secondary"
+            startIcon={<AddBoxIcon />}
+            onClick={showAccountFormHandler}
+          >
+            Accounts
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {accountFormShow && (
+            <AccountForm updateAccountLog={updateAccountLogHandler} />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12}>
-        {accountFormShow && (
-          <AccountForm updateAccountLog={updateAccountLogHandler} />
-        )}
-      </Grid>
-    </Grid>
+    </Box>
   );
 
   return (

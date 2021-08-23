@@ -76,7 +76,7 @@ const CategoryList = (props) => {
     });
 
   return (
-    <Box mt={3}>
+    <Box mt={2}>
       <Grid container spacing={2}>
         <List>{categoryList}</List>
       </Grid>
