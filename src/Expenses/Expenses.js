@@ -4,8 +4,8 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
-import ExpenseForm from "../Expenses/ExpenseForm";
-import ExpenseLog from "../Expenses/ExpenseLog";
+import ExpenseForm from "./ExpenseForm";
+import ExpenseLog from "./ExpenseLog";
 
 const Expenses = (props) => {
   const [expenseFormShow, setExpenseFormShow] = useState(false);

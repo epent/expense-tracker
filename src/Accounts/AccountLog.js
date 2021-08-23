@@ -15,7 +15,7 @@ const AccountLog = (props) => {
     Balance: 0,
   });
 
-  //  id of the expense we want to edit
+  //  id of the account we want to edit
   const [editedAccountId, setEditedAccountId] = useState("");
 
   // if want to edit transaction, need to show the form again

@@ -4,13 +4,13 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 
-import Balance from "../Balance";
-import HistoryLog from "../History/HistoryLog";
-import Accounts from "./Accounts";
-import Categories from "./Categories";
-import Expenses from "./Expenses";
-import Income from "./Income";
-import Transfers from "./Transfers";
+import Balance from "../components/Balance/Balance";
+import HistoryLog from "../components/History/HistoryLog";
+import Accounts from "../Accounts/Accounts";
+import Categories from "../Categories/Categories";
+import Expenses from "../Expenses/Expenses";
+import Income from "../Income/Income";
+import Transfers from "../Transfers/Transfers";
 
 const Home = () => {
   const [updateHome, setUpdateHome] = useState(false);

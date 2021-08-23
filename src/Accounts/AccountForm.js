@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
-import Form from "../Forms/Form";
+import Form from "../components/Forms/Form";
 
 const AccountForm = (props) => {
   const [accountForm, setAccountForm] = useState({

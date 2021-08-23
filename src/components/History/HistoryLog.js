@@ -6,9 +6,9 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Expenses from "../components/Expenses";
-import Income from "../components/Income";
-import Transfers from "../components/Transfers";
+import Expenses from "../../Expenses/Expenses";
+import Income from "../../Income/Income";
+import Transfers from "../../Transfers/Transfers";
 
 const useStyles = makeStyles({
   root: {

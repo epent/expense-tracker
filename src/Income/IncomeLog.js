@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
-import History from "../History/History";
+import History from "../components/History/History";
 
 const IncomeLog = (props) => {
   const [incomeLog, setIncomeLog] = useState({

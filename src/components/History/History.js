@@ -16,9 +16,9 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import ExpenseForm from "../Expenses/ExpenseForm";
-import IncomeForm from "../Income/IncomeForm";
-import TransferForm from "../Transfers/TransferForm";
+import ExpenseForm from "../../Expenses/ExpenseForm";
+import IncomeForm from "../../Income/IncomeForm";
+import TransferForm from "../../Transfers/TransferForm";
 
 const useStyles = makeStyles({
   root: {

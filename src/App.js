@@ -1,15 +1,15 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Appbar from "./Appbar";
+import Appbar from "./components/Appbar/Appbar";
 import SideBar from "./components/SideBar/SideBar";
-import Home from "./components/Home";
-import Expenses from "./components/Expenses";
-import Income from "./components/Income";
-import Transfers from "./components/Transfers";
-import Accounts from "./components/Accounts";
-import HistoryLog from "./History/HistoryLog";
-import Categories from "./components/Categories";
+import Home from "./Home/Home";
+import Expenses from "./Expenses/Expenses";
+import Income from "./Income/Income";
+import Transfers from "./Transfers/Transfers";
+import Accounts from "./Accounts/Accounts";
+import HistoryLog from "./components/History/HistoryLog";
+import Categories from "./Categories/Categories";
 
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
