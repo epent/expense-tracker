@@ -51,13 +51,14 @@ const Home = () => {
         justifyContent="space-around"
         xs={12}
       >
-        <Grid item>
+        {/* this is not finished yet */}
+        {/* <Grid item>
           <Balance
             title="Balance"
             amount={total.balance}
             amountColor="textSecondary"
           />
-        </Grid>
+        </Grid> */}
         <Grid item>
           <Balance title="Income" amount={total.income} amountColor="primary" />
         </Grid>
