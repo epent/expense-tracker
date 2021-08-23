@@ -163,7 +163,9 @@ const IncomeForm = (props) => {
           // trigger the page to rerender with updated incomeLog
           .then((response) => props.updateIncomeLog())
           // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => props.updateHomeHandler());
+          .then((response) => {
+            if (props.updateHomeHandler) props.updateHomeHandler();
+          });
       });
   };
 
@@ -293,7 +295,9 @@ const IncomeForm = (props) => {
             // trigger the page to rerender with updated incomeLog
             .then((response) => props.updateIncomeLog())
             // trigger Home to rerender with updated accountLog/categoryLog
-            .then((response) => props.updateHomeHandler());
+            .then((response) => {
+              if (props.updateHomeHandler) props.updateHomeHandler();
+            });
         });
     }
 

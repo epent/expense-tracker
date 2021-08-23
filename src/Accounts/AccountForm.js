@@ -14,6 +14,8 @@ const AccountForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
+  const accountCategoriesList = ["Bank account", "Credit card", "Cash"];
+
   useEffect(() => {
     if (props.editedAccountForm) {
       setAccountForm({
@@ -93,6 +95,7 @@ const AccountForm = (props) => {
       form={accountForm}
       updateForm={updateFormHandler}
       formSubmitHandler={accountFormSubmitHandler}
+      accountCategoriesList={accountCategoriesList}
       btnName="save account"
       btnColor="secondary"
     />
@@ -106,6 +109,7 @@ const AccountForm = (props) => {
         updateForm={updateFormHandler}
         formSubmitHandler={accountFormUpdateHandler}
         showEditedForm={showEditedForm}
+        accountCategoriesList={accountCategoriesList}
         btnName="edit account"
         btnColor="secondary"
       />

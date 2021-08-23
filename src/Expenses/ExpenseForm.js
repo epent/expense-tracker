@@ -199,7 +199,9 @@ const ExpenseForm = (props) => {
           // trigger the page to rerender with updated expenseLog
           .then((response) => props.updateExpenseLog())
           // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => props.updateHomeHandler());
+          .then((response) => {
+            if (props.updateHomeHandler) props.updateHomeHandler();
+          });
       });
   };
 
@@ -384,7 +386,9 @@ const ExpenseForm = (props) => {
             // trigger the page to rerender with updated expenseLog
             .then((response) => props.updateExpenseLog())
             // trigger Home to rerender with updated accountLog/categoryLog
-            .then((response) => props.updateHomeHandler());
+            .then((response) => {
+              if (props.updateHomeHandler) props.updateHomeHandler();
+            });
         });
     }
     // close the editable form automatically

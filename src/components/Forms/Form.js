@@ -27,7 +27,7 @@ const Form = (props) => {
   // if we edit any transaction, shown form changes
   if (props.showEditedForm) formValues = props.editedForm;
 
-  let accountsToChoose = <p>Loading...</p>;
+  let accountsToChoose = <p>You have no accounts yet</p>;
   if (props.accountList && props.accountList.length > 0)
     accountsToChoose = props.accountList.map((account) => {
       return (
@@ -37,9 +37,19 @@ const Form = (props) => {
       );
     });
 
-  let categoriesToChoose = <p>Loading...</p>;
+  let categoriesToChoose = <p>You have no categories yet...</p>;
   if (props.categoryList && props.categoryList.length > 0)
     categoriesToChoose = props.categoryList.map((category) => {
+      return (
+        <MenuItem key={category} value={category}>
+          {category}
+        </MenuItem>
+      );
+    });
+
+  let accountCategoriesToChoose;
+  if (props.accountCategoriesList)
+    accountCategoriesToChoose = props.accountCategoriesList.map((category) => {
       return (
         <MenuItem key={category} value={category}>
           {category}
@@ -104,6 +114,19 @@ const Form = (props) => {
             onChange={(e) => props.updateForm(e, formKey)}
           >
             {categoriesToChoose}
+          </Select>
+        </FormControl>
+      </Grid>
+    ) : formKey === "Category" ? (
+      <Grid item key={formKey}>
+        <FormControl variant="outlined" margin="normal" size="small">
+          <InputLabel>Category</InputLabel>
+          <Select
+            className={classes.root}
+            value={formValues[formKey]}
+            onChange={(e) => props.updateForm(e, formKey)}
+          >
+            {accountCategoriesToChoose}
           </Select>
         </FormControl>
       </Grid>
