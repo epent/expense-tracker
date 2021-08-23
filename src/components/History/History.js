@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 const History = (props) => {
   const classes = useStyles();
 
-  let transactions = <p>Loading...</p>;
+  let transactions = <p>You have no transactions yet...</p>;
 
   if (props.transactions.length > 0)
     transactions = props.transactions.map((transaction) => {

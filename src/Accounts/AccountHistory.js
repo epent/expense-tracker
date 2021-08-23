@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const AccountHistory = (props) => {
   const classes = useStyles();
 
-  let accountList = <p>Loading...</p>;
+  let accountList = <p>You have no accounts yet...</p>;
 
   if (props.accounts.length > 0)
     accountList = props.accounts.map((account) => {

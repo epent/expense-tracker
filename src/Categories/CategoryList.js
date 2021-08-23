@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 const CategoryList = (props) => {
   const classes = useStyles();
 
-  let categoryList = <p>Loading...</p>;
+  let categoryList = <p>You have no categories yet...</p>;
 
   if (props.categoryList.length > 0)
     categoryList = props.categoryList.map((category) => {
