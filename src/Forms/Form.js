@@ -28,7 +28,7 @@ const Form = (props) => {
   if (props.showEditedForm) formValues = props.editedForm;
 
   let accountsToChoose = <p>Loading...</p>;
-  if (props.accountList.length > 0)
+  if (props.accountList && props.accountList.length > 0)
     accountsToChoose = props.accountList.map((account) => {
       return (
         <MenuItem key={account} value={account}>
@@ -38,7 +38,7 @@ const Form = (props) => {
     });
 
   let categoriesToChoose = <p>Loading...</p>;
-  if (props.categoryList.length > 0)
+  if (props.categoryList && props.categoryList.length > 0)
     categoriesToChoose = props.categoryList.map((category) => {
       return (
         <MenuItem key={category} value={category}>

@@ -21,21 +21,8 @@ const CategoryForm = (props) => {
     }
   }, []);
 
-  // update empty form
+  // update/edit the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Balance"
-      ? setCategoryForm({
-          ...categoryForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setCategoryForm({
-          ...categoryForm,
-          [formKey]: event.target.value,
-        });
-  };
-
-  // edit pre-filled form
-  const editFormHandler = (event, formKey) => {
     formKey === "Balance"
       ? setCategoryForm({
           ...categoryForm,
@@ -95,7 +82,7 @@ const CategoryForm = (props) => {
         });
       });
 
-    // close the editable form
+    // close the editable form automatically
     props.setShowCategoryForm();
   };
 
@@ -114,7 +101,7 @@ const CategoryForm = (props) => {
       <Form
         form={props.editedCategoryForm}
         editedForm={categoryForm}
-        updateForm={editFormHandler}
+        updateForm={updateFormHandler}
         formSubmitHandler={categoryFormUpdateHandler}
         showEditedForm={showEditedForm}
         btnName="add category"

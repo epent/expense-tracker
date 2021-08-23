@@ -22,7 +22,7 @@ const AccountForm = (props) => {
     }
   }, []);
 
-  // update empty form
+  // update/edit the form
   const updateFormHandler = (event, formKey) => {
     formKey === "Balance"
       ? setAccountForm({
@@ -33,19 +33,7 @@ const AccountForm = (props) => {
           ...accountForm,
           [formKey]: event.target.value,
         });
-  };
 
-  // edit pre-filled form
-  const editFormHandler = (event, formKey) => {
-    formKey === "Balance"
-      ? setAccountForm({
-          ...accountForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setAccountForm({
-          ...accountForm,
-          [formKey]: event.target.value,
-        });
     setShowEditedForm(true);
   };
 
@@ -96,7 +84,7 @@ const AccountForm = (props) => {
         });
       });
 
-    // close the editable form
+    // close the editable form automatically
     props.setShowAccountForm();
   };
 
@@ -115,7 +103,7 @@ const AccountForm = (props) => {
       <Form
         form={props.editedAccountForm}
         editedForm={accountForm}
-        updateForm={editFormHandler}
+        updateForm={updateFormHandler}
         formSubmitHandler={accountFormUpdateHandler}
         showEditedForm={showEditedForm}
         btnName="edit account"
