@@ -16,8 +16,10 @@ const TransferForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
+  // below is the list that we fill with data fetched from db (to use after)
   const fetchedAccountList = [];
 
+  // if we trigger edit, prefilled form is shown by default
   useEffect(() => {
     if (props.editedTransferForm) {
       setTransferForm({
@@ -26,26 +28,8 @@ const TransferForm = (props) => {
     }
   }, []);
 
-  // update empty form
+  // update/edit the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Date"
-      ? setTransferForm({
-          ...transferForm,
-          Date: event.toDateString(),
-        })
-      : formKey === "Amount"
-      ? setTransferForm({
-          ...transferForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setTransferForm({
-          ...transferForm,
-          [formKey]: event.target.value,
-        });
-  };
-
-  // edit pre-filled form
-  const editFormHandler = (event, formKey) => {
     formKey === "Date"
       ? setTransferForm({
           ...transferForm,
@@ -64,11 +48,34 @@ const TransferForm = (props) => {
     setShowEditedForm(true);
   };
 
+  // shared between both handlers - put fetched accounts to the list
+  const fetchList = (data, listName) => {
+    for (let key in data) {
+      listName.push({
+        ...data[key],
+        id: key,
+      });
+    }
+  };
+
+  // shared between both handlers - post changes in accounts to db
+  const postChangedAccountCategoryBalance = (type, id, updated) => {
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/" +
+        type +
+        "/" +
+        id +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updated),
+      }
+    );
+  };
+
   // add new transfer
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Transfer form submitted: ");
-    console.log(transferForm);
 
     // post new transferForm to server
     fetch(
@@ -85,14 +92,7 @@ const TransferForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        console.log(fetchedAccountList);
+        fetchList(data, fetchedAccountList);
       })
 
       // update accountBalanceFrom after new transfer
@@ -106,14 +106,10 @@ const TransferForm = (props) => {
         const accountId = account[0].id;
 
         // post changed balance to server
-        fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-            accountId +
-            ".json",
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedAccount),
-          }
+        postChangedAccountCategoryBalance(
+          "accounts",
+          accountId,
+          updatedAccount
         );
       })
 
@@ -137,6 +133,7 @@ const TransferForm = (props) => {
             body: JSON.stringify(updatedAccount),
           }
         )
+          // shown form is cleared
           .then((response) => {
             setTransferForm({
               From: "",
@@ -169,6 +166,7 @@ const TransferForm = (props) => {
       }
     );
 
+    // if amount changed, we should change balance of account
     if (props.editedTransferForm.Amount !== transferForm.Amount) {
       // fetch accountList from server
       fetch(
@@ -176,14 +174,7 @@ const TransferForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          for (let key in data) {
-            fetchedAccountList.push({
-              ...data[key],
-              id: key,
-            });
-          }
-
-          console.log(fetchedAccountList);
+          fetchList(data, fetchedAccountList);
         })
 
         // update accountBalanceFrom after edited transfer (From)
@@ -216,14 +207,10 @@ const TransferForm = (props) => {
           }
 
           // post changed balance to server
-          fetch(
-            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-              accountId +
-              ".json",
-            {
-              method: "PATCH",
-              body: JSON.stringify(updatedAccount),
-            }
+          postChangedAccountCategoryBalance(
+            "accounts",
+            accountId,
+            updatedAccount
           );
         })
 
@@ -257,15 +244,12 @@ const TransferForm = (props) => {
           }
 
           // post changed balance to server
-          fetch(
-            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-              accountId +
-              ".json",
-            {
-              method: "PATCH",
-              body: JSON.stringify(updatedAccount),
-            }
+          postChangedAccountCategoryBalance(
+            "accounts",
+            accountId,
+            updatedAccount
           )
+            // shown form is cleared
             .then((response) => {
               setTransferForm({
                 From: "",
@@ -282,7 +266,7 @@ const TransferForm = (props) => {
             .then((response) => props.updateHomeHandler());
         });
     }
-    // close the editable form
+    // close the editable form automatically
     props.setShowTransferForm();
   };
 
@@ -308,10 +292,10 @@ const TransferForm = (props) => {
       <Form
         form={props.editedTransferForm}
         editedForm={transferForm}
-        updateForm={editFormHandler}
+        updateForm={updateFormHandler}
         selectedDate={transferForm.Date}
         formSubmitHandler={transferFormUpdateHandler}
-        handleDateChange={editFormHandler}
+        handleDateChange={updateFormHandler}
         showEditedForm={showEditedForm}
         transfers
         accountList={props.accountList}

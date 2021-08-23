@@ -16,12 +16,14 @@ const ExpenseForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
+  // below are 3 lists that we fill with data fetched from db (to use after)
   const fetchedAccountList = [];
 
   const fetchedCategoryList = [];
 
   const fetchedBalanceList = [];
 
+  // if we trigger edit, prefilled form is shown by default
   useEffect(() => {
     if (props.editedExpenseForm) {
       setExpenseForm({
@@ -50,11 +52,34 @@ const ExpenseForm = (props) => {
     setShowEditedForm(true);
   };
 
+  // shared between both handlers - put fetched accounts/categories to the list
+  const fetchList = (data, listName) => {
+    for (let key in data) {
+      listName.push({
+        ...data[key],
+        id: key,
+      });
+    }
+  };
+
+  // shared between both handlers - post changes in accounts/categories to db
+  const postChangedAccountCategoryBalance = (type, id, updated) => {
+    fetch(
+      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/" +
+        type +
+        "/" +
+        id +
+        ".json",
+      {
+        method: "PATCH",
+        body: JSON.stringify(updated),
+      }
+    );
+  };
+
   // add new expense
   const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("Expense form submitted: ");
-    console.log(expenseForm);
 
     // post new expenseForm to server
     fetch(
@@ -71,14 +96,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        console.log(fetchedAccountList);
+        fetchList(data, fetchedAccountList);
       })
 
       // update accountBalance after new expense
@@ -92,14 +110,10 @@ const ExpenseForm = (props) => {
         const accountId = account[0].id;
 
         // post changed accountBalance to server
-        fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-            accountId +
-            ".json",
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedAccount),
-          }
+        postChangedAccountCategoryBalance(
+          "accounts",
+          accountId,
+          updatedAccount
         );
       });
 
@@ -109,14 +123,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        console.log(fetchedCategoryList);
+        fetchList(data, fetchedCategoryList);
       })
 
       // update categoryBalance after new expense
@@ -130,14 +137,10 @@ const ExpenseForm = (props) => {
         const categoryId = category[0].id;
 
         // post changed categoryBalance to server
-        fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
-            categoryId +
-            ".json",
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedCategory),
-          }
+        postChangedAccountCategoryBalance(
+          "categories",
+          categoryId,
+          updatedCategory
         );
       });
 
@@ -153,7 +156,6 @@ const ExpenseForm = (props) => {
             id: index,
           });
         }
-        console.log(fetchedBalanceList);
       })
 
       // update totalBalances after new expense
@@ -183,6 +185,7 @@ const ExpenseForm = (props) => {
             body: JSON.stringify(updatedTotals),
           }
         )
+          // shown form is cleared
           .then((response) => {
             setExpenseForm({
               From: "",
@@ -215,6 +218,7 @@ const ExpenseForm = (props) => {
       }
     );
 
+    // if amount changed, we should change balances of category and account
     if (props.editedExpenseForm.Amount !== expenseForm.Amount) {
       // fetch accountList from server
       fetch(
@@ -222,14 +226,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          for (let key in data) {
-            fetchedAccountList.push({
-              ...data[key],
-              id: key,
-            });
-          }
-
-          console.log(fetchedAccountList);
+          fetchList(data, fetchedAccountList);
         })
 
         // update accountBalance after edited expense
@@ -262,14 +259,10 @@ const ExpenseForm = (props) => {
           }
 
           // post changed accountBalance to server
-          fetch(
-            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-              accountId +
-              ".json",
-            {
-              method: "PATCH",
-              body: JSON.stringify(updatedAccount),
-            }
+          postChangedAccountCategoryBalance(
+            "accounts",
+            accountId,
+            updatedAccount
           );
         });
     }
@@ -281,12 +274,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          for (let key in data) {
-            fetchedCategoryList.push({
-              ...data[key],
-              id: key,
-            });
-          }
+          fetchList(data, fetchedCategoryList);
         })
 
         // update categoryBalance after edited expense
@@ -319,14 +307,10 @@ const ExpenseForm = (props) => {
           }
 
           // post changed categoryBalance to server
-          fetch(
-            "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
-              categoryId +
-              ".json",
-            {
-              method: "PATCH",
-              body: JSON.stringify(updatedCategory),
-            }
+          postChangedAccountCategoryBalance(
+            "categories",
+            categoryId,
+            updatedCategory
           );
         });
 
@@ -386,6 +370,7 @@ const ExpenseForm = (props) => {
               body: JSON.stringify(updatedTotals),
             }
           )
+            // shown form is cleared
             .then((response) => {
               setExpenseForm({
                 From: "",
@@ -402,7 +387,7 @@ const ExpenseForm = (props) => {
             .then((response) => props.updateHomeHandler());
         });
     }
-    // close the editable form
+    // close the editable form automatically
     props.setShowExpenseForm();
   };
 
