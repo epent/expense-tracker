@@ -3,13 +3,12 @@
 An app to track how much money you earn, how much you spend and what you spend it on
 
 ## Stack
-#
+
 * React (CRA) 17
 * Material-UI 4.12
 * Firebase
 
 ## Description
-#
 Listed below you can find all the actions you are able to perform in this app:
 ### Accounts page
 * Create new account (you can choose from the following categories: Bank account/Credit Card/Cash)
