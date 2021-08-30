@@ -53,13 +53,13 @@ const ExpenseForm = (props) => {
   };
 
   // shared between both handlers - put fetched accounts/categories to the list
-  const fetchList = (data, listName) => {
-    for (let key in data) {
+  const fetchedDataToTheList = (data, listName) => {
+    Object.keys(data).map((key) => {
       listName.push({
         ...data[key],
         id: key,
       });
-    }
+    });
   };
 
   // shared between both handlers - post changes in accounts/categories to db
@@ -92,7 +92,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchList(data, fetchedAccountList);
+        fetchedDataToTheList(data, fetchedAccountList);
       })
 
       // update accountBalance after new expense
@@ -119,7 +119,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchList(data, fetchedCategoryList);
+        fetchedDataToTheList(data, fetchedCategoryList);
       })
 
       // update categoryBalance after new expense
@@ -146,12 +146,12 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let index in data) {
+        Object.keys(data).map((key) => {
           fetchedBalanceList.push({
-            [index]: data[index],
-            id: index,
+            [key]: data[key],
+            id: key,
           });
-        }
+        });
       })
 
       // update totalBalances after new expense
@@ -222,7 +222,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchList(data, fetchedAccountList);
+          fetchedDataToTheList(data, fetchedAccountList);
         })
 
         // update accountBalance after edited expense
@@ -270,7 +270,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchList(data, fetchedCategoryList);
+          fetchedDataToTheList(data, fetchedCategoryList);
         })
 
         // update categoryBalance after edited expense
@@ -391,7 +391,6 @@ const ExpenseForm = (props) => {
 
   const commonProps = {
     updateForm: updateFormHandler,
-    formSubmitHandler: expenseFormSubmitHandler,
     handleDateChange: updateFormHandler,
     selectedDate: expenseForm.Date,
     expenses: true,
@@ -401,7 +400,14 @@ const ExpenseForm = (props) => {
     btnColor: "secondary",
   };
 
-  let form = <Form {...commonProps} form={expenseForm} btnName="add expense" />;
+  let form = (
+    <Form
+      {...commonProps}
+      form={expenseForm}
+      formSubmitHandler={expenseFormSubmitHandler}
+      btnName="add expense"
+    />
+  );
 
   // if we want to edit expense, the form is pre-filled
   if (props.showEditedForm)
@@ -410,6 +416,7 @@ const ExpenseForm = (props) => {
         {...commonProps}
         form={props.editedExpenseForm}
         editedForm={expenseForm}
+        formSubmitHandler={expenseFormUpdateHandler}
         showEditedForm={showEditedForm}
         btnName="edit expense"
       />

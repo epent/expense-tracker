@@ -49,13 +49,13 @@ const TransferForm = (props) => {
   };
 
   // shared between both handlers - put fetched accounts to the list
-  const fetchList = (data, listName) => {
-    for (let key in data) {
+  const fetchedDataToTheList = (data, listName) => {
+    Object.keys(data).map((key) => {
       listName.push({
         ...data[key],
         id: key,
       });
-    }
+    });
   };
 
   // shared between both handlers - post changes in accounts to db
@@ -88,7 +88,7 @@ const TransferForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchList(data, fetchedAccountList);
+        fetchedDataToTheList(data, fetchedAccountList);
       })
 
       // update accountBalanceFrom after new transfer
@@ -168,7 +168,7 @@ const TransferForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchList(data, fetchedAccountList);
+          fetchedDataToTheList(data, fetchedAccountList);
         })
 
         // update accountBalanceFrom after edited transfer (From)
@@ -268,7 +268,6 @@ const TransferForm = (props) => {
 
   const commonProps = {
     updateForm: updateFormHandler,
-    formSubmitHandler: transferFormSubmitHandler,
     handleDateChange: updateFormHandler,
     selectedDate: transferForm.Date,
     transfers: true,
@@ -280,7 +279,12 @@ const TransferForm = (props) => {
   };
 
   let form = (
-    <Form {...commonProps} form={transferForm} btnName="add transfer" />
+    <Form
+      {...commonProps}
+      form={transferForm}
+      formSubmitHandler={transferFormSubmitHandler}
+      btnName="add transfer"
+    />
   );
 
   if (props.showEditedForm)
@@ -289,6 +293,7 @@ const TransferForm = (props) => {
         {...commonProps}
         form={props.editedTransferForm}
         editedForm={transferForm}
+        formSubmitHandler={transferFormUpdateHandler}
         showEditedForm={showEditedForm}
         btnName="add transfer"
       />

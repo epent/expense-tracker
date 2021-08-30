@@ -51,13 +51,13 @@ const IncomeForm = (props) => {
   };
 
   // shared between both handlers - put fetched accounts to the list
-  const fetchList = (data, listName) => {
-    for (let key in data) {
+  const fetchedDataToTheList = (data, listName) => {
+    Object.keys(data).map((key) => {
       listName.push({
         ...data[key],
         id: key,
       });
-    }
+    });
   };
 
   // shared between both handlers - post changes in accounts to db
@@ -90,7 +90,7 @@ const IncomeForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchList(data, fetchedAccountList);
+        fetchedDataToTheList(data, fetchedAccountList);
       })
 
       // update accountBalance after new income
@@ -117,13 +117,12 @@ const IncomeForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        for (let index in data) {
+        Object.keys(data).map((key) => {
           fetchedBalanceList.push({
-            [index]: data[index],
-            id: index,
+            [key]: data[key],
+            id: key,
           });
-        }
-        console.log(fetchedBalanceList);
+        });
       })
 
       // update totalBalances after new income
@@ -186,7 +185,7 @@ const IncomeForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchList(data, fetchedAccountList);
+          fetchedDataToTheList(data, fetchedAccountList);
         })
 
         // update accountBalance after edited income
@@ -232,13 +231,12 @@ const IncomeForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          for (let index in data) {
+          Object.keys(data).map((key) => {
             fetchedBalanceList.push({
-              [index]: data[index],
-              id: index,
+              [key]: data[key],
+              id: key,
             });
-          }
-          console.log(fetchedBalanceList);
+          });
         })
 
         // update totalBalances after new income
@@ -301,7 +299,6 @@ const IncomeForm = (props) => {
 
   const commonProps = {
     updateForm: updateFormHandler,
-    formSubmitHandler: incomeFormSubmitHandler,
     handleDateChange: updateFormHandler,
     selectedDate: incomeForm.Date,
     income: true,
@@ -311,7 +308,14 @@ const IncomeForm = (props) => {
     btnColor: "primary",
   };
 
-  let form = <Form {...commonProps} form={incomeForm} btnName="add income" />;
+  let form = (
+    <Form
+      {...commonProps}
+      form={incomeForm}
+      formSubmitHandler={incomeFormSubmitHandler}
+      btnName="add income"
+    />
+  );
 
   // if we want to edit expense, the form is pre-filled
   if (props.showEditedForm)
@@ -320,6 +324,7 @@ const IncomeForm = (props) => {
         {...commonProps}
         form={props.editedIncomeForm}
         editedForm={incomeForm}
+        formSubmitHandler={incomeFormUpdateHandler}
         showEditedForm={showEditedForm}
         btnName="edit income"
       />
