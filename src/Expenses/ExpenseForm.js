@@ -389,39 +389,29 @@ const ExpenseForm = (props) => {
     props.setShowExpenseForm();
   };
 
-  let form = (
-    <Form
-      form={expenseForm}
-      updateForm={updateFormHandler}
-      selectedDate={expenseForm.Date}
-      formSubmitHandler={expenseFormSubmitHandler}
-      handleDateChange={updateFormHandler}
-      expenses
-      accountList={props.accountList}
-      categoryList={props.categoryList}
-      accountsLabel="From"
-      btnName="add expense"
-      btnColor="secondary"
-    />
-  );
+  const commonProps = {
+    updateForm: updateFormHandler,
+    formSubmitHandler: expenseFormSubmitHandler,
+    handleDateChange: updateFormHandler,
+    selectedDate: expenseForm.Date,
+    expenses: true,
+    accountList: props.accountList,
+    categoryList: props.categoryList,
+    accountsLabel: "From",
+    btnColor: "secondary",
+  };
+
+  let form = <Form {...commonProps} form={expenseForm} btnName="add expense" />;
 
   // if we want to edit expense, the form is pre-filled
   if (props.showEditedForm)
     form = (
       <Form
+        {...commonProps}
         form={props.editedExpenseForm}
         editedForm={expenseForm}
-        updateForm={updateFormHandler}
-        selectedDate={expenseForm.Date}
-        formSubmitHandler={expenseFormUpdateHandler}
-        handleDateChange={updateFormHandler}
         showEditedForm={showEditedForm}
-        expenses
-        accountList={props.accountList}
-        categoryList={props.categoryList}
-        accountsLabel="From"
         btnName="edit expense"
-        btnColor="secondary"
       />
     );
 

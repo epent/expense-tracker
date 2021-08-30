@@ -266,40 +266,31 @@ const TransferForm = (props) => {
     props.setShowTransferForm();
   };
 
+  const commonProps = {
+    updateForm: updateFormHandler,
+    formSubmitHandler: transferFormSubmitHandler,
+    handleDateChange: updateFormHandler,
+    selectedDate: transferForm.Date,
+    transfers: true,
+    accountList: props.accountList,
+    categoryList: props.categoryList,
+    accountsLabel: "From",
+    accountsLabelTransferTo: "To",
+    btnColor: "default",
+  };
+
   let form = (
-    <Form
-      form={transferForm}
-      updateForm={updateFormHandler}
-      selectedDate={transferForm.Date}
-      formSubmitHandler={transferFormSubmitHandler}
-      handleDateChange={updateFormHandler}
-      transfers
-      accountList={props.accountList}
-      categoryList={props.categoryList}
-      accountsLabel="From"
-      accountsLabelTransferTo="To"
-      btnName="add transfer"
-      btnColor="default"
-    />
+    <Form {...commonProps} form={transferForm} btnName="add transfer" />
   );
 
   if (props.showEditedForm)
     form = (
       <Form
+        {...commonProps}
         form={props.editedTransferForm}
         editedForm={transferForm}
-        updateForm={updateFormHandler}
-        selectedDate={transferForm.Date}
-        formSubmitHandler={transferFormUpdateHandler}
-        handleDateChange={updateFormHandler}
         showEditedForm={showEditedForm}
-        transfers
-        accountList={props.accountList}
-        categoryList={props.categoryList}
-        accountsLabel="From"
-        accountsLabelTransferTo="To"
         btnName="add transfer"
-        btnColor="default"
       />
     );
 
