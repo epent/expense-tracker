@@ -52,14 +52,9 @@ const ExpenseLog = (props) => {
       });
   }, [props.updatedExpenseLog, props.updateHome]);
 
-  const deleteExpenseHandler = (
-    expenseId,
-    expenseAmount,
-    expenseFrom,
-    expenseTo
-  ) => {
+  const deleteExpenseHandler = (expenseToDelete) => {
     const updatedExpenseLog = expenseLog.filter(
-      (expense) => expense.id !== expenseId
+      (expense) => expense.id !== expenseToDelete.id
     );
 
     setExpenseLog(updatedExpenseLog);
@@ -68,7 +63,7 @@ const ExpenseLog = (props) => {
 
     // delete expense from db
     fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseToDelete.id}.json`,
       {
         method: "DELETE",
       }
@@ -91,10 +86,10 @@ const ExpenseLog = (props) => {
       // update accountBalance after deleting expense
       .then((response) => {
         const account = fetchedAccountList.filter(
-          (account) => account.Name === expenseFrom
+          (account) => account.Name === expenseToDelete.From
         );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(expenseAmount),
+          Balance: Number(account[0].Balance) + Number(expenseToDelete.Amount),
         };
         const accountId = account[0].id;
 
@@ -139,10 +134,10 @@ const ExpenseLog = (props) => {
       // update categoryBalance after deleting expense
       .then((response) => {
         const category = fetchedCategoryList.filter(
-          (category) => category.Name === expenseTo
+          (category) => category.Name === expenseToDelete.To
         );
         const updatedCategory = {
-          Balance: Number(category[0].Balance) - Number(expenseAmount),
+          Balance: Number(category[0].Balance) - Number(expenseToDelete.Amount),
         };
         const categoryId = category[0].id;
 
@@ -190,7 +185,8 @@ const ExpenseLog = (props) => {
         // });
 
         const updatedTotals = {
-          expenses: Number(totalExpenses[0].expenses) - Number(expenseAmount),
+          expenses:
+            Number(totalExpenses[0].expenses) - Number(expenseToDelete.Amount),
         };
 
         // post changed totalBalances to server
@@ -204,25 +200,18 @@ const ExpenseLog = (props) => {
       });
   };
 
-  const editExpenseHandler = (
-    expenseId,
-    expenseFrom,
-    expenseTo,
-    expenseAmount,
-    expenseDate,
-    expenseComment
-  ) => {
+  const editExpenseHandler = (expense) => {
     setExpenseForm({
-      From: expenseFrom,
-      To: expenseTo,
-      Amount: expenseAmount,
-      Date: expenseDate,
-      Comment: expenseComment,
+      From: expense.From,
+      To: expense.To,
+      Amount: expense.Amount,
+      Date: expense.Date,
+      Comment: expense.Comment,
     });
 
-    setEditedExpenseId(expenseId);
+    setEditedExpenseId(expense.id);
 
-    if (editedExpenseId === expenseId) {
+    if (editedExpenseId === expense.id) {
       setShowExpenseForm((prevState) => !prevState);
       props.setEditExpenseFormShow();
     }

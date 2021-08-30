@@ -50,14 +50,9 @@ const TransferLog = (props) => {
       });
   }, [props.updatedTransferLog, props.updateHome]);
 
-  const deleteTransferHandler = (
-    transferId,
-    transferAmount,
-    transferFrom,
-    transferTo
-  ) => {
+  const deleteTransferHandler = (transferToDelete) => {
     const updatedTransferLog = transferLog.filter(
-      (expense) => expense.id !== transferId
+      (expense) => expense.id !== transferToDelete.id
     );
 
     setTransferLog(updatedTransferLog);
@@ -66,7 +61,7 @@ const TransferLog = (props) => {
 
     // delete expense from db
     fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers/${transferId}.json`,
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers/${transferToDelete.id}.json`,
       {
         method: "DELETE",
       }
@@ -89,10 +84,10 @@ const TransferLog = (props) => {
       // update accountBalanceFrom after deleting transfer
       .then((response) => {
         const account = fetchedAccountList.filter(
-          (account) => account.Name === transferTo
+          (account) => account.Name === transferToDelete.To
         );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) - Number(transferAmount),
+          Balance: Number(account[0].Balance) - Number(transferToDelete.Amount),
         };
         const accountId = account[0].id;
 
@@ -109,10 +104,10 @@ const TransferLog = (props) => {
       // update accountBalanceTo after deleting transfer
       .then((response) => {
         const account = fetchedAccountList.filter(
-          (account) => account.Name === transferFrom
+          (account) => account.Name === transferToDelete.From
         );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(transferAmount),
+          Balance: Number(account[0].Balance) + Number(transferToDelete.Amount),
         };
         const accountId = account[0].id;
 
@@ -131,25 +126,18 @@ const TransferLog = (props) => {
       });
   };
 
-  const editTransferHandler = (
-    transferId,
-    transferFrom,
-    transferTo,
-    transferAmount,
-    transferDate,
-    transferComment
-  ) => {
+  const editTransferHandler = (transfer) => {
     setTransferForm({
-      From: transferFrom,
-      To: transferTo,
-      Amount: transferAmount,
-      Date: transferDate,
-      Comment: transferComment,
+      From: transfer.From,
+      To: transfer.To,
+      Amount: transfer.Amount,
+      Date: transfer.Date,
+      Comment: transfer.Comment,
     });
 
-    setEditedTransferId(transferId);
+    setEditedTransferId(transfer.id);
 
-    if (editedTransferId === transferId) {
+    if (editedTransferId === transfer.id) {
       setShowTransferForm((prevState) => !prevState);
     }
   };

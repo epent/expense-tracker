@@ -52,14 +52,9 @@ const IncomeLog = (props) => {
       });
   }, [props.updatedIncomeLog, props.updateHome]);
 
-  const deleteIncomeHandler = (
-    incomeId,
-    incomeAmount,
-    incomeFrom,
-    incomeTo
-  ) => {
+  const deleteIncomeHandler = (incometoDelete) => {
     const updatedIncomeLog = incomeLog.filter(
-      (income) => income.id !== incomeId
+      (income) => income.id !== incometoDelete.id
     );
 
     setIncomeLog(updatedIncomeLog);
@@ -68,7 +63,7 @@ const IncomeLog = (props) => {
 
     // delete income from db
     fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incomeId}.json`,
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incometoDelete.id}.json`,
       {
         method: "DELETE",
       }
@@ -91,10 +86,10 @@ const IncomeLog = (props) => {
       // update accountBalance after deleting income
       .then((response) => {
         const account = fetchedAccountList.filter(
-          (account) => account.Name === incomeTo
+          (account) => account.Name === incometoDelete.To
         );
         const updatedAccount = {
-          Balance: Number(account[0].Balance) - Number(incomeAmount),
+          Balance: Number(account[0].Balance) - Number(incometoDelete.Amount),
         };
         const accountId = account[0].id;
 
@@ -135,7 +130,7 @@ const IncomeLog = (props) => {
         console.log(totalIncome);
 
         const updatedTotals = {
-          income: Number(totalIncome[0].income) - Number(incomeAmount),
+          income: Number(totalIncome[0].income) - Number(incometoDelete.Amount),
         };
 
         // post changed totalBalances to server
@@ -149,25 +144,18 @@ const IncomeLog = (props) => {
       });
   };
 
-  const editIncomeHandler = (
-    incomeId,
-    incomeFrom,
-    incomeTo,
-    incomeAmount,
-    incomeDate,
-    incomeComment
-  ) => {
+  const editIncomeHandler = (income) => {
     setIncomeForm({
-      From: incomeFrom,
-      To: incomeTo,
-      Amount: incomeAmount,
-      Date: incomeDate,
-      Comment: incomeComment,
+      From: income.From,
+      To: income.To,
+      Amount: income.Amount,
+      Date: income.Date,
+      Comment: income.Comment,
     });
 
-    setEditedIncomeId(incomeId);
+    setEditedIncomeId(income.id);
 
-    if (editedIncomeId === incomeId) {
+    if (editedIncomeId === income.id) {
       setShowIncomeForm((prevState) => !prevState);
       props.setEditIncomeFormShow();
     }

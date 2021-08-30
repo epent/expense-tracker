@@ -70,18 +70,7 @@ const History = (props) => {
                 >{`${props.sign}${transaction.Amount} ILS`}</Typography>
               </Grid>
               <Grid item xs={1} align="right">
-                <IconButton
-                  onClick={() =>
-                    props.editTransaction(
-                      transaction.id,
-                      transaction.From,
-                      transaction.To,
-                      transaction.Amount,
-                      transaction.Date,
-                      transaction.Comment
-                    )
-                  }
-                >
+                <IconButton onClick={() => props.editTransaction(transaction)}>
                   <EditIcon />
                 </IconButton>
               </Grid>
@@ -134,12 +123,7 @@ const History = (props) => {
                       <Button
                         color="secondary"
                         onClick={() =>
-                          props.deleteTransaction(
-                            props.transactionToDelete.id,
-                            props.transactionToDelete.Amount,
-                            props.transactionToDelete.From,
-                            props.transactionToDelete.To
-                          )
+                          props.deleteTransaction(props.transactionToDelete)
                         }
                       >
                         Delete
