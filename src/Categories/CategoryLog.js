@@ -5,9 +5,7 @@ import Box from "@material-ui/core/Box";
 import CategoryList from "./CategoryList";
 
 const CategoryLog = (props) => {
-  const [categoryLog, setCategoryLog] = useState({
-    categoryList: [],
-  });
+  const [categoryLog, setCategoryLog] = useState([]);
 
   const [categoryForm, setCategoryForm] = useState({
     Name: "",
@@ -35,22 +33,16 @@ const CategoryLog = (props) => {
           });
         }
 
-        setCategoryLog({
-          ...categoryLog,
-          categoryList: fetchedCategoryList,
-        });
+        setCategoryLog(fetchedCategoryList);
       });
   }, [props.updatedCategoryLog, props.updateHome]);
 
   const deleteCategoryHandler = (categoryId) => {
-    const updatedCategoryLog = categoryLog.categoryList.filter(
+    const updatedCategoryLog = categoryLog.filter(
       (category) => category.id !== categoryId
     );
 
-    setCategoryLog({
-      ...categoryLog,
-      categoryList: updatedCategoryLog,
-    });
+    setCategoryLog(updatedCategoryLog);
 
     // delete category from db
     fetch(
@@ -74,8 +66,8 @@ const CategoryLog = (props) => {
     }
   };
 
-  let categoryList = categoryLog.categoryList;
-  if (props.sliceLog) categoryList = categoryLog.categoryList.slice(0, 8);
+  let categoryList = categoryLog;
+  if (props.sliceLog) categoryList = categoryLog.slice(0, 8);
 
   return (
     <Box>

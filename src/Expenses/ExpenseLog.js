@@ -5,9 +5,7 @@ import Box from "@material-ui/core/Box";
 import History from "../components/History/History";
 
 const ExpenseLog = (props) => {
-  const [expenseLog, setExpenseLog] = useState({
-    expenseList: [],
-  });
+  const [expenseLog, setExpenseLog] = useState([]);
 
   const [expenseForm, setExpenseForm] = useState({
     From: "",
@@ -50,10 +48,7 @@ const ExpenseLog = (props) => {
           (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
         );
 
-        setExpenseLog({
-          ...expenseLog,
-          expenseList: fetchedList,
-        });
+        setExpenseLog(fetchedList);
       });
   }, [props.updatedExpenseLog, props.updateHome]);
 
@@ -63,14 +58,11 @@ const ExpenseLog = (props) => {
     expenseFrom,
     expenseTo
   ) => {
-    const updatedExpenseLog = expenseLog.expenseList.filter(
+    const updatedExpenseLog = expenseLog.filter(
       (expense) => expense.id !== expenseId
     );
 
-    setExpenseLog({
-      ...expenseLog,
-      expenseList: updatedExpenseLog,
-    });
+    setExpenseLog(updatedExpenseLog);
 
     setShowModal(false);
 
@@ -245,8 +237,8 @@ const ExpenseLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = expenseLog.expenseList;
-  if (props.sliceLog) transactions = expenseLog.expenseList.slice(0, 4);
+  let transactions = expenseLog;
+  if (props.sliceLog) transactions = expenseLog.slice(0, 4);
 
   return (
     <Box>

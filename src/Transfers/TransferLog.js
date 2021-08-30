@@ -5,9 +5,7 @@ import Box from "@material-ui/core/Box";
 import History from "../components/History/History";
 
 const TransferLog = (props) => {
-  const [transferLog, setTransferLog] = useState({
-    transferList: [],
-  });
+  const [transferLog, setTransferLog] = useState([]);
 
   const [transferForm, setTransferForm] = useState({
     From: "",
@@ -48,10 +46,7 @@ const TransferLog = (props) => {
           (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
         );
 
-        setTransferLog({
-          ...transferLog,
-          transferList: fetchedList,
-        });
+        setTransferLog(fetchedList);
       });
   }, [props.updatedTransferLog, props.updateHome]);
 
@@ -61,14 +56,11 @@ const TransferLog = (props) => {
     transferFrom,
     transferTo
   ) => {
-    const updatedTransferLog = transferLog.transferList.filter(
+    const updatedTransferLog = transferLog.filter(
       (expense) => expense.id !== transferId
     );
 
-    setTransferLog({
-      ...transferLog,
-      transferList: updatedTransferLog,
-    });
+    setTransferLog(updatedTransferLog);
 
     setShowModal(false);
 
@@ -171,8 +163,8 @@ const TransferLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = transferLog.transferList;
-  if (props.sliceLog) transactions = transferLog.transferList.slice(0, 2);
+  let transactions = transferLog;
+  if (props.sliceLog) transactions = transferLog.slice(0, 2);
 
   return (
     <Box>

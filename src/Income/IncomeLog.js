@@ -5,9 +5,7 @@ import Box from "@material-ui/core/Box";
 import History from "../components/History/History";
 
 const IncomeLog = (props) => {
-  const [incomeLog, setIncomeLog] = useState({
-    incomeList: [],
-  });
+  const [incomeLog, setIncomeLog] = useState([]);
 
   const [incomeForm, setIncomeForm] = useState({
     From: "",
@@ -50,10 +48,7 @@ const IncomeLog = (props) => {
           (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
         );
 
-        setIncomeLog({
-          ...incomeLog,
-          incomeList: fetchedList,
-        });
+        setIncomeLog(fetchedList);
       });
   }, [props.updatedIncomeLog, props.updateHome]);
 
@@ -63,14 +58,11 @@ const IncomeLog = (props) => {
     incomeFrom,
     incomeTo
   ) => {
-    const updatedIncomeLog = incomeLog.incomeList.filter(
+    const updatedIncomeLog = incomeLog.filter(
       (income) => income.id !== incomeId
     );
 
-    setIncomeLog({
-      ...incomeLog,
-      incomeList: updatedIncomeLog,
-    });
+    setIncomeLog(updatedIncomeLog);
 
     setShowModal(false);
 
@@ -190,8 +182,8 @@ const IncomeLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = incomeLog.incomeList;
-  if (props.sliceLog) transactions = incomeLog.incomeList.slice(0, 2);
+  let transactions = incomeLog;
+  if (props.sliceLog) transactions = incomeLog.slice(0, 2);
 
   return (
     <Box>

@@ -5,9 +5,7 @@ import Box from "@material-ui/core/Box";
 import AccountHistory from "./AccountHistory";
 
 const AccountLog = (props) => {
-  const [accountLog, setAccountLog] = useState({
-    accountList: [],
-  });
+  const [accountLog, setAccountLog] = useState([]);
 
   const [accountForm, setAccountForm] = useState({
     Name: "",
@@ -35,22 +33,16 @@ const AccountLog = (props) => {
           });
         }
 
-        setAccountLog({
-          ...accountLog,
-          accountList: fetchedList,
-        });
+        setAccountLog(fetchedList);
       });
   }, [props.updatedAccountLog, props.updateHome]);
 
   const deleteAccountHandler = (accountId) => {
-    const updatedExpenseLog = accountLog.accountList.filter(
+    const updatedExpenseLog = accountLog.filter(
       (expense) => expense.id !== accountId
     );
 
-    setAccountLog({
-      ...accountLog,
-      accountList: updatedExpenseLog,
-    });
+    setAccountLog(updatedExpenseLog);
 
     // delete account from db
     fetch(
@@ -80,8 +72,8 @@ const AccountLog = (props) => {
     }
   };
 
-  let accounts = accountLog.accountList;
-  if (props.sliceLog) accounts = accountLog.accountList.slice(0, 8);
+  let accounts = accountLog;
+  if (props.sliceLog) accounts = accountLog .slice(0, 8);
 
   return (
     <Box>
