@@ -65,11 +65,7 @@ const ExpenseForm = (props) => {
   // shared between both handlers - post changes in accounts/categories to db
   const postChangedAccountCategoryBalance = (type, id, updated) => {
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/" +
-        type +
-        "/" +
-        id +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
       {
         method: "PATCH",
         body: JSON.stringify(updated),
@@ -211,9 +207,7 @@ const ExpenseForm = (props) => {
 
     // post edited expenseForm to server
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/" +
-        props.editedExpenseId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${props.editedExpenseId}.json`,
       {
         method: "PATCH",
         body: JSON.stringify(expenseForm),

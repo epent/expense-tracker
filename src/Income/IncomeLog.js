@@ -76,9 +76,7 @@ const IncomeLog = (props) => {
 
     // delete income from db
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/" +
-        incomeId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incomeId}.json`,
       {
         method: "DELETE",
       }
@@ -110,9 +108,7 @@ const IncomeLog = (props) => {
 
         // post changed accountBalance to server
         fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-            accountId +
-            ".json",
+          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
           {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),

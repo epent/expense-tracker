@@ -67,9 +67,7 @@ const AccountForm = (props) => {
 
     // post edited accountForm to server
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-        props.editedAccountId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${props.editedAccountId}.json`,
       {
         method: "PATCH",
         body: JSON.stringify(accountForm),

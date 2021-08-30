@@ -64,9 +64,7 @@ const CategoryForm = (props) => {
 
     //  post edited categoryForm to server
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
-        props.editedCategoryId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${props.editedCategoryId}.json`,
       {
         method: "PATCH",
         body: JSON.stringify(categoryForm),

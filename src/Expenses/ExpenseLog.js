@@ -76,9 +76,7 @@ const ExpenseLog = (props) => {
 
     // delete expense from db
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/" +
-        expenseId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseId}.json`,
       {
         method: "DELETE",
       }
@@ -110,9 +108,7 @@ const ExpenseLog = (props) => {
 
         // post changed accountBalance to server
         fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-            accountId +
-            ".json",
+          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
           {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
@@ -160,9 +156,7 @@ const ExpenseLog = (props) => {
 
         // post changed categoryBalance to server
         fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
-            categoryId +
-            ".json",
+          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${categoryId}.json`,
           {
             method: "PATCH",
             body: JSON.stringify(updatedCategory),

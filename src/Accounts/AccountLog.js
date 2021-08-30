@@ -54,9 +54,7 @@ const AccountLog = (props) => {
 
     // delete account from db
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/" +
-        accountId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
       {
         method: "DELETE",
       }

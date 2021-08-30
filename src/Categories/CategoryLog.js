@@ -54,9 +54,7 @@ const CategoryLog = (props) => {
 
     // delete category from db
     fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/" +
-        categoryId +
-        ".json",
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${categoryId}.json`,
       {
         method: "DELETE",
       }
