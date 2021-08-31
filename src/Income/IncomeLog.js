@@ -21,71 +21,71 @@ const IncomeLog = (props) => {
   // if want to edit transaction, need to show the form again
   const [showIncomeForm, setShowIncomeForm] = useState(false);
 
-  const fetchedAccountList = [];
-
-  const fetchedBalanceList = [];
-
   // needed for modal when deleting transaction
   const [showModal, setShowModal] = useState(false);
   const [incomeToDelete, setIncomeToDelete] = useState("");
 
-  useEffect(() => {
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        const fetchedList = [];
-        for (let key in data) {
-          fetchedList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        fetchedList.sort(
-          (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
-        );
-
-        setIncomeLog(fetchedList);
+  const pushFetchedDataToList = (data) => {
+    const list = [];
+    if (data) {
+      Object.keys(data).map((key) => {
+        list.push({
+          ...data[key],
+          id: key,
+        });
       });
+    }
+    return list;
+  };
+
+  useEffect(() => {
+    const fetchIncomeLog = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json"
+      );
+      const fetchedData = await response.json();
+      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      fetchedDataList.sort(
+        (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
+      );
+      setIncomeLog(fetchedDataList);
+    };
+    fetchIncomeLog();
   }, [props.updatedIncomeLog, props.updateHome]);
 
   const deleteIncomeHandler = (incometoDelete) => {
-    const updatedIncomeLog = incomeLog.filter(
-      (income) => income.id !== incometoDelete.id
-    );
+    const updateIncomeLog = () => {
+      const updatedIncomeLog = incomeLog.filter(
+        (income) => income.id !== incometoDelete.id
+      );
+      setIncomeLog(updatedIncomeLog);
+    };
+    updateIncomeLog();
 
-    setIncomeLog(updatedIncomeLog);
-
+    // close the delete modal
     setShowModal(false);
 
     // delete income from db
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incometoDelete.id}.json`,
-      {
-        method: "DELETE",
-      }
-    );
+    const deleteIncomeFromDB = () => {
+      fetch(
+        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incometoDelete.id}.json`,
+        {
+          method: "DELETE",
+        }
+      );
+    };
+    deleteIncomeFromDB();
 
     // fetch accountList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-      })
+    const updateAccountBalance = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+      );
+      const fetchedData = await response.json();
+      const fetchedDataList = pushFetchedDataToList(fetchedData);
 
-      // update accountBalance after deleting income
-      .then((response) => {
-        const account = fetchedAccountList.filter(
+      const updateBalanceInDB = () => {
+        const account = fetchedDataList.filter(
           (account) => account.Name === incometoDelete.To
         );
         const updatedAccount = {
@@ -93,47 +93,49 @@ const IncomeLog = (props) => {
         };
         const accountId = account[0].id;
 
-        // post changed accountBalance to server
         fetch(
           `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
           {
             method: "PATCH",
             body: JSON.stringify(updatedAccount),
           }
-        )
-          // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => {
-            if (props.updateHomeHandler) props.updateHomeHandler();
-          });
-      });
+        ).then((response) => {
+          if (props.updateHomeHandler) props.updateHomeHandler();
+        });
+      };
+      updateBalanceInDB();
+    };
+    updateAccountBalance();
 
     // fetch totalBalances from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let index in data) {
-          fetchedBalanceList.push({
-            [index]: data[index],
-            id: index,
-          });
+    const updateTotalBalance = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+      );
+      const fetchedData = response.json();
+      const pushFetchedBalanceToList = (data) => {
+        const list = [];
+        if (data) {
+          for (let index in data) {
+            list.push({
+              [index]: data[index],
+              id: index,
+            });
+          }
         }
-        console.log(fetchedBalanceList);
-      })
+        return list;
+      };
+      const fetchedDataList = pushFetchedBalanceToList(fetchedData);
 
-      // update totalBalances after new income
-      .then((response) => {
-        const totalIncome = fetchedBalanceList.filter((total) => {
+      const updateBalanceInDB = () => {
+        const totalIncome = fetchedDataList.filter((total) => {
           return total.id === "income";
         });
-        console.log(totalIncome);
 
         const updatedTotals = {
           income: Number(totalIncome[0].income) - Number(incometoDelete.Amount),
         };
 
-        // post changed totalBalances to server
         fetch(
           "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
           {
@@ -141,7 +143,10 @@ const IncomeLog = (props) => {
             body: JSON.stringify(updatedTotals),
           }
         );
-      });
+      };
+      updateBalanceInDB();
+    };
+    updateTotalBalance();
   };
 
   const editIncomeHandler = (income) => {

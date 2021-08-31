@@ -21,71 +21,69 @@ const ExpenseLog = (props) => {
   // if want to edit transaction, need to show the form again
   const [showExpenseForm, setShowExpenseForm] = useState(false);
 
-  const fetchedAccountList = [];
-
-  const fetchedCategoryList = [];
-
-  const fetchedBalanceList = [];
-
   // needed for modal when deleting transaction
   const [showModal, setShowModal] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState("");
 
-  useEffect(() => {
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const fetchedList = [];
-        for (let key in data) {
-          fetchedList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-        fetchedList.sort(
-          (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
-        );
-
-        setExpenseLog(fetchedList);
+  const pushFetchedDataToList = (data) => {
+    const list = [];
+    if (data) {
+      Object.keys(data).map((key) => {
+        list.push({
+          ...data[key],
+          id: key,
+        });
       });
+    }
+    return list;
+  };
+
+  useEffect(() => {
+    const fetchExpenseLog = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json"
+      );
+      const fetchedData = await response.json();
+      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      fetchedDataList.sort(
+        (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
+      );
+      setExpenseLog(fetchedDataList);
+    };
+    fetchExpenseLog();
   }, [props.updatedExpenseLog, props.updateHome]);
 
   const deleteExpenseHandler = (expenseToDelete) => {
-    const updatedExpenseLog = expenseLog.filter(
-      (expense) => expense.id !== expenseToDelete.id
-    );
+    const updateExpenseLog = () => {
+      const updatedExpenseLog = expenseLog.filter(
+        (expense) => expense.id !== expenseToDelete.id
+      );
+      setExpenseLog(updatedExpenseLog);
+    };
+    updateExpenseLog();
 
-    setExpenseLog(updatedExpenseLog);
-
+    // close the delete modal
     setShowModal(false);
 
-    // delete expense from db
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseToDelete.id}.json`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    // fetch accountList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
+    const deleteExpenseFromDB = () => {
+      fetch(
+        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseToDelete.id}.json`,
+        {
+          method: "DELETE",
         }
-      })
+      );
+    };
+    deleteExpenseFromDB();
 
-      // update accountBalance after deleting expense
-      .then((response) => {
-        const account = fetchedAccountList.filter(
+    const updateAccountBalance = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
+      );
+      const fetchedData = await response.json();
+      const fetchedDataList = pushFetchedDataToList(fetchedData);
+
+      const updateBalanceinDB = () => {
+        const account = fetchedDataList.filter(
           (account) => account.Name === expenseToDelete.From
         );
         const updatedAccount = {
@@ -93,7 +91,6 @@ const ExpenseLog = (props) => {
         };
         const accountId = account[0].id;
 
-        // post changed accountBalance to server
         fetch(
           `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
           {
@@ -101,39 +98,20 @@ const ExpenseLog = (props) => {
             body: JSON.stringify(updatedAccount),
           }
         );
-      });
+      };
+      updateBalanceinDB();
+    };
+    updateAccountBalance();
 
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-        console.log(fetchedAccountList);
-      });
+    const updateCategoryBalance = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
+      );
+      const fetchedData = await response.json();
+      const fetchedDataList = pushFetchedDataToList(fetchedData);
 
-    // fetch categoryList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-      })
-
-      // update categoryBalance after deleting expense
-      .then((response) => {
-        const category = fetchedCategoryList.filter(
+      const updateBalanceinDB = () => {
+        const category = fetchedDataList.filter(
           (category) => category.Name === expenseToDelete.To
         );
         const updatedCategory = {
@@ -141,46 +119,50 @@ const ExpenseLog = (props) => {
         };
         const categoryId = category[0].id;
 
-        // post changed categoryBalance to server
         fetch(
           `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${categoryId}.json`,
           {
             method: "PATCH",
             body: JSON.stringify(updatedCategory),
           }
-        )
-          // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => {
-            if (props.updateHomeHandler) props.updateHomeHandler();
-          });
-      });
+        ).then((response) => {
+          if (props.updateHomeHandler) props.updateHomeHandler();
+        });
+      };
+      updateBalanceinDB();
+    };
+    updateCategoryBalance();
 
     // fetch totalBalances from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let index in data) {
-          fetchedBalanceList.push({
-            [index]: data[index],
-            id: index,
-          });
+    const updateTotalBalance = async () => {
+      const response = await fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+      );
+      const fetchedData = await response.json();
+      const pushFetchedBalanceToList = (data) => {
+        const list = [];
+        if (data) {
+          for (let index in data) {
+            list.push({
+              [index]: data[index],
+              id: index,
+            });
+          }
         }
-        console.log(fetchedBalanceList);
-      })
+        return list;
+      };
+      const fetchedDataList = pushFetchedBalanceToList(fetchedData);
 
-      // update totalBalances after new expense
-      .then((response) => {
-        const totalExpenses = fetchedBalanceList.filter((total) => {
+      const updateBalanceinDB = () => {
+        const totalExpenses = fetchedDataList.filter((total) => {
           return total.id === "expenses";
         });
 
-        // const totalIncome = fetchedBalanceList.filter((total) => {
+        // const totalIncome = fetchedDataList.filter((total) => {
         //   return total.id === "income";
         // });
 
-        // const totalBalance = fetchedBalanceList.filter((total) => {
+        // const totalBalance = fetchedDataList.filter((total) => {
         //   return total.id === "balance";
         // });
 
@@ -189,7 +171,6 @@ const ExpenseLog = (props) => {
             Number(totalExpenses[0].expenses) - Number(expenseToDelete.Amount),
         };
 
-        // post changed totalBalances to server
         fetch(
           "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
           {
@@ -197,7 +178,10 @@ const ExpenseLog = (props) => {
             body: JSON.stringify(updatedTotals),
           }
         );
-      });
+      };
+      updateBalanceinDB();
+    };
+    updateTotalBalance();
   };
 
   const editExpenseHandler = (expense) => {

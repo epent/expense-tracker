@@ -52,8 +52,8 @@ const ExpenseForm = (props) => {
     setShowEditedForm(true);
   };
 
-  // shared between both handlers - put fetched accounts/categories to the list
-  const fetchedDataToTheList = (data, listName) => {
+  // shared between both handlers - push fetched accounts/categories to the list
+  const pushFetchedDataToList = (data, listName) => {
     Object.keys(data).map((key) => {
       listName.push({
         ...data[key],
@@ -92,7 +92,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchedDataToTheList(data, fetchedAccountList);
+        pushFetchedDataToList(data, fetchedAccountList);
       })
 
       // update accountBalance after new expense
@@ -119,7 +119,7 @@ const ExpenseForm = (props) => {
     )
       .then((response) => response.json())
       .then((data) => {
-        fetchedDataToTheList(data, fetchedCategoryList);
+        pushFetchedDataToList(data, fetchedCategoryList);
       })
 
       // update categoryBalance after new expense
@@ -222,7 +222,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchedDataToTheList(data, fetchedAccountList);
+          pushFetchedDataToList(data, fetchedAccountList);
         })
 
         // update accountBalance after edited expense
@@ -270,7 +270,7 @@ const ExpenseForm = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          fetchedDataToTheList(data, fetchedCategoryList);
+          pushFetchedDataToList(data, fetchedCategoryList);
         })
 
         // update categoryBalance after edited expense
