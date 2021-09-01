@@ -16,11 +16,6 @@ const IncomeForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
-  // below are 2 lists that we fill with data fetched from db (to use after)
-  const fetchedAccountList = [];
-
-  const fetchedBalanceList = [];
-
   // if we trigger edit, prefilled form is shown by default
   useEffect(() => {
     if (props.editedIncomeForm) {
@@ -50,18 +45,35 @@ const IncomeForm = (props) => {
     setShowEditedForm(true);
   };
 
-  // shared between both handlers - put fetched accounts to the list
-  const fetchedDataToTheList = (data, listName) => {
-    Object.keys(data).map((key) => {
-      listName.push({
-        ...data[key],
-        id: key,
-      });
-    });
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      isTotal
+        ? Object.keys(data).map((key) => {
+            list.push({
+              [key]: data[key],
+              id: key,
+            });
+          })
+        : Object.keys(data).map((key) => {
+            list.push({
+              ...data[key],
+              id: key,
+            });
+          });
+      return list;
+    };
+
+    const response = await fetch(
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
+    );
+    const fetchedData = await response.json();
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
   };
 
   // shared between both handlers - post changes in accounts to db
-  const postChangedAccountCategoryBalance = (type, id, updated) => {
+  const postChangedBalance = (type, id, updated) => {
     fetch(
       `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
       {
@@ -75,26 +87,21 @@ const IncomeForm = (props) => {
   const incomeFormSubmitHandler = (event) => {
     event.preventDefault();
 
-    // post new incomeForm to server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json",
-      {
-        method: "POST",
-        body: JSON.stringify(incomeForm),
-      }
-    );
+    const postIncomeToDB = () => {
+      fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json",
+        {
+          method: "POST",
+          body: JSON.stringify(incomeForm),
+        }
+      );
+    };
+    postIncomeToDB();
 
-    // fetch accountList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        fetchedDataToTheList(data, fetchedAccountList);
-      })
+    const updateAccountBalance = async () => {
+      const fetchedAccountList = await fetchDataToList("accounts");
 
-      // update accountBalance after new income
-      .then((response) => {
+      const updateBalanceInDB = () => {
         const account = fetchedAccountList.filter(
           (account) => account.Name === incomeForm.To
         );
@@ -103,40 +110,24 @@ const IncomeForm = (props) => {
         };
         const accountId = account[0].id;
 
-        // post changed balance to server
-        postChangedAccountCategoryBalance(
-          "accounts",
-          accountId,
-          updatedAccount
-        );
-      });
+        postChangedBalance("accounts", accountId, updatedAccount);
+      };
+      updateBalanceInDB();
+    };
+    updateAccountBalance();
 
-    // fetch totalBalances from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        Object.keys(data).map((key) => {
-          fetchedBalanceList.push({
-            [key]: data[key],
-            id: key,
-          });
-        });
-      })
+    const updateTotalBalance = async () => {
+      const fetchedTotalList = await fetchDataToList("total", true);
 
-      // update totalBalances after new income
-      .then((response) => {
-        const totalIncome = fetchedBalanceList.filter((total) => {
+      const updateBalanceInDB = () => {
+        const totalIncome = fetchedTotalList.filter((total) => {
           return total.id === "income";
         });
-        console.log(totalIncome);
 
         const updatedTotals = {
           income: Number(totalIncome[0].income) + Number(incomeForm.Amount),
         };
 
-        // post changed totalBalances to server
         fetch(
           "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
           {
@@ -144,7 +135,6 @@ const IncomeForm = (props) => {
             body: JSON.stringify(updatedTotals),
           }
         )
-          // shown form is cleared
           .then((response) => {
             setIncomeForm({
               From: "",
@@ -155,41 +145,39 @@ const IncomeForm = (props) => {
             });
           })
 
-          // trigger the page to rerender with updated incomeLog
+          // trigger the page to rerender with updated expenseLog
           .then((response) => props.updateIncomeLog())
           // trigger Home to rerender with updated accountLog/categoryLog
           .then((response) => {
             if (props.updateHomeHandler) props.updateHomeHandler();
           });
-      });
+      };
+      updateBalanceInDB();
+    };
+    updateTotalBalance();
   };
 
   // edit selected income
   const incomeFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    // post edited incomeForm to server
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${props.editedIncomeId}.json`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(incomeForm),
-      }
-    );
+    const postEditedIncomeToDB = () => {
+      fetch(
+        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${props.editedIncomeId}.json`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(incomeForm),
+        }
+      );
+    };
+    postEditedIncomeToDB();
 
     // if amount changed, we should change balance of account
     if (props.editedIncomeForm.Amount !== incomeForm.Amount) {
-      // fetch accountList from server
-      fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          fetchedDataToTheList(data, fetchedAccountList);
-        })
+      const updateAccountBalance = async () => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-        // update accountBalance after edited income
-        .then((response) => {
+        const updateBalanceInDB = () => {
           const account = fetchedAccountList.filter(
             (account) => account.Name === incomeForm.To
           );
@@ -216,32 +204,17 @@ const IncomeForm = (props) => {
             };
             accountId = account[0].id;
           }
+          postChangedBalance("accounts", accountId, updatedAccount);
+        };
+        updateBalanceInDB();
+      };
+      updateAccountBalance();
 
-          // post changed balance to server
-          postChangedAccountCategoryBalance(
-            "accounts",
-            accountId,
-            updatedAccount
-          );
-        });
+      const updateTotalBalance = async () => {
+        const fetchedTotalList = await fetchDataToList("total", true);
 
-      // fetch totalBalances from server
-      fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          Object.keys(data).map((key) => {
-            fetchedBalanceList.push({
-              [key]: data[key],
-              id: key,
-            });
-          });
-        })
-
-        // update totalBalances after new income
-        .then((response) => {
-          const totalIncome = fetchedBalanceList.filter((total) => {
+        const updateBalanceInDB = () => {
+          const totalIncome = fetchedTotalList.filter((total) => {
             return total.id === "income";
           });
 
@@ -265,7 +238,6 @@ const IncomeForm = (props) => {
             };
           }
 
-          // post changed totalBalances to server
           fetch(
             "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
             {
@@ -290,7 +262,22 @@ const IncomeForm = (props) => {
             .then((response) => {
               if (props.updateHomeHandler) props.updateHomeHandler();
             });
-        });
+        };
+        updateBalanceInDB();
+      };
+      updateTotalBalance();
+    }
+
+    if (props.editedIncomeForm.From !== incomeForm.From) {
+    }
+
+    if (props.editedIncomeForm.To !== incomeForm.To) {
+    }
+
+    if (props.editedIncomeForm.Date !== incomeForm.Date) {
+    }
+
+    if (props.editedIncomeForm.Comment !== incomeForm.Comment) {
     }
 
     // close the editable form automatically

@@ -25,30 +25,42 @@ const ExpenseLog = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [expenseToDelete, setExpenseToDelete] = useState("");
 
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    if (data) {
-      Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-        });
-      });
-    }
-    return list;
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      if (data) {
+        isTotal
+          ? Object.keys(data).map((key) => {
+              list.push({
+                [key]: data[key],
+                id: key,
+              });
+            })
+          : Object.keys(data).map((key) => {
+              list.push({
+                ...data[key],
+                id: key,
+              });
+            });
+      }
+      return list;
+    };
+
+    const response = await fetch(
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
+    );
+    const fetchedData = await response.json();
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
   };
 
   useEffect(() => {
     const fetchExpenseLog = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
-      fetchedDataList.sort(
+      const fetchedExpensesList = await fetchDataToList("expenses");
+      fetchedExpensesList.sort(
         (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
       );
-      setExpenseLog(fetchedDataList);
+      setExpenseLog(fetchedExpensesList);
     };
     fetchExpenseLog();
   }, [props.updatedExpenseLog, props.updateHome]);
@@ -76,14 +88,10 @@ const ExpenseLog = (props) => {
     deleteExpenseFromDB();
 
     const updateAccountBalance = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      const fetchedAccountList = await fetchDataToList("accounts");
 
-      const updateBalanceinDB = () => {
-        const account = fetchedDataList.filter(
+      const updateBalanceInDB = () => {
+        const account = fetchedAccountList.filter(
           (account) => account.Name === expenseToDelete.From
         );
         const updatedAccount = {
@@ -99,19 +107,15 @@ const ExpenseLog = (props) => {
           }
         );
       };
-      updateBalanceinDB();
+      updateBalanceInDB();
     };
     updateAccountBalance();
 
     const updateCategoryBalance = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      const fetchedCategoryList = await fetchDataToList("categories");
 
-      const updateBalanceinDB = () => {
-        const category = fetchedDataList.filter(
+      const updateBalanceInDB = () => {
+        const category = fetchedCategoryList.filter(
           (category) => category.Name === expenseToDelete.To
         );
         const updatedCategory = {
@@ -129,32 +133,15 @@ const ExpenseLog = (props) => {
           if (props.updateHomeHandler) props.updateHomeHandler();
         });
       };
-      updateBalanceinDB();
+      updateBalanceInDB();
     };
     updateCategoryBalance();
 
-    // fetch totalBalances from server
     const updateTotalBalance = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-      );
-      const fetchedData = await response.json();
-      const pushFetchedBalanceToList = (data) => {
-        const list = [];
-        if (data) {
-          for (let index in data) {
-            list.push({
-              [index]: data[index],
-              id: index,
-            });
-          }
-        }
-        return list;
-      };
-      const fetchedDataList = pushFetchedBalanceToList(fetchedData);
+      const fetchedTotalList = await fetchDataToList("total", true);
 
-      const updateBalanceinDB = () => {
-        const totalExpenses = fetchedDataList.filter((total) => {
+      const updateBalanceInDB = () => {
+        const totalExpenses = fetchedTotalList.filter((total) => {
           return total.id === "expenses";
         });
 
@@ -168,7 +155,7 @@ const ExpenseLog = (props) => {
 
         const updatedTotals = {
           expenses:
-            Number(totalExpenses[0].expenses) - Number(expenseToDelete.Amount),
+            Number(totalExpenses[0].expenses) + Number(expenseToDelete.Amount),
         };
 
         fetch(
@@ -179,7 +166,7 @@ const ExpenseLog = (props) => {
           }
         );
       };
-      updateBalanceinDB();
+      updateBalanceInDB();
     };
     updateTotalBalance();
   };

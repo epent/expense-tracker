@@ -25,31 +25,42 @@ const TransferLog = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [transferToDelete, setTransferToDelete] = useState("");
 
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    if (data) {
-      Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-        });
-      });
-    }
-    return list;
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      if (data) {
+        isTotal
+          ? Object.keys(data).map((key) => {
+              list.push({
+                [key]: data[key],
+                id: key,
+              });
+            })
+          : Object.keys(data).map((key) => {
+              list.push({
+                ...data[key],
+                id: key,
+              });
+            });
+      }
+      return list;
+    };
+
+    const response = await fetch(
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
+    );
+    const fetchedData = await response.json();
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
   };
 
   useEffect(() => {
     const fetchTransferLog = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json"
-      );
-
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
-      fetchedDataList.sort(
+      const fetchedTransfersList = await fetchDataToList("transfers");
+      fetchedTransfersList.sort(
         (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
       );
-      setTransferLog(fetchedDataList);
+      setTransferLog(fetchedTransfersList);
     };
     fetchTransferLog();
   }, [props.updatedTransferLog, props.updateHome]);
@@ -78,11 +89,7 @@ const TransferLog = (props) => {
     deleteTransferFromDB();
 
     const updateAccountBalance = async (fromOrTo) => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      const fetchedAccountList = await fetchDataToList("accounts");
 
       const updateBalanceInDB = () => {
         let accountName;
@@ -90,7 +97,7 @@ const TransferLog = (props) => {
           ? (accountName = transferToDelete.From)
           : (accountName = transferToDelete.To);
 
-        const account = fetchedDataList.filter(
+        const account = fetchedAccountList.filter(
           (account) => account.Name === accountName
         );
 

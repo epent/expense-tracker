@@ -16,9 +16,6 @@ const TransferForm = (props) => {
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
 
-  // below is the list that we fill with data fetched from db (to use after)
-  const fetchedAccountList = [];
-
   // if we trigger edit, prefilled form is shown by default
   useEffect(() => {
     if (props.editedTransferForm) {
@@ -48,18 +45,35 @@ const TransferForm = (props) => {
     setShowEditedForm(true);
   };
 
-  // shared between both handlers - put fetched accounts to the list
-  const fetchedDataToTheList = (data, listName) => {
-    Object.keys(data).map((key) => {
-      listName.push({
-        ...data[key],
-        id: key,
-      });
-    });
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      isTotal
+        ? Object.keys(data).map((key) => {
+            list.push({
+              [key]: data[key],
+              id: key,
+            });
+          })
+        : Object.keys(data).map((key) => {
+            list.push({
+              ...data[key],
+              id: key,
+            });
+          });
+      return list;
+    };
+
+    const response = await fetch(
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
+    );
+    const fetchedData = await response.json();
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
   };
 
   // shared between both handlers - post changes in accounts to db
-  const postChangedAccountCategoryBalance = (type, id, updated) => {
+  const postChangedBalance = (type, id, updated) => {
     fetch(
       `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
       {
@@ -73,106 +87,87 @@ const TransferForm = (props) => {
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
 
-    // post new transferForm to server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json",
-      {
-        method: "POST",
-        body: JSON.stringify(transferForm),
-      }
-    );
+    const postTransferToDB = () => {
+      fetch(
+        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json",
+        {
+          method: "POST",
+          body: JSON.stringify(transferForm),
+        }
+      );
+    };
+    postTransferToDB();
 
-    // fetch accountList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        fetchedDataToTheList(data, fetchedAccountList);
-      })
-
-      // update accountBalanceFrom after new transfer
-      .then((response) => {
-        const account = fetchedAccountList.filter(
-          (account) => account.Name === transferForm.From
-        );
-        const updatedAccount = {
-          Balance: Number(account[0].Balance) - Number(transferForm.Amount),
-        };
-        const accountId = account[0].id;
-
-        // post changed balance to server
-        postChangedAccountCategoryBalance(
-          "accounts",
-          accountId,
-          updatedAccount
-        );
-      })
-
-      // update accountBalanceTo after new transfer
-      .then((response) => {
-        const account = fetchedAccountList.filter(
-          (account) => account.Name === transferForm.To
-        );
-        const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(transferForm.Amount),
-        };
-        const accountId = account[0].id;
-
-        // post changed balance to server
-        fetch(
-          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedAccount),
-          }
-        )
-          // shown form is cleared
-          .then((response) => {
-            setTransferForm({
-              From: "",
-              To: "",
-              Amount: 0,
-              Date: new Date().toDateString(),
-              Comment: "",
-            });
-          })
-
-          // trigger the page to rerender with updated expenseLog
-          .then((response) => props.updateTransferLog())
-          // trigger Home to rerender with updated accountLog/categoryLog
-          .then((response) => {
-            if (props.updateHomeHandler) props.updateHomeHandler();
-          });
+    const updateTransferForm = async () => {
+      setTransferForm({
+        From: "",
+        To: "",
+        Amount: 0,
+        Date: new Date().toDateString(),
+        Comment: "",
       });
+      // trigger the page to rerender with updated expenseLog
+      props.updateTransferLog();
+
+      // trigger Home to rerender with updated accountLog/categoryLog
+      props.updateHomeHandler();
+    };
+
+    const updateAccountBalance = async (fromOrTo) => {
+      const fetchedAccountList = await fetchDataToList("accounts");
+
+      const updateBalanceInDB = () => {
+        let accountName;
+        fromOrTo === "From"
+          ? (accountName = transferForm.From)
+          : (accountName = transferForm.To);
+
+        const account = fetchedAccountList.filter(
+          (account) => account.Name === accountName
+        );
+
+        let updatedAccount;
+        fromOrTo === "From"
+          ? (updatedAccount = {
+              Balance:
+                Number(account[0].Balance) - Number(transferForm.Amount),
+            })
+          : (updatedAccount = {
+              Balance:
+                Number(account[0].Balance) + Number(transferForm.Amount),
+            });
+        const accountId = account[0].id;
+
+        postChangedBalance("accounts", accountId, updatedAccount);
+      };
+      updateBalanceInDB();
+      await updateTransferForm();
+    };
+    updateAccountBalance("From");
+    updateAccountBalance("To");
   };
 
   // edit selected transfer
   const transferFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    // post edited transferForm to server
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${props.editedTransferId}.json`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(transferForm),
-      }
-    );
+    const postEditedExpenseToDB = () => {
+      fetch(
+        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${props.editedTransferId}.json`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(transferForm),
+        }
+      );
+    };
+    postEditedExpenseToDB();
 
     // if amount changed, we should change balance of account
     if (props.editedTransferForm.Amount !== transferForm.Amount) {
-      // fetch accountList from server
-      fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          fetchedDataToTheList(data, fetchedAccountList);
-        })
+      const updateAccountBalanceFrom = async () => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-        // update accountBalanceFrom after edited transfer (From)
-        .then((response) => {
+        const updateBalanceInDB = () => {
           const account = fetchedAccountList.filter(
             (account) => account.Name === transferForm.From
           );
@@ -199,17 +194,16 @@ const TransferForm = (props) => {
             };
             accountId = account[0].id;
           }
+          postChangedBalance("accounts", accountId, updatedAccount);
+        };
+        updateBalanceInDB();
+      };
+      updateAccountBalanceFrom();
 
-          // post changed balance to server
-          postChangedAccountCategoryBalance(
-            "accounts",
-            accountId,
-            updatedAccount
-          );
-        })
+      const updateAccountBalanceTo = async () => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-        // update accountBalanceTo after new transfer (To)
-        .then((response) => {
+        const updateBalanceInDB = () => {
           const account = fetchedAccountList.filter(
             (account) => account.Name === transferForm.To
           );
@@ -236,32 +230,41 @@ const TransferForm = (props) => {
             };
             accountId = account[0].id;
           }
+          postChangedBalance("accounts", accountId, updatedAccount);
+        };
+        updateBalanceInDB();
+      };
+      updateAccountBalanceTo();
 
-          // post changed balance to server
-          postChangedAccountCategoryBalance(
-            "accounts",
-            accountId,
-            updatedAccount
-          )
-            // shown form is cleared
-            .then((response) => {
-              setTransferForm({
-                From: "",
-                To: "",
-                Amount: 0,
-                Date: new Date().toDateString(),
-                Comment: "",
-              });
-            })
-
-            // trigger the page to rerender with updated expenseLog
-            .then((response) => props.updateTransferLog())
-            // trigger Home to rerender with updated accountLog/categoryLog
-            .then((response) => {
-              if (props.updateHomeHandler) props.updateHomeHandler();
-            });
+      const updateTransferForm = async () => {
+        setTransferForm({
+          From: "",
+          To: "",
+          Amount: 0,
+          Date: new Date().toDateString(),
+          Comment: "",
         });
+        // trigger the page to rerender with updated expenseLog
+        props.updateTransferLog();
+
+        // trigger Home to rerender with updated accountLog/categoryLog
+        props.updateHomeHandler();
+      };
+      updateTransferForm();
     }
+
+    if (props.editedTransferForm.From !== transferForm.From) {
+    }
+
+    if (props.editedTransferForm.To !== transferForm.To) {
+    }
+
+    if (props.editedTransferForm.Date !== transferForm.Date) {
+    }
+
+    if (props.editedTransferForm.Comment !== transferForm.Comment) {
+    }
+
     // close the editable form automatically
     props.setShowTransferForm();
   };

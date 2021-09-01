@@ -25,30 +25,42 @@ const IncomeLog = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [incomeToDelete, setIncomeToDelete] = useState("");
 
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    if (data) {
-      Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-        });
-      });
-    }
-    return list;
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      if (data) {
+        isTotal
+          ? Object.keys(data).map((key) => {
+              list.push({
+                [key]: data[key],
+                id: key,
+              });
+            })
+          : Object.keys(data).map((key) => {
+              list.push({
+                ...data[key],
+                id: key,
+              });
+            });
+      }
+      return list;
+    };
+
+    const response = await fetch(
+      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
+    );
+    const fetchedData = await response.json();
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
   };
 
   useEffect(() => {
     const fetchIncomeLog = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
-      fetchedDataList.sort(
+      const fetchedIncomeList = await fetchDataToList("income");
+      fetchedIncomeList.sort(
         (a, b) => new Date(b.Date).getTime() - new Date(a.Date).getTime()
       );
-      setIncomeLog(fetchedDataList);
+      setIncomeLog(fetchedIncomeList);
     };
     fetchIncomeLog();
   }, [props.updatedIncomeLog, props.updateHome]);
@@ -65,7 +77,6 @@ const IncomeLog = (props) => {
     // close the delete modal
     setShowModal(false);
 
-    // delete income from db
     const deleteIncomeFromDB = () => {
       fetch(
         `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/income/${incometoDelete.id}.json`,
@@ -76,16 +87,11 @@ const IncomeLog = (props) => {
     };
     deleteIncomeFromDB();
 
-    // fetch accountList from server
     const updateAccountBalance = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-      );
-      const fetchedData = await response.json();
-      const fetchedDataList = pushFetchedDataToList(fetchedData);
+      const fetchedAccountList = await fetchDataToList("accounts");
 
       const updateBalanceInDB = () => {
-        const account = fetchedDataList.filter(
+        const account = fetchedAccountList.filter(
           (account) => account.Name === incometoDelete.To
         );
         const updatedAccount = {
@@ -107,28 +113,11 @@ const IncomeLog = (props) => {
     };
     updateAccountBalance();
 
-    // fetch totalBalances from server
     const updateTotalBalance = async () => {
-      const response = await fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-      );
-      const fetchedData = response.json();
-      const pushFetchedBalanceToList = (data) => {
-        const list = [];
-        if (data) {
-          for (let index in data) {
-            list.push({
-              [index]: data[index],
-              id: index,
-            });
-          }
-        }
-        return list;
-      };
-      const fetchedDataList = pushFetchedBalanceToList(fetchedData);
+      const fetchedTotalList = await fetchDataToList("total", true);
 
       const updateBalanceInDB = () => {
-        const totalIncome = fetchedDataList.filter((total) => {
+        const totalIncome = fetchedTotalList.filter((total) => {
           return total.id === "income";
         });
 
