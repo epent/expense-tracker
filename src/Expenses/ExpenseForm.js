@@ -275,7 +275,7 @@ const ExpenseForm = (props) => {
           const updateTotalBalance = async () => {
             const fetchedTotalList = await fetchDataToList("total", true);
 
-            const updateBalanceInDB = () => {
+            const updateBalanceInDB = async () => {
               const totalExpenses = fetchedTotalList.filter((total) => {
                 return total.id === "expenses";
               });
@@ -304,7 +304,7 @@ const ExpenseForm = (props) => {
                 };
               }
 
-              fetch(
+              await fetch(
                 "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
                 {
                   method: "PATCH",
@@ -312,7 +312,7 @@ const ExpenseForm = (props) => {
                 }
               );
             };
-            updateBalanceInDB();
+            await updateBalanceInDB();
           };
           await updateTotalBalance();
         }
