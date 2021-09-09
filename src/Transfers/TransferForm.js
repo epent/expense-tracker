@@ -73,8 +73,8 @@ const TransferForm = (props) => {
   };
 
   // shared between both handlers - post changes in accounts to db
-  const postChangedBalance = (type, id, updated) => {
-    fetch(
+  const postChangedBalance = async (type, id, updated) => {
+    await fetch(
       `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
       {
         method: "PATCH",
@@ -129,12 +129,10 @@ const TransferForm = (props) => {
         let updatedAccount;
         fromOrTo === "From"
           ? (updatedAccount = {
-              Balance:
-                Number(account[0].Balance) - Number(transferForm.Amount),
+              Balance: Number(account[0].Balance) - Number(transferForm.Amount),
             })
           : (updatedAccount = {
-              Balance:
-                Number(account[0].Balance) + Number(transferForm.Amount),
+              Balance: Number(account[0].Balance) + Number(transferForm.Amount),
             });
         const accountId = account[0].id;
 
@@ -153,7 +151,7 @@ const TransferForm = (props) => {
 
     const postEditedExpenseToDB = () => {
       fetch(
-        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${props.editedTransferId}.json`,
+        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers/${props.editedTransferId}.json`,
         {
           method: "PATCH",
           body: JSON.stringify(transferForm),
@@ -162,81 +160,163 @@ const TransferForm = (props) => {
     };
     postEditedExpenseToDB();
 
-    // if amount changed, we should change balance of account
-    if (props.editedTransferForm.Amount !== transferForm.Amount) {
-      const updateAccountBalanceFrom = async () => {
-        const fetchedAccountList = await fetchDataToList("accounts");
+    const updateData = async () => {
+      const updateAccountFrom = async () => {
+        if (props.editedTransferForm.From !== transferForm.From) {
+          const updateAccountBalance = async (PrevOrCurr) => {
+            const fetchedAccountList = await fetchDataToList("accounts");
 
-        const updateBalanceInDB = () => {
-          const account = fetchedAccountList.filter(
-            (account) => account.Name === transferForm.From
-          );
+            const updateBalanceInDB = async () => {
+              let accountName;
+              PrevOrCurr === "Previous"
+                ? (accountName = props.editedTransferForm.From)
+                : (accountName = transferForm.From);
 
-          let updatedAccount;
-          let accountId;
+              const account = fetchedAccountList.filter(
+                (account) => account.Name === accountName
+              );
+              let updatedAccount;
 
-          if (props.editedTransferForm.Amount > transferForm.Amount) {
-            updatedAccount = {
-              Balance:
-                Number(account[0].Balance) +
-                (Number(props.editedTransferForm.Amount) -
-                  Number(transferForm.Amount)),
+              PrevOrCurr === "Previous"
+                ? (updatedAccount = {
+                    Balance:
+                      Number(account[0].Balance) +
+                      Number(props.editedTransferForm.Amount),
+                  })
+                : (updatedAccount = {
+                    Balance:
+                      Number(account[0].Balance) -
+                      Number(props.editedTransferForm.Amount),
+                  });
+
+              const accountId = account[0].id;
+              await postChangedBalance("accounts", accountId, updatedAccount);
             };
-            accountId = account[0].id;
-          }
-
-          if (props.editedTransferForm.Amount < transferForm.Amount) {
-            updatedAccount = {
-              Balance:
-                Number(account[0].Balance) -
-                (Number(transferForm.Amount) -
-                  Number(props.editedTransferForm.Amount)),
-            };
-            accountId = account[0].id;
-          }
-          postChangedBalance("accounts", accountId, updatedAccount);
-        };
-        updateBalanceInDB();
+            await updateBalanceInDB();
+          };
+          await updateAccountBalance("Previous");
+          await updateAccountBalance("Current");
+        }
       };
-      updateAccountBalanceFrom();
+      await updateAccountFrom();
 
-      const updateAccountBalanceTo = async () => {
-        const fetchedAccountList = await fetchDataToList("accounts");
+      const updateAccountTo = async () => {
+        if (props.editedTransferForm.To !== transferForm.To) {
+          const updateAccountBalance = async (PrevOrCurr) => {
+            const fetchedAccountList = await fetchDataToList("accounts");
 
-        const updateBalanceInDB = () => {
-          const account = fetchedAccountList.filter(
-            (account) => account.Name === transferForm.To
-          );
+            const updateBalanceInDB = async () => {
+              let accountName;
+              PrevOrCurr === "Previous"
+                ? (accountName = props.editedTransferForm.To)
+                : (accountName = transferForm.To);
 
-          let updatedAccount;
-          let accountId;
+              const account = fetchedAccountList.filter(
+                (account) => account.Name === accountName
+              );
+              let updatedAccount;
 
-          if (props.editedTransferForm.Amount > transferForm.Amount) {
-            updatedAccount = {
-              Balance:
-                Number(account[0].Balance) -
-                (Number(props.editedTransferForm.Amount) -
-                  Number(transferForm.Amount)),
+              PrevOrCurr === "Previous"
+                ? (updatedAccount = {
+                    Balance:
+                      Number(account[0].Balance) -
+                      Number(props.editedTransferForm.Amount),
+                  })
+                : (updatedAccount = {
+                    Balance:
+                      Number(account[0].Balance) +
+                      Number(props.editedTransferForm.Amount),
+                  });
+
+              const accountId = account[0].id;
+              await postChangedBalance("accounts", accountId, updatedAccount);
             };
-            accountId = account[0].id;
-          }
-
-          if (props.editedTransferForm.Amount < transferForm.Amount) {
-            updatedAccount = {
-              Balance:
-                Number(account[0].Balance) +
-                (Number(transferForm.Amount) -
-                  Number(props.editedTransferForm.Amount)),
-            };
-            accountId = account[0].id;
-          }
-          postChangedBalance("accounts", accountId, updatedAccount);
-        };
-        updateBalanceInDB();
+            await updateBalanceInDB();
+          };
+          await updateAccountBalance("Previous");
+          await updateAccountBalance("Current");
+        }
       };
-      updateAccountBalanceTo();
+      await updateAccountTo();
 
-      const updateTransferForm = async () => {
+      const updateAmount = async () => {
+        if (props.editedTransferForm.Amount !== transferForm.Amount) {
+          const updateAccountBalanceFrom = async () => {
+            const fetchedAccountList = await fetchDataToList("accounts");
+
+            const updateBalanceInDB = async () => {
+              const account = fetchedAccountList.filter(
+                (account) => account.Name === transferForm.From
+              );
+
+              let updatedAccount;
+              let accountId;
+
+              if (props.editedTransferForm.Amount > transferForm.Amount) {
+                updatedAccount = {
+                  Balance:
+                    Number(account[0].Balance) +
+                    (Number(props.editedTransferForm.Amount) -
+                      Number(transferForm.Amount)),
+                };
+                accountId = account[0].id;
+              }
+
+              if (props.editedTransferForm.Amount < transferForm.Amount) {
+                updatedAccount = {
+                  Balance:
+                    Number(account[0].Balance) -
+                    (Number(transferForm.Amount) -
+                      Number(props.editedTransferForm.Amount)),
+                };
+                accountId = account[0].id;
+              }
+              await postChangedBalance("accounts", accountId, updatedAccount);
+            };
+            await updateBalanceInDB();
+          };
+          await updateAccountBalanceFrom();
+
+          const updateAccountBalanceTo = async () => {
+            const fetchedAccountList = await fetchDataToList("accounts");
+
+            const updateBalanceInDB = async () => {
+              const account = fetchedAccountList.filter(
+                (account) => account.Name === transferForm.To
+              );
+
+              let updatedAccount;
+              let accountId;
+
+              if (props.editedTransferForm.Amount > transferForm.Amount) {
+                updatedAccount = {
+                  Balance:
+                    Number(account[0].Balance) -
+                    (Number(props.editedTransferForm.Amount) -
+                      Number(transferForm.Amount)),
+                };
+                accountId = account[0].id;
+              }
+
+              if (props.editedTransferForm.Amount < transferForm.Amount) {
+                updatedAccount = {
+                  Balance:
+                    Number(account[0].Balance) +
+                    (Number(transferForm.Amount) -
+                      Number(props.editedTransferForm.Amount)),
+                };
+                accountId = account[0].id;
+              }
+              await postChangedBalance("accounts", accountId, updatedAccount);
+            };
+            await updateBalanceInDB();
+          };
+          await updateAccountBalanceTo();
+        }
+      };
+      await updateAmount();
+
+      const triggerUpdates = async () => {
         setTransferForm({
           From: "",
           To: "",
@@ -244,26 +324,15 @@ const TransferForm = (props) => {
           Date: new Date().toDateString(),
           Comment: "",
         });
+
         // trigger the page to rerender with updated expenseLog
-        props.updateTransferLog();
-
+        await props.updateTransferLog();
         // trigger Home to rerender with updated accountLog/categoryLog
-        props.updateHomeHandler();
+        await props.updateHomeHandler();
       };
-      updateTransferForm();
-    }
-
-    if (props.editedTransferForm.From !== transferForm.From) {
-    }
-
-    if (props.editedTransferForm.To !== transferForm.To) {
-    }
-
-    if (props.editedTransferForm.Date !== transferForm.Date) {
-    }
-
-    if (props.editedTransferForm.Comment !== transferForm.Comment) {
-    }
+      await triggerUpdates();
+    };
+    updateData();
 
     // close the editable form automatically
     props.setShowTransferForm();
@@ -298,7 +367,7 @@ const TransferForm = (props) => {
         editedForm={transferForm}
         formSubmitHandler={transferFormUpdateHandler}
         showEditedForm={showEditedForm}
-        btnName="add transfer"
+        btnName="edit transfer"
       />
     );
 
