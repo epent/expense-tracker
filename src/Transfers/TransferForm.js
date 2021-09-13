@@ -3,6 +3,13 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import Form from "../components/Forms/Form";
+import {
+  postNewTransactionToDB,
+  postEditedTransactionToDB,
+  postUpdatedBalance,
+  postUpdatedTotal,
+  getDataFromDB,
+} from "../modules/fetch";
 
 const TransferForm = (props) => {
   const [transferForm, setTransferForm] = useState({
@@ -64,101 +71,78 @@ const TransferForm = (props) => {
       return list;
     };
 
-    const response = await fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
-    );
-    const fetchedData = await response.json();
+    const fetchedData = await getDataFromDB(urlName);
     const fetchedDataList = pushFetchedDataToList(fetchedData);
     return fetchedDataList;
-  };
-
-  // shared between both handlers - post changes in accounts to db
-  const postChangedBalance = async (type, id, updated) => {
-    await fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(updated),
-      }
-    );
   };
 
   // add new transfer
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
 
-    const postTransferToDB = () => {
-      fetch(
-        "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers.json",
-        {
-          method: "POST",
-          body: JSON.stringify(transferForm),
-        }
-      );
-    };
-    postTransferToDB();
+    postNewTransactionToDB(transferForm, "transfers");
 
-    const updateTransferForm = async () => {
-      setTransferForm({
-        From: "",
-        To: "",
-        Amount: 0,
-        Date: new Date().toDateString(),
-        Comment: "",
-      });
-      // trigger the page to rerender with updated expenseLog
-      props.updateTransferLog();
+    const updateData = async () => {
+      const updateAccountBalance = async (fromOrTo) => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-      // trigger Home to rerender with updated accountLog/categoryLog
-      props.updateHomeHandler();
-    };
+        const updateBalanceInDB = async () => {
+          let accountName;
+          fromOrTo === "From"
+            ? (accountName = transferForm.From)
+            : (accountName = transferForm.To);
 
-    const updateAccountBalance = async (fromOrTo) => {
-      const fetchedAccountList = await fetchDataToList("accounts");
+          const account = fetchedAccountList.filter(
+            (account) => account.Name === accountName
+          );
 
-      const updateBalanceInDB = () => {
-        let accountName;
-        fromOrTo === "From"
-          ? (accountName = transferForm.From)
-          : (accountName = transferForm.To);
+          let updatedAccount;
+          fromOrTo === "From"
+            ? (updatedAccount = {
+                Balance:
+                  Number(account[0].Balance) - Number(transferForm.Amount),
+              })
+            : (updatedAccount = {
+                Balance:
+                  Number(account[0].Balance) + Number(transferForm.Amount),
+              });
+          const accountId = account[0].id;
 
-        const account = fetchedAccountList.filter(
-          (account) => account.Name === accountName
-        );
-
-        let updatedAccount;
-        fromOrTo === "From"
-          ? (updatedAccount = {
-              Balance: Number(account[0].Balance) - Number(transferForm.Amount),
-            })
-          : (updatedAccount = {
-              Balance: Number(account[0].Balance) + Number(transferForm.Amount),
-            });
-        const accountId = account[0].id;
-
-        postChangedBalance("accounts", accountId, updatedAccount);
+          await postUpdatedBalance("accounts", accountId, updatedAccount);
+        };
+        await updateBalanceInDB();
       };
-      updateBalanceInDB();
-      await updateTransferForm();
+      await updateAccountBalance("From");
+      await updateAccountBalance("To");
+
+      const triggerPageUpdates = async () => {
+        setTransferForm({
+          From: "",
+          To: "",
+          Amount: 0,
+          Date: new Date().toDateString(),
+          Comment: "",
+        });
+
+        // trigger the page to rerender with updated expenseLog
+        await props.updateTransferLog();
+        // trigger Home to rerender with updated accountLog/categoryLog
+        await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
     };
-    updateAccountBalance("From");
-    updateAccountBalance("To");
+    updateData();
   };
 
   // edit selected transfer
   const transferFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    const postEditedExpenseToDB = () => {
-      fetch(
-        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers/${props.editedTransferId}.json`,
-        {
-          method: "PATCH",
-          body: JSON.stringify(transferForm),
-        }
-      );
-    };
-    postEditedExpenseToDB();
+    postEditedTransactionToDB(
+      transferForm,
+      "transfers",
+      props.editedTransferId
+    );
 
     const updateData = async () => {
       const updateAccountFrom = async () => {
@@ -190,7 +174,7 @@ const TransferForm = (props) => {
                   });
 
               const accountId = account[0].id;
-              await postChangedBalance("accounts", accountId, updatedAccount);
+              await postUpdatedBalance("accounts", accountId, updatedAccount);
             };
             await updateBalanceInDB();
           };
@@ -229,7 +213,7 @@ const TransferForm = (props) => {
                   });
 
               const accountId = account[0].id;
-              await postChangedBalance("accounts", accountId, updatedAccount);
+              await postUpdatedBalance("accounts", accountId, updatedAccount);
             };
             await updateBalanceInDB();
           };
@@ -271,7 +255,7 @@ const TransferForm = (props) => {
                 };
                 accountId = account[0].id;
               }
-              await postChangedBalance("accounts", accountId, updatedAccount);
+              await postUpdatedBalance("accounts", accountId, updatedAccount);
             };
             await updateBalanceInDB();
           };
@@ -307,7 +291,7 @@ const TransferForm = (props) => {
                 };
                 accountId = account[0].id;
               }
-              await postChangedBalance("accounts", accountId, updatedAccount);
+              await postUpdatedBalance("accounts", accountId, updatedAccount);
             };
             await updateBalanceInDB();
           };
@@ -316,7 +300,7 @@ const TransferForm = (props) => {
       };
       await updateAmount();
 
-      const triggerUpdates = async () => {
+      const triggerPageUpdates = async () => {
         setTransferForm({
           From: "",
           To: "",
@@ -330,7 +314,7 @@ const TransferForm = (props) => {
         // trigger Home to rerender with updated accountLog/categoryLog
         await props.updateHomeHandler();
       };
-      await triggerUpdates();
+      await triggerPageUpdates();
     };
     updateData();
 
