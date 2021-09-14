@@ -1,47 +1,35 @@
+const baseURL = "https://expense-tracker-fd99a-default-rtdb.firebaseio.com";
+
 export const postNewTransactionToDB = (form, urlName) => {
-  fetch(
-    `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`,
-    {
-      method: "POST",
-      body: JSON.stringify(form),
-    }
-  );
+  fetch(`${baseURL}/${urlName}.json`, {
+    method: "POST",
+    body: JSON.stringify(form),
+  });
 };
 
 export const postEditedTransactionToDB = (form, urlName, id) => {
-  fetch(
-    `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}/${id}.json`,
-    {
-      method: "PATCH",
-      body: JSON.stringify(form),
-    }
-  );
+  fetch(`${baseURL}/${urlName}/${id}.json`, {
+    method: "PATCH",
+    body: JSON.stringify(form),
+  });
 };
 
 export const postUpdatedBalance = async (type, id, updatedBalance) => {
-  await fetch(
-    `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${id}.json`,
-    {
-      method: "PATCH",
-      body: JSON.stringify(updatedBalance),
-    }
-  );
+  await fetch(`${baseURL}/${type}/${id}.json`, {
+    method: "PATCH",
+    body: JSON.stringify(updatedBalance),
+  });
 };
 
 export const postUpdatedTotal = async (updatedTotals) => {
-  await fetch(
-    "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
-    {
-      method: "PATCH",
-      body: JSON.stringify(updatedTotals),
-    }
-  );
+  await fetch(`${baseURL}/total.json`, {
+    method: "PATCH",
+    body: JSON.stringify(updatedTotals),
+  });
 };
 
-export const getDataFromDB = async (urlName, isTotal) => {
-  const response = await fetch(
-    `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
-  );
+export const getDataFromDB = async (urlName) => {
+  const response = await fetch(`${baseURL}/${urlName}.json`);
   const fetchedData = await response.json();
   return fetchedData;
 };
