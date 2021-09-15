@@ -3,6 +3,12 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import History from "../components/History/History";
+import {
+  postUpdatedBalance,
+  postUpdatedTotal,
+  getDataFromDB,
+  deleteTransactionFromDB,
+} from "../modules/fetch";
 
 const TransferLog = (props) => {
   const [transferLog, setTransferLog] = useState([]);
@@ -46,10 +52,7 @@ const TransferLog = (props) => {
       return list;
     };
 
-    const response = await fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
-    );
-    const fetchedData = await response.json();
+    const fetchedData = await getDataFromDB(urlName);
     const fetchedDataList = pushFetchedDataToList(fetchedData);
     return fetchedDataList;
   };
@@ -66,6 +69,8 @@ const TransferLog = (props) => {
   }, [props.updatedTransferLog, props.updateHome]);
 
   const deleteTransferHandler = (transferToDelete) => {
+    deleteTransactionFromDB("transfers", transferToDelete.id);
+
     const updateTransferLog = () => {
       const updatedTransferLog = transferLog.filter(
         (expense) => expense.id !== transferToDelete.id
@@ -78,55 +83,46 @@ const TransferLog = (props) => {
     // close the delete modal
     setShowModal(false);
 
-    const deleteTransferFromDB = () => {
-      fetch(
-        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/transfers/${transferToDelete.id}.json`,
-        {
-          method: "DELETE",
-        }
-      );
-    };
-    deleteTransferFromDB();
+    const updateData = async () => {
+      const updateAccountBalance = async (fromOrTo) => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-    const updateAccountBalance = async (fromOrTo) => {
-      const fetchedAccountList = await fetchDataToList("accounts");
+        const updateBalanceInDB = async () => {
+          let accountName;
+          fromOrTo === "From"
+            ? (accountName = transferToDelete.From)
+            : (accountName = transferToDelete.To);
 
-      const updateBalanceInDB = () => {
-        let accountName;
-        fromOrTo === "From"
-          ? (accountName = transferToDelete.From)
-          : (accountName = transferToDelete.To);
+          const account = fetchedAccountList.filter(
+            (account) => account.Name === accountName
+          );
 
-        const account = fetchedAccountList.filter(
-          (account) => account.Name === accountName
-        );
+          let updatedAccount;
+          fromOrTo === "From"
+            ? (updatedAccount = {
+                Balance:
+                  Number(account[0].Balance) + Number(transferToDelete.Amount),
+              })
+            : (updatedAccount = {
+                Balance:
+                  Number(account[0].Balance) - Number(transferToDelete.Amount),
+              });
+          const accountId = account[0].id;
 
-        let updatedAccount;
-        fromOrTo === "From"
-          ? (updatedAccount = {
-              Balance:
-                Number(account[0].Balance) + Number(transferToDelete.Amount),
-            })
-          : (updatedAccount = {
-              Balance:
-                Number(account[0].Balance) - Number(transferToDelete.Amount),
-            });
-        const accountId = account[0].id;
-
-        fetch(
-          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedAccount),
-          }
-        ).then((response) => {
-          if (props.updateHomeHandler) props.updateHomeHandler();
-        });
+          await postUpdatedBalance("accounts", accountId, updatedAccount);
+        };
+        await updateBalanceInDB();
       };
-      updateBalanceInDB();
+      await updateAccountBalance("From");
+      await updateAccountBalance("To");
+
+      const triggerPageUpdates = async () => {
+        // trigger Home to rerender with updated accountLog/categoryLog
+        if (props.updateHomeHandler) await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
     };
-    updateAccountBalance("From");
-    updateAccountBalance("To");
+    updateData();
   };
 
   const editTransferHandler = (transfer) => {

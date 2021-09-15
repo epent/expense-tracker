@@ -3,6 +3,12 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import History from "../components/History/History";
+import {
+  postUpdatedBalance,
+  postUpdatedTotal,
+  getDataFromDB,
+  deleteTransactionFromDB,
+} from "../modules/fetch";
 
 const ExpenseLog = (props) => {
   const [expenseLog, setExpenseLog] = useState([]);
@@ -46,10 +52,7 @@ const ExpenseLog = (props) => {
       return list;
     };
 
-    const response = await fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${urlName}.json`
-    );
-    const fetchedData = await response.json();
+    const fetchedData = await getDataFromDB(urlName);
     const fetchedDataList = pushFetchedDataToList(fetchedData);
     return fetchedDataList;
   };
@@ -66,6 +69,8 @@ const ExpenseLog = (props) => {
   }, [props.updatedExpenseLog, props.updateHome]);
 
   const deleteExpenseHandler = (expenseToDelete) => {
+    deleteTransactionFromDB("expenses", expenseToDelete.id);
+
     const updateExpenseLog = () => {
       const updatedExpenseLog = expenseLog.filter(
         (expense) => expense.id !== expenseToDelete.id
@@ -77,98 +82,76 @@ const ExpenseLog = (props) => {
     // close the delete modal
     setShowModal(false);
 
-    const deleteExpenseFromDB = () => {
-      fetch(
-        `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/expenses/${expenseToDelete.id}.json`,
-        {
-          method: "DELETE",
-        }
-      );
-    };
-    deleteExpenseFromDB();
+    const updateData = async () => {
+      const updateAccountBalance = async () => {
+        const fetchedAccountList = await fetchDataToList("accounts");
 
-    const updateAccountBalance = async () => {
-      const fetchedAccountList = await fetchDataToList("accounts");
+        const updateBalanceInDB = () => {
+          const account = fetchedAccountList.filter(
+            (account) => account.Name === expenseToDelete.From
+          );
+          const updatedAccount = {
+            Balance:
+              Number(account[0].Balance) + Number(expenseToDelete.Amount),
+          };
+          const accountId = account[0].id;
 
-      const updateBalanceInDB = () => {
-        const account = fetchedAccountList.filter(
-          (account) => account.Name === expenseToDelete.From
-        );
-        const updatedAccount = {
-          Balance: Number(account[0].Balance) + Number(expenseToDelete.Amount),
+          postUpdatedBalance("accounts", accountId, updatedAccount);
         };
-        const accountId = account[0].id;
-
-        fetch(
-          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedAccount),
-          }
-        );
+        updateBalanceInDB();
       };
-      updateBalanceInDB();
-    };
-    updateAccountBalance();
+      await updateAccountBalance();
 
-    const updateCategoryBalance = async () => {
-      const fetchedCategoryList = await fetchDataToList("categories");
+      const updateCategoryBalance = async () => {
+        const fetchedCategoryList = await fetchDataToList("categories");
 
-      const updateBalanceInDB = () => {
-        const category = fetchedCategoryList.filter(
-          (category) => category.Name === expenseToDelete.To
-        );
-        const updatedCategory = {
-          Balance: Number(category[0].Balance) - Number(expenseToDelete.Amount),
+        const updateBalanceInDB = () => {
+          const category = fetchedCategoryList.filter(
+            (category) => category.Name === expenseToDelete.To
+          );
+          const updatedCategory = {
+            Balance:
+              Number(category[0].Balance) - Number(expenseToDelete.Amount),
+          };
+          const categoryId = category[0].id;
+
+          postUpdatedBalance("categories", categoryId, updatedCategory);
         };
-        const categoryId = category[0].id;
-
-        fetch(
-          `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${categoryId}.json`,
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedCategory),
-          }
-        ).then((response) => {
-          if (props.updateHomeHandler) props.updateHomeHandler();
-        });
+        updateBalanceInDB();
       };
-      updateBalanceInDB();
-    };
-    updateCategoryBalance();
+      await updateCategoryBalance();
 
-    const updateTotalBalance = async () => {
-      const fetchedTotalList = await fetchDataToList("total", true);
+      const updateTotalBalance = async () => {
+        const fetchedTotalList = await fetchDataToList("total", true);
 
-      const updateBalanceInDB = () => {
-        const totalExpenses = fetchedTotalList.filter((total) => {
-          return total.id === "expenses";
-        });
+        const updateBalanceInDB = async () => {
+          const totalExpenses = fetchedTotalList.filter((total) => {
+            return total.id === "expenses";
+          });
 
-        // const totalIncome = fetchedDataList.filter((total) => {
-        //   return total.id === "income";
-        // });
+          // const totalBalance = fetchedDataList.filter((total) => {
+          //   return total.id === "balance";
+          // });
 
-        // const totalBalance = fetchedDataList.filter((total) => {
-        //   return total.id === "balance";
-        // });
+          const updatedTotals = {
+            expenses:
+              Number(totalExpenses[0].expenses) +
+              Number(expenseToDelete.Amount),
+          };
 
-        const updatedTotals = {
-          expenses:
-            Number(totalExpenses[0].expenses) + Number(expenseToDelete.Amount),
+          await postUpdatedTotal(updatedTotals);
         };
-
-        fetch(
-          "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json",
-          {
-            method: "PATCH",
-            body: JSON.stringify(updatedTotals),
-          }
-        );
+        await updateBalanceInDB();
       };
-      updateBalanceInDB();
+      await updateTotalBalance();
+
+      const triggerPageUpdates = async () => {
+        // trigger Home to rerender with updated accountLog/categoryLog
+        if (props.updateHomeHandler) await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
     };
-    updateTotalBalance();
+    updateData();
   };
 
   const editExpenseHandler = (expense) => {
