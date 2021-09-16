@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import Form from "../components/Forms/Form";
+import {
+  postNewTransactionToDB as postNewAccountToDB,
+  postEditedTransactionToDB as postEditedAccountToDB,
+} from "../modules/fetch";
 
 const AccountForm = (props) => {
   const [accountForm, setAccountForm] = useState({
@@ -43,46 +47,45 @@ const AccountForm = (props) => {
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
 
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json",
-      {
-        method: "POST",
-        body: JSON.stringify(accountForm),
-      }
-    )
-      // trigger the page to rerender with updated accountLog
-      .then((response) => props.updateAccountLog())
+    postNewAccountToDB(accountForm, "accounts");
 
-      .then((response) => {
-        setAccountForm({
-          Name: "",
-          Category: "",
-          Balance: 0,
-        });
+    const triggerUpdates = async () => {
+      setAccountForm({
+        Name: "",
+        Category: "",
+        Balance: 0,
       });
+
+      // trigger the page to rerender with updated categoryLog
+      await props.updateAccountLog();
+    };
+    triggerUpdates();
   };
 
   const accountFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    // post edited accountForm to server
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${props.editedAccountId}.json`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(accountForm),
-      }
-    )
-      // trigger the page to rerender with updated accountLog
-      .then((response) => props.updateAccountLog())
+    const updateData = async () => {
+      // post edited accountForm to server
+      await postEditedAccountToDB(
+        accountForm,
+        "accounts",
+        props.editedAccountId
+      );
 
-      .then((response) => {
+      const triggerUpdates = async () => {
         setAccountForm({
           Name: "",
           Category: "",
           Balance: 0,
         });
-      });
+
+        // trigger the page to rerender with updated accountLog
+        await props.updateAccountLog();
+      };
+      await triggerUpdates();
+    };
+    updateData();
 
     // close the editable form automatically
     props.setShowAccountForm();

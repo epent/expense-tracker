@@ -7,6 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import TransferForm from "../Transfers/TransferForm";
 import TransferLog from "../Transfers/TransferLog";
+import { fetchAccountsFromDB, fetchCategoriesFromDB } from "../modules/fetch";
 
 const Transfers = (props) => {
   const [transferFormShow, setTransferFormShow] = useState(false);
@@ -16,51 +17,18 @@ const Transfers = (props) => {
   const [updatedTransferLog, setUpdatedTransferLog] = useState(false);
 
   const [accountList, setAccountList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-
-  const fetchedAccountList = [];
-  const fetchedCategoryList = [];
 
   useEffect(() => {
     // fetch accountList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const accountList = fetchedAccountList.map((account) => {
-          return account.Name;
-        });
-
-        setAccountList(accountList);
+    const fetchAccounts = async () => {
+      const fetchedAccountList = await fetchAccountsFromDB();
+      const accountList = fetchedAccountList.map((account) => {
+        return account.Name;
       });
 
-    // fetch categoryList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const categoryList = fetchedCategoryList.map((category) => {
-          return category.Name;
-        });
-
-        setCategoryList(categoryList);
-      });
+      setAccountList(accountList);
+    };
+    fetchAccounts();
   }, [transferFormShow, editTransferFormShow]);
 
   // show the form when toggle "+Transfers" button
@@ -96,7 +64,6 @@ const Transfers = (props) => {
               updateTransferLog={updateTransferLogHandler}
               updateHomeHandler={props.updateHomeHandler}
               accountList={accountList}
-              categoryList={categoryList}
             />
           )}
         </Grid>
@@ -117,7 +84,6 @@ const Transfers = (props) => {
             updateHomeHandler={props.updateHomeHandler}
             setEditExpenseFormShow={editTransferFormShowHandler}
             accountList={accountList}
-            categoryList={categoryList}
           />
         )}
       </Grid>

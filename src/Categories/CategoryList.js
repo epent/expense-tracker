@@ -43,9 +43,7 @@ const CategoryList = (props) => {
                 <IconButton
                   onClick={() =>
                     props.editCategory(
-                      category.id,
-                      category.Name,
-                      category.Balance
+                      category
                     )
                   }
                 >

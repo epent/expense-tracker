@@ -7,6 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import ExpenseForm from "./ExpenseForm";
 import ExpenseLog from "./ExpenseLog";
+import { fetchAccountsFromDB, fetchCategoriesFromDB } from "../modules/fetch";
 
 const Expenses = (props) => {
   const [expenseFormShow, setExpenseFormShow] = useState(false);
@@ -18,49 +19,28 @@ const Expenses = (props) => {
   const [accountList, setAccountList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
 
-  const fetchedAccountList = [];
-  const fetchedCategoryList = [];
-
   useEffect(() => {
     // fetch accountList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const accountList = fetchedAccountList.map((account) => {
-          return account.Name;
-        });
-
-        setAccountList(accountList);
+    const fetchAccounts = async () => {
+      const fetchedAccountList = await fetchAccountsFromDB();
+      const accountList = fetchedAccountList.map((account) => {
+        return account.Name;
       });
+
+      setAccountList(accountList);
+    };
+    fetchAccounts();
 
     // fetch categoryList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const categoryList = fetchedCategoryList.map((category) => {
-          return category.Name;
-        });
-
-        setCategoryList(categoryList);
+    const fetchCategories = async () => {
+      const fetchedCategoryList = await fetchCategoriesFromDB();
+      const categoryList = fetchedCategoryList.map((category) => {
+        return category.Name;
       });
+
+      setCategoryList(categoryList);
+    };
+    fetchCategories();
   }, [expenseFormShow, editExpenseFormShow]);
 
   // show the form when toggle "+Expenses" button

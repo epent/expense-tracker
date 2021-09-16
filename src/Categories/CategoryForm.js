@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import Form from "../components/Forms/Form";
+import {
+  postNewTransactionToDB as postNewCategoryToDB,
+  postEditedTransactionToDB as postEditedCategoryToDB,
+} from "../modules/fetch";
 
 const CategoryForm = (props) => {
   const [categoryForm, setCategoryForm] = useState({
@@ -41,44 +45,44 @@ const CategoryForm = (props) => {
     event.preventDefault();
 
     //  post new categoryForm to server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json",
-      {
-        method: "POST",
-        body: JSON.stringify(categoryForm),
-      }
-    )
-      // trigger the page to rerender with updated categoryLog
-      .then((response) => props.updateCategoryLog())
+    postNewCategoryToDB(categoryForm, "categories");
 
-      .then((response) => {
-        setCategoryForm({
-          Name: "",
-          Balance: 0,
-        });
+    const triggerUpdates = async () => {
+      setCategoryForm({
+        Name: "",
+        Balance: 0,
       });
+
+      // trigger the page to rerender with updated categoryLog
+      await props.updateCategoryLog();
+    };
+    triggerUpdates();
   };
 
+  // edit selected category
   const categoryFormUpdateHandler = (event) => {
     event.preventDefault();
 
-    //  post edited categoryForm to server
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${props.editedCategoryId}.json`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(categoryForm),
-      }
-    )
-      // trigger the page to rerender with updated categoryLog
-      .then((response) => props.updateCategoryLog())
+    const updateData = async () => {
+      //  post edited categoryForm to server
+      await postEditedCategoryToDB(
+        categoryForm,
+        "categories",
+        props.editedCategoryId
+      );
 
-      .then((response) => {
+      const triggerUpdates = async () => {
         setCategoryForm({
           Name: "",
           Balance: 0,
         });
-      });
+
+        // trigger the page to rerender with updated categoryLog
+        await props.updateCategoryLog();
+      };
+      await triggerUpdates();
+    };
+    updateData();
 
     // close the editable form automatically
     props.setShowCategoryForm();

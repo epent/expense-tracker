@@ -163,7 +163,6 @@ const History = (props) => {
                   updateIncomeLog={props.updateIncomeLog}
                   updateHomeHandler={props.updateHomeHandler}
                   accountList={props.accountList}
-                  categoryList={props.categoryList}
                 />
               )}
           </Grid>
@@ -178,7 +177,6 @@ const History = (props) => {
                   updateTransferLog={props.updateTransferLog}
                   updateHomeHandler={props.updateHomeHandler}
                   accountList={props.accountList}
-                  categoryList={props.categoryList}
                 />
               )}
           </Grid>

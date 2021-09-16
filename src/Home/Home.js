@@ -11,6 +11,7 @@ import Categories from "../Categories/Categories";
 import Expenses from "../Expenses/Expenses";
 import Income from "../Income/Income";
 import Transfers from "../Transfers/Transfers";
+import { getDataFromDB } from "../modules/fetch";
 
 const Home = () => {
   const [updateHome, setUpdateHome] = useState(false);
@@ -26,19 +27,23 @@ const Home = () => {
   };
 
   useEffect(() => {
+    const fetchTotals = async () => {
+      const fetchedTotals = await getDataFromDB("total");
+
+      setTotal({
+        expenses: fetchedTotals.expenses,
+        income: fetchedTotals.income,
+        balance: fetchedTotals.balance,
+      });
+    };
+    fetchTotals();
+
     fetch(
       "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
     )
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-
-        setTotal({
-          ...total,
-          expenses: data.expenses,
-          income: data.income,
-          balance: data.balance,
-        });
       });
   }, [updateHome]);
 

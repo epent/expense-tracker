@@ -328,7 +328,6 @@ const TransferForm = (props) => {
     selectedDate: transferForm.Date,
     transfers: true,
     accountList: props.accountList,
-    categoryList: props.categoryList,
     accountsLabel: "From",
     accountsLabelTransferTo: "To",
     btnColor: "default",

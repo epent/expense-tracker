@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import AccountHistory from "./AccountHistory";
+import {
+  fetchAccountsFromDB,
+  deleteTransactionFromDB as deleteAccountFromDB,
+} from "../modules/fetch";
 
 const AccountLog = (props) => {
   const [accountLog, setAccountLog] = useState([]);
@@ -20,60 +24,44 @@ const AccountLog = (props) => {
   const [showAccountForm, setShowAccountForm] = useState(false);
 
   useEffect(() => {
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const fetchedList = [];
-        for (let key in data) {
-          fetchedList.push({
-            ...data[key],
-            id: key,
-          });
-        }
+    // fetch accountList from server
+    const fetchAccounts = async () => {
+      const accountList = await fetchAccountsFromDB();
 
-        setAccountLog(fetchedList);
-      });
+      setAccountLog(accountList);
+    };
+    fetchAccounts();
   }, [props.updatedAccountLog, props.updateHome]);
 
   const deleteAccountHandler = (accountId) => {
-    const updatedExpenseLog = accountLog.filter(
-      (expense) => expense.id !== accountId
-    );
+    deleteAccountFromDB("accounts", accountId);
 
-    setAccountLog(updatedExpenseLog);
+    const updateAccountLog = () => {
+      const updatedExpenseLog = accountLog.filter(
+        (expense) => expense.id !== accountId
+      );
 
-    // delete account from db
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts/${accountId}.json`,
-      {
-        method: "DELETE",
-      }
-    );
+      setAccountLog(updatedExpenseLog);
+    };
+    updateAccountLog();
   };
 
-  const editAccountHandler = (
-    accountId,
-    accountName,
-    accountCategory,
-    accountBalance
-  ) => {
+  const editAccountHandler = (account) => {
     setAccountForm({
-      Name: accountName,
-      Category: accountCategory,
-      Balance: accountBalance,
+      Name: account.Name,
+      Category: account.Category,
+      Balance: account.Balance,
     });
 
-    setEditedAccountId(accountId);
+    setEditedAccountId(account.id);
 
-    if (editedAccountId === accountId) {
+    if (editedAccountId === account.id) {
       setShowAccountForm((prevState) => !prevState);
     }
   };
 
   let accounts = accountLog;
-  if (props.sliceLog) accounts = accountLog .slice(0, 8);
+  if (props.sliceLog) accounts = accountLog.slice(0, 8);
 
   return (
     <Box>

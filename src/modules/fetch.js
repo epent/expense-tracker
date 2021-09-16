@@ -13,8 +13,8 @@ export const postNewTransactionToDB = (form, type) => {
   });
 };
 
-export const postEditedTransactionToDB = (form, type, id) => {
-  fetch(`${baseURL}/${type}/${id}.json`, {
+export const postEditedTransactionToDB = async (form, type, id) => {
+  await fetch(`${baseURL}/${type}/${id}.json`, {
     method: "PATCH",
     body: JSON.stringify(form),
   });
@@ -35,10 +35,43 @@ export const postUpdatedTotal = async (updatedTotals) => {
 };
 
 export const deleteTransactionFromDB = (type, transactionId) => {
-  fetch(
-    `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/${type}/${transactionId}.json`,
-    {
-      method: "DELETE",
-    }
-  );
+  fetch(`${baseURL}/${type}/${transactionId}.json`, {
+    method: "DELETE",
+  });
+};
+
+export const fetchAccountsFromDB = async () => {
+  const pushFetchedDataToList = (data) => {
+    const list = [];
+    Object.keys(data).map((key) => {
+      list.push({
+        ...data[key],
+        id: key,
+      });
+    });
+    return list;
+  };
+
+  const fetchedData = await getDataFromDB("accounts");
+  const fetchedDataList = pushFetchedDataToList(fetchedData);
+
+  return fetchedDataList;
+};
+
+export const fetchCategoriesFromDB = async () => {
+  const pushFetchedDataToList = (data) => {
+    const list = [];
+    Object.keys(data).map((key) => {
+      list.push({
+        ...data[key],
+        id: key,
+      });
+    });
+    return list;
+  };
+
+  const fetchedData = await getDataFromDB("categories");
+  const fetchedDataList = pushFetchedDataToList(fetchedData);
+
+  return fetchedDataList;
 };

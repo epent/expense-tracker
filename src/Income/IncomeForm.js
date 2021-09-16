@@ -284,7 +284,6 @@ const IncomeForm = (props) => {
     selectedDate: incomeForm.Date,
     income: true,
     accountList: props.accountList,
-    categoryList: props.categoryList,
     accountsLabel: "To",
     btnColor: "primary",
   };

@@ -44,16 +44,7 @@ const AccountHistory = (props) => {
                 >{`${account.Balance} ILS`}</Typography>
               </Grid>
               {props.showEditBtn && (
-                <IconButton
-                  onClick={() =>
-                    props.editAccount(
-                      account.id,
-                      account.Name,
-                      account.Category,
-                      account.Balance
-                    )
-                  }
-                >
+                <IconButton onClick={() => props.editAccount(account)}>
                   <EditIcon />
                 </IconButton>
               )}

@@ -179,7 +179,6 @@ const IncomeLog = (props) => {
         transactionToDelete={incomeToDelete}
         updateHomeHandler={props.updateHomeHandler}
         accountList={props.accountList}
-        categoryList={props.categoryList}
       />
     </Box>
   );

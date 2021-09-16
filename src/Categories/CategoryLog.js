@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import CategoryList from "./CategoryList";
+import {
+  fetchCategoriesFromDB,
+  deleteTransactionFromDB as deleteCategoryFromDB,
+} from "../modules/fetch";
 
 const CategoryLog = (props) => {
   const [categoryLog, setCategoryLog] = useState([]);
@@ -20,48 +24,35 @@ const CategoryLog = (props) => {
 
   useEffect(() => {
     // fetch categoryList from server
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const fetchedCategoryList = [];
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
+    const fetchCategories = async () => {
+      const categoryList = await fetchCategoriesFromDB();
 
-        setCategoryLog(fetchedCategoryList);
-      });
+      setCategoryLog(categoryList);
+    };
+    fetchCategories();
   }, [props.updatedCategoryLog, props.updateHome]);
 
   const deleteCategoryHandler = (categoryId) => {
-    const updatedCategoryLog = categoryLog.filter(
-      (category) => category.id !== categoryId
-    );
+    deleteCategoryFromDB("categories", categoryId);
 
-    setCategoryLog(updatedCategoryLog);
-
-    // delete category from db
-    fetch(
-      `https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories/${categoryId}.json`,
-      {
-        method: "DELETE",
-      }
-    );
+    const updateCategoryLog = () => {
+      const updatedCategoryLog = categoryLog.filter(
+        (category) => category.id !== categoryId
+      );
+      setCategoryLog(updatedCategoryLog);
+    };
+    updateCategoryLog();
   };
 
-  const editCategoryHandler = (categoryId, categoryName, categoryBalance) => {
+  const editCategoryHandler = (category) => {
     setCategoryForm({
-      Name: categoryName,
-      Balance: categoryBalance,
+      Name: category.Name,
+      Balance: category.Balance,
     });
 
-    setEditedCategoryId(categoryId);
+    setEditedCategoryId(category.id);
 
-    if (editedCategoryId === categoryId) {
+    if (editedCategoryId === category.id) {
       setShowCategoryForm((prevState) => !prevState);
     }
   };

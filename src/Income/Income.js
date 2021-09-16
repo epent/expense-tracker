@@ -7,6 +7,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import IncomeForm from "../Income/IncomeForm";
 import IncomeLog from "../Income/IncomeLog";
+import { fetchAccountsFromDB } from "../modules/fetch";
 
 const Income = (props) => {
   const [incomeFormShow, setIncomeFormShow] = useState(false);
@@ -16,51 +17,18 @@ const Income = (props) => {
   const [updatedIncomeLog, setUpdatedIncomeLog] = useState(false);
 
   const [accountList, setAccountList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-
-  const fetchedAccountList = [];
-  const fetchedCategoryList = [];
 
   useEffect(() => {
     // fetch accountList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/accounts.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedAccountList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const accountList = fetchedAccountList.map((account) => {
-          return account.Name;
-        });
-
-        setAccountList(accountList);
+    const fetchAccounts = async () => {
+      const fetchedAccountList = await fetchAccountsFromDB();
+      const accountList = fetchedAccountList.map((account) => {
+        return account.Name;
       });
 
-    // fetch categoryList from server when form is opened
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/categories.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        for (let key in data) {
-          fetchedCategoryList.push({
-            ...data[key],
-            id: key,
-          });
-        }
-
-        const categoryList = fetchedCategoryList.map((category) => {
-          return category.Name;
-        });
-
-        setCategoryList(categoryList);
-      });
+      setAccountList(accountList);
+    };
+    fetchAccounts();
   }, [incomeFormShow, editIncomeFormShow]);
 
   // show the form when toggle "+Income" button
@@ -97,7 +65,6 @@ const Income = (props) => {
               updateIncomeLog={updateIncomeLogHandler}
               updateHomeHandler={props.updateHomeHandler}
               accountList={accountList}
-              categoryList={categoryList}
             />
           )}
         </Grid>
@@ -118,7 +85,6 @@ const Income = (props) => {
             updateHomeHandler={props.updateHomeHandler}
             setEditIncomeFormShow={editIncomeFormShowHandler}
             accountList={accountList}
-            categoryList={categoryList}
           />
         )}
       </Grid>
