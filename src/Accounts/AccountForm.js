@@ -8,12 +8,21 @@ import {
   postEditedTransactionToDB as postEditedAccountToDB,
 } from "../modules/fetch";
 
+import { checkAccountFormValidity } from "../modules/validation";
+
 const AccountForm = (props) => {
   const [accountForm, setAccountForm] = useState({
     Name: "",
     Category: "",
-    Balance: 0,
+    Balance: "",
   });
+
+  const validityRules = {
+    required: true,
+    greaterThanZero: true,
+  };
+
+  const [formIsValid, setFormIsValid] = useState(true);
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
@@ -30,15 +39,10 @@ const AccountForm = (props) => {
 
   // update/edit the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Balance"
-      ? setAccountForm({
-          ...accountForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setAccountForm({
-          ...accountForm,
-          [formKey]: event.target.value,
-        });
+    setAccountForm({
+      ...accountForm,
+      [formKey]: event.target.value,
+    });
 
     setShowEditedForm(true);
   };
@@ -46,20 +50,27 @@ const AccountForm = (props) => {
   // add new account
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
-
-    postNewAccountToDB(accountForm, "accounts");
+    setFormIsValid(false);
 
     const triggerUpdates = async () => {
       setAccountForm({
         Name: "",
         Category: "",
-        Balance: 0,
+        Balance: "",
       });
 
       // trigger the page to rerender with updated categoryLog
       await props.updateAccountLog();
     };
-    triggerUpdates();
+
+    const formIsValid = checkAccountFormValidity(accountForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewAccountToDB(accountForm, "accounts");
+      triggerUpdates();
+    }
   };
 
   const accountFormUpdateHandler = (event) => {
@@ -77,7 +88,7 @@ const AccountForm = (props) => {
         setAccountForm({
           Name: "",
           Category: "",
-          Balance: 0,
+          Balance: "",
         });
 
         // trigger the page to rerender with updated accountLog
@@ -91,28 +102,61 @@ const AccountForm = (props) => {
     props.setShowAccountForm();
   };
 
+  let helperTextName, helperTextCategory, helperTextBalance;
+  let invalidInputName, invalidInputCategory, invalidInputBalance;
+
+  if (formIsValid === false) {
+    if (accountForm.Name === "") {
+      helperTextName = "Please fill in";
+      invalidInputName = true;
+    }
+    if (accountForm.Category === "") {
+      helperTextCategory = "Please fill in";
+      invalidInputCategory = true;
+    }
+    if (
+      accountForm.Balance <= 0 ||
+      accountForm.Balance != Number(accountForm.Balance)
+    ) {
+      helperTextBalance = "Invalid input";
+      invalidInputBalance = true;
+    }
+    if (accountForm.Balance === "") {
+      helperTextBalance = "Please fill in";
+      invalidInputBalance = true;
+    }
+  }
+
+  const commonProps = {
+    updateForm: updateFormHandler,
+    accountCategoriesList: accountCategoriesList,
+    btnColor: "secondary",
+    helperTextName: helperTextName,
+    helperTextCategory: helperTextCategory,
+    helperTextAmount: helperTextBalance,
+    invalidInputName: invalidInputName,
+    invalidInputCategory: invalidInputCategory,
+    invalidInputAmount: invalidInputBalance,
+  };
+
   let form = (
     <Form
+      {...commonProps}
       form={accountForm}
-      updateForm={updateFormHandler}
       formSubmitHandler={accountFormSubmitHandler}
-      accountCategoriesList={accountCategoriesList}
       btnName="save account"
-      btnColor="secondary"
     />
   );
 
   if (props.showEditedForm)
     form = (
       <Form
+        {...commonProps}
         form={props.editedAccountForm}
         editedForm={accountForm}
-        updateForm={updateFormHandler}
         formSubmitHandler={accountFormUpdateHandler}
         showEditedForm={showEditedForm}
-        accountCategoriesList={accountCategoriesList}
         btnName="edit account"
-        btnColor="secondary"
       />
     );
 

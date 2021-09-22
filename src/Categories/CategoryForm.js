@@ -8,11 +8,20 @@ import {
   postEditedTransactionToDB as postEditedCategoryToDB,
 } from "../modules/fetch";
 
+import { checkCategoryFormValidity } from "../modules/validation";
+
 const CategoryForm = (props) => {
   const [categoryForm, setCategoryForm] = useState({
     Name: "",
-    Balance: 0,
+    Balance: "",
   });
+
+  const validityRules = {
+    required: true,
+    greaterThanZero: true,
+  };
+
+  const [formIsValid, setFormIsValid] = useState(true);
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
@@ -27,15 +36,10 @@ const CategoryForm = (props) => {
 
   // update/edit the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Balance"
-      ? setCategoryForm({
-          ...categoryForm,
-          [formKey]: Number(event.target.value),
-        })
-      : setCategoryForm({
-          ...categoryForm,
-          [formKey]: event.target.value,
-        });
+    setCategoryForm({
+      ...categoryForm,
+      [formKey]: event.target.value,
+    });
 
     setShowEditedForm(true);
   };
@@ -43,20 +47,26 @@ const CategoryForm = (props) => {
   // add new category
   const categoryFormSubmitHandler = (event) => {
     event.preventDefault();
-
-    //  post new categoryForm to server
-    postNewCategoryToDB(categoryForm, "categories");
+    setFormIsValid(false);
 
     const triggerUpdates = async () => {
       setCategoryForm({
         Name: "",
-        Balance: 0,
+        Balance: "",
       });
 
       // trigger the page to rerender with updated categoryLog
       await props.updateCategoryLog();
     };
-    triggerUpdates();
+
+    const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewCategoryToDB(categoryForm, "categories");
+      triggerUpdates();
+    }
   };
 
   // edit selected category
@@ -74,7 +84,7 @@ const CategoryForm = (props) => {
       const triggerUpdates = async () => {
         setCategoryForm({
           Name: "",
-          Balance: 0,
+          Balance: "",
         });
 
         // trigger the page to rerender with updated categoryLog
@@ -88,26 +98,54 @@ const CategoryForm = (props) => {
     props.setShowCategoryForm();
   };
 
+  let helperTextName, helperTextBalance;
+  let invalidInputName, invalidInputBalance;
+
+  if (formIsValid === false) {
+    if (categoryForm.Name === "") {
+      helperTextName = "Please fill in";
+      invalidInputName = true;
+    }
+    if (
+      categoryForm.Balance <= 0 ||
+      categoryForm.Balance != Number(categoryForm.Balance)
+    ) {
+      helperTextBalance = "Invalid input";
+      invalidInputBalance = true;
+    }
+    if (categoryForm.Balance === "") {
+      helperTextBalance = "Please fill in";
+      invalidInputBalance = true;
+    }
+  }
+
+  const commonProps = {
+    updateForm: updateFormHandler,
+    btnColor: "secondary",
+    helperTextName: helperTextName,
+    helperTextAmount: helperTextBalance,
+    invalidInputName: invalidInputName,
+    invalidInputAmount: invalidInputBalance,
+  };
+
   let form = (
     <Form
+      {...commonProps}
       form={categoryForm}
-      updateForm={updateFormHandler}
       formSubmitHandler={categoryFormSubmitHandler}
       btnName="add category"
-      btnColor="secondary"
     />
   );
 
   if (props.showEditedForm)
     form = (
       <Form
+        {...commonProps}
         form={props.editedCategoryForm}
         editedForm={categoryForm}
-        updateForm={updateFormHandler}
         formSubmitHandler={categoryFormUpdateHandler}
         showEditedForm={showEditedForm}
-        btnName="add category"
-        btnColor="secondary"
+        btnName="edit category"
       />
     );
 

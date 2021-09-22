@@ -5,7 +5,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -77,58 +76,130 @@ const Form = (props) => {
         </MuiPickersUtilsProvider>
       </Grid>
     ) : (formKey === "From" && props.expenses) ||
-      (formKey === "To" && props.income) ||
       (formKey === "From" && props.transfers) ? (
       <Grid item key={formKey}>
-        <FormControl variant="outlined" margin="normal" size="small">
-          <InputLabel>{props.accountsLabel}</InputLabel>
-          <Select
-            className={classes.root}
-            value={formValues[formKey]}
-            onChange={(e) => props.updateForm(e, formKey)}
-          >
-            {accountsToChoose}
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          variant="outlined"
+          margin="normal"
+          size="small"
+          label={props.accountsLabel}
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputFrom}
+          helperText={props.helperTextFrom}
+          onChange={(e) => props.updateForm(e, formKey)}
+        >
+          {accountsToChoose}
+        </TextField>
       </Grid>
-    ) : formKey === "To" && props.transfers ? (
+    ) : formKey === "From" && props.income ? (
       <Grid item key={formKey}>
-        <FormControl variant="outlined" margin="normal" size="small">
-          <InputLabel>{props.accountsLabelTransferTo}</InputLabel>
-          <Select
-            className={classes.root}
-            value={formValues[formKey]}
-            onChange={(e) => props.updateForm(e, formKey)}
-          >
-            {accountsToChoose}
-          </Select>
-        </FormControl>
+        <TextField
+          label={formKey}
+          variant="outlined"
+          margin="normal"
+          size="small"
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputFrom}
+          helperText={props.helperTextFrom}
+          onChange={(e) => props.updateForm(e, formKey)}
+        />
+      </Grid>
+    ) : (formKey === "To" && props.income) ||
+      (formKey === "To" && props.transfers) ? (
+      <Grid item key={formKey}>
+        <TextField
+          select
+          variant="outlined"
+          margin="normal"
+          size="small"
+          label="To"
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputTo}
+          helperText={props.helperTextTo}
+          onChange={(e) => props.updateForm(e, formKey)}
+        >
+          {accountsToChoose}
+        </TextField>
       </Grid>
     ) : formKey === "To" && props.expenses ? (
       <Grid item key={formKey}>
-        <FormControl variant="outlined" margin="normal" size="small">
-          <InputLabel>To</InputLabel>
-          <Select
-            className={classes.root}
-            value={formValues[formKey]}
-            onChange={(e) => props.updateForm(e, formKey)}
-          >
-            {categoriesToChoose}
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          variant="outlined"
+          margin="normal"
+          size="small"
+          label="To"
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputTo}
+          helperText={props.helperTextTo}
+          onChange={(e) => props.updateForm(e, formKey)}
+        >
+          {categoriesToChoose}
+        </TextField>
       </Grid>
     ) : formKey === "Category" ? (
       <Grid item key={formKey}>
-        <FormControl variant="outlined" margin="normal" size="small">
-          <InputLabel>Category</InputLabel>
-          <Select
-            className={classes.root}
-            value={formValues[formKey]}
-            onChange={(e) => props.updateForm(e, formKey)}
-          >
-            {accountCategoriesToChoose}
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          variant="outlined"
+          margin="normal"
+          size="small"
+          label={formKey}
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputCategory}
+          helperText={props.helperTextCategory}
+          onChange={(e) => props.updateForm(e, formKey)}
+        >
+          {accountCategoriesToChoose}
+        </TextField>
+      </Grid>
+    ) : formKey === "Comment" ? (
+      <Grid item key={formKey}>
+        <TextField
+          label={formKey}
+          variant="outlined"
+          multiline
+          maxRows={6}
+          margin="normal"
+          size="small"
+          className={classes.root}
+          value={formValues[formKey]}
+          onChange={(e) => props.updateForm(e, formKey)}
+        />
+      </Grid>
+    ) : formKey === "Amount" || formKey === "Balance" ? (
+      <Grid item key={formKey}>
+        <TextField
+          label={formKey}
+          variant="outlined"
+          margin="normal"
+          size="small"
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputAmount}
+          helperText={props.helperTextAmount}
+          onChange={(e) => props.updateForm(e, formKey)}
+        />
+      </Grid>
+    ) : formKey === "Name" ? (
+      <Grid item key={formKey}>
+        <TextField
+          label={formKey}
+          variant="outlined"
+          margin="normal"
+          size="small"
+          className={classes.root}
+          value={formValues[formKey]}
+          error={props.invalidInputName}
+          helperText={props.helperTextName}
+          onChange={(e) => props.updateForm(e, formKey)}
+        />
       </Grid>
     ) : (
       <Grid item key={formKey}>

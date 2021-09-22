@@ -7,18 +7,26 @@ import {
   postNewTransactionToDB,
   postEditedTransactionToDB,
   postUpdatedBalance,
-  postUpdatedTotal,
   getDataFromDB,
 } from "../modules/fetch";
+
+import { checkFormValidity } from "../modules/validation";
 
 const TransferForm = (props) => {
   const [transferForm, setTransferForm] = useState({
     From: "",
     To: "",
-    Amount: 0,
+    Amount: "",
     Date: new Date().toDateString(),
     Comment: "",
   });
+
+  const validityRules = {
+    required: true,
+    greaterThanZero: true,
+  };
+
+  const [formIsValid, setFormIsValid] = useState(true);
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
@@ -38,11 +46,6 @@ const TransferForm = (props) => {
       ? setTransferForm({
           ...transferForm,
           Date: event.toDateString(),
-        })
-      : formKey === "Amount"
-      ? setTransferForm({
-          ...transferForm,
-          [formKey]: Number(event.target.value),
         })
       : setTransferForm({
           ...transferForm,
@@ -79,8 +82,7 @@ const TransferForm = (props) => {
   // add new transfer
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
-
-    postNewTransactionToDB(transferForm, "transfers");
+    setFormIsValid(false);
 
     const updateData = async () => {
       const updateAccountBalance = async (fromOrTo) => {
@@ -119,7 +121,7 @@ const TransferForm = (props) => {
         setTransferForm({
           From: "",
           To: "",
-          Amount: 0,
+          Amount: "",
           Date: new Date().toDateString(),
           Comment: "",
         });
@@ -127,11 +129,19 @@ const TransferForm = (props) => {
         // trigger the page to rerender with updated expenseLog
         await props.updateTransferLog();
         // trigger Home to rerender with updated accountLog/categoryLog
-        await props.updateHomeHandler();
+        if (props.updateHomeHandler) await props.updateHomeHandler();
       };
       await triggerPageUpdates();
     };
-    updateData();
+
+    const formIsValid = checkFormValidity(transferForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewTransactionToDB(transferForm, "transfers");
+      updateData();
+    }
   };
 
   // edit selected transfer
@@ -304,7 +314,7 @@ const TransferForm = (props) => {
         setTransferForm({
           From: "",
           To: "",
-          Amount: 0,
+          Amount: "",
           Date: new Date().toDateString(),
           Comment: "",
         });
@@ -312,7 +322,7 @@ const TransferForm = (props) => {
         // trigger the page to rerender with updated expenseLog
         await props.updateTransferLog();
         // trigger Home to rerender with updated accountLog/categoryLog
-        await props.updateHomeHandler();
+        if (props.updateHomeHandler) await props.updateHomeHandler();
       };
       await triggerPageUpdates();
     };
@@ -322,6 +332,31 @@ const TransferForm = (props) => {
     props.setShowTransferForm();
   };
 
+  let helperTextFrom, helperTextTo, helperTextAmount;
+  let invalidInputFrom, invalidInputTo, invalidInputAmount;
+
+  if (formIsValid === false) {
+    if (transferForm.From === "") {
+      helperTextFrom = "Please fill in";
+      invalidInputFrom = true;
+    }
+    if (transferForm.To === "") {
+      helperTextTo = "Please fill in";
+      invalidInputTo = true;
+    }
+    if (
+      transferForm.Amount <= 0 ||
+      transferForm.Amount != Number(transferForm.Amount)
+    ) {
+      helperTextAmount = "Invalid input";
+      invalidInputAmount = true;
+    }
+    if (transferForm.Amount === "") {
+      helperTextAmount = "Please fill in";
+      invalidInputAmount = true;
+    }
+  }
+
   const commonProps = {
     updateForm: updateFormHandler,
     handleDateChange: updateFormHandler,
@@ -329,8 +364,13 @@ const TransferForm = (props) => {
     transfers: true,
     accountList: props.accountList,
     accountsLabel: "From",
-    accountsLabelTransferTo: "To",
     btnColor: "default",
+    helperTextFrom: helperTextFrom,
+    helperTextTo: helperTextTo,
+    helperTextAmount: helperTextAmount,
+    invalidInputFrom: invalidInputFrom,
+    invalidInputTo: invalidInputTo,
+    invalidInputAmount: invalidInputAmount,
   };
 
   let form = (

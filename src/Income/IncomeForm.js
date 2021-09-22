@@ -11,14 +11,23 @@ import {
   getDataFromDB,
 } from "../modules/fetch";
 
+import { checkFormValidity } from "../modules/validation";
+
 const IncomeForm = (props) => {
   const [incomeForm, setIncomeForm] = useState({
     From: "",
     To: "",
-    Amount: 0,
+    Amount: "",
     Date: new Date().toDateString(),
     Comment: "",
   });
+
+  const validityRules = {
+    required: true,
+    greaterThanZero: true,
+  };
+
+  const [formIsValid, setFormIsValid] = useState(true);
 
   // to show the changed form instead of the empty (after editFormHandler is triggered), we need to pass another form to <Form/>
   const [showEditedForm, setShowEditedForm] = useState(false);
@@ -38,11 +47,6 @@ const IncomeForm = (props) => {
       ? setIncomeForm({
           ...incomeForm,
           Date: event.toDateString(),
-        })
-      : formKey === "Amount"
-      ? setIncomeForm({
-          ...incomeForm,
-          [formKey]: Number(event.target.value),
         })
       : setIncomeForm({
           ...incomeForm,
@@ -79,8 +83,7 @@ const IncomeForm = (props) => {
   // add new income
   const incomeFormSubmitHandler = (event) => {
     event.preventDefault();
-
-    postNewTransactionToDB(incomeForm, "income");
+    setFormIsValid(false);
 
     const updateData = async () => {
       const updateAccountBalance = async () => {
@@ -123,7 +126,7 @@ const IncomeForm = (props) => {
         setIncomeForm({
           From: "",
           To: "",
-          Amount: 0,
+          Amount: "",
           Date: new Date().toDateString(),
           Comment: "",
         });
@@ -131,11 +134,19 @@ const IncomeForm = (props) => {
         // trigger the page to rerender with updated expenseLog
         await props.updateIncomeLog();
         // trigger Home to rerender with updated accountLog/categoryLog
-        await props.updateHomeHandler();
+        if (props.updateHomeHandler) await props.updateHomeHandler();
       };
       await triggerPageUpdates();
     };
-    updateData();
+
+    const formIsValid = checkFormValidity(incomeForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewTransactionToDB(incomeForm, "income");
+      updateData();
+    }
   };
 
   // edit selected income
@@ -260,7 +271,7 @@ const IncomeForm = (props) => {
         setIncomeForm({
           From: "",
           To: "",
-          Amount: 0,
+          Amount: "",
           Date: new Date().toDateString(),
           Comment: "",
         });
@@ -268,7 +279,7 @@ const IncomeForm = (props) => {
         // trigger the page to rerender with updated expenseLog
         await props.updateIncomeLog();
         // trigger Home to rerender with updated accountLog/categoryLog
-        await props.updateHomeHandler();
+        if (props.updateHomeHandler) await props.updateHomeHandler();
       };
       await triggerPageUpdates();
     };
@@ -278,14 +289,44 @@ const IncomeForm = (props) => {
     props.setShowIncomeForm();
   };
 
+  let helperTextFrom, helperTextTo, helperTextAmount;
+  let invalidInputFrom, invalidInputTo, invalidInputAmount;
+
+  if (formIsValid === false) {
+    if (incomeForm.From === "") {
+      helperTextFrom = "Please fill in";
+      invalidInputFrom = true;
+    }
+    if (incomeForm.To === "") {
+      helperTextTo = "Please fill in";
+      invalidInputTo = true;
+    }
+    if (
+      incomeForm.Amount <= 0 ||
+      incomeForm.Amount != Number(incomeForm.Amount)
+    ) {
+      helperTextAmount = "Invalid input";
+      invalidInputAmount = true;
+    }
+    if (incomeForm.Amount === "") {
+      helperTextAmount = "Please fill in";
+      invalidInputAmount = true;
+    }
+  }
+
   const commonProps = {
     updateForm: updateFormHandler,
     handleDateChange: updateFormHandler,
     selectedDate: incomeForm.Date,
     income: true,
     accountList: props.accountList,
-    accountsLabel: "To",
     btnColor: "primary",
+    helperTextFrom: helperTextFrom,
+    helperTextTo: helperTextTo,
+    helperTextAmount: helperTextAmount,
+    invalidInputFrom: invalidInputFrom,
+    invalidInputTo: invalidInputTo,
+    invalidInputAmount: invalidInputAmount,
   };
 
   let form = (
