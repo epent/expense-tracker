@@ -4,6 +4,8 @@ import Box from "@material-ui/core/Box";
 
 import Form from "../components/Forms/Form";
 import {
+  getDataFromDB,
+  postUpdatedTotal,
   postNewTransactionToDB as postNewAccountToDB,
   postEditedTransactionToDB as postEditedAccountToDB,
 } from "../modules/fetch";
@@ -47,20 +49,66 @@ const AccountForm = (props) => {
     setShowEditedForm(true);
   };
 
+  const fetchDataToList = async (urlName, isTotal) => {
+    const pushFetchedDataToList = (data) => {
+      const list = [];
+      isTotal
+        ? Object.keys(data).map((key) => {
+            list.push({
+              [key]: data[key],
+              id: key,
+            });
+          })
+        : Object.keys(data).map((key) => {
+            list.push({
+              ...data[key],
+              id: key,
+            });
+          });
+      return list;
+    };
+
+    const fetchedData = await getDataFromDB(urlName);
+    const fetchedDataList = pushFetchedDataToList(fetchedData);
+    return fetchedDataList;
+  };
+
   // add new account
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
     setFormIsValid(false);
 
-    const triggerUpdates = async () => {
-      setAccountForm({
-        Name: "",
-        Category: "",
-        Balance: "",
-      });
+    const updateData = async () => {
+      const updateTotalBalance = async () => {
+        const fetchedTotalList = await fetchDataToList("total", true);
 
-      // trigger the page to rerender with updated categoryLog
-      await props.updateAccountLog();
+        const updateBalanceInDB = async () => {
+          const totalBalance = fetchedTotalList.filter((total) => {
+            return total.id === "balance";
+          });
+
+          const updatedTotals = {
+            balance:
+              Number(totalBalance[0].balance) + Number(accountForm.Balance),
+          };
+
+          await postUpdatedTotal(updatedTotals);
+        };
+        await updateBalanceInDB();
+      };
+      await updateTotalBalance();
+
+      const triggerUpdates = async () => {
+        setAccountForm({
+          Name: "",
+          Category: "",
+          Balance: "",
+        });
+
+        // trigger the page to rerender with updated categoryLog
+        await props.updateAccountLog();
+      };
+      await triggerUpdates();
     };
 
     const formIsValid = checkAccountFormValidity(accountForm, validityRules);
@@ -69,7 +117,7 @@ const AccountForm = (props) => {
     if (formIsValid) {
       setFormIsValid(true);
       postNewAccountToDB(accountForm, "accounts");
-      triggerUpdates();
+      updateData();
     }
   };
 

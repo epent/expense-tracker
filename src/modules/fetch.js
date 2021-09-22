@@ -75,3 +75,16 @@ export const fetchCategoriesFromDB = async () => {
 
   return fetchedDataList;
 };
+
+export const calculateTotalBalance = async () => {
+  const fetchAccounts = async () => {
+    const accountList = await fetchAccountsFromDB();
+    return accountList;
+  };
+  const fetchedAccounts = await fetchAccounts();
+
+  let sum = 0;
+  fetchedAccounts.forEach((account) => (sum += Number(account.Balance)));
+
+  return sum;
+};

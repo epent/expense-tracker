@@ -57,13 +57,13 @@ const Home = () => {
         xs={12}
       >
         {/* this is not finished yet */}
-        {/* <Grid item>
+        <Grid item>
           <Balance
             title="Balance"
             amount={total.balance}
             amountColor="textSecondary"
           />
-        </Grid> */}
+        </Grid>
         <Grid item>
           <Balance title="Income" amount={total.income} amountColor="primary" />
         </Grid>

@@ -8,6 +8,7 @@ import {
   postUpdatedTotal,
   getDataFromDB,
   deleteTransactionFromDB,
+  calculateTotalBalance
 } from "../modules/fetch";
 
 const IncomeLog = (props) => {
@@ -109,9 +110,12 @@ const IncomeLog = (props) => {
             return total.id === "income";
           });
 
+          const totalBalance = await calculateTotalBalance();
+
           const updatedTotals = {
             income:
               Number(totalIncome[0].income) - Number(incometoDelete.Amount),
+            balance: totalBalance,
           };
 
           await postUpdatedTotal(updatedTotals);

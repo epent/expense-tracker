@@ -9,6 +9,7 @@ import {
   postUpdatedBalance,
   postUpdatedTotal,
   getDataFromDB,
+  calculateTotalBalance,
 } from "../modules/fetch";
 
 import { checkFormValidity } from "../modules/validation";
@@ -112,8 +113,11 @@ const IncomeForm = (props) => {
             return total.id === "income";
           });
 
+          const totalBalance = await calculateTotalBalance();
+
           const updatedTotals = {
             income: Number(totalIncome[0].income) + Number(incomeForm.Amount),
+            balance: totalBalance,
           };
 
           await postUpdatedTotal(updatedTotals);
@@ -202,6 +206,8 @@ const IncomeForm = (props) => {
                 return total.id === "income";
               });
 
+              const totalBalance = await calculateTotalBalance();
+
               let updatedTotals;
 
               if (props.editedIncomeForm.Amount > incomeForm.Amount) {
@@ -210,6 +216,7 @@ const IncomeForm = (props) => {
                     Number(totalIncome[0].income) -
                     (Number(props.editedIncomeForm.Amount) -
                       Number(incomeForm.Amount)),
+                  balace: totalBalance,
                 };
               }
 
@@ -219,6 +226,7 @@ const IncomeForm = (props) => {
                     Number(totalIncome[0].income) +
                     (Number(incomeForm.Amount) -
                       Number(props.editedIncomeForm.Amount)),
+                  balace: totalBalance,
                 };
               }
               await postUpdatedTotal(updatedTotals);

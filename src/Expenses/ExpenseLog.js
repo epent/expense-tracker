@@ -8,6 +8,7 @@ import {
   postUpdatedTotal,
   getDataFromDB,
   deleteTransactionFromDB,
+  calculateTotalBalance,
 } from "../modules/fetch";
 
 const ExpenseLog = (props) => {
@@ -129,14 +130,13 @@ const ExpenseLog = (props) => {
             return total.id === "expenses";
           });
 
-          // const totalBalance = fetchedDataList.filter((total) => {
-          //   return total.id === "balance";
-          // });
+          const totalBalance = await calculateTotalBalance();
 
           const updatedTotals = {
             expenses:
               Number(totalExpenses[0].expenses) +
               Number(expenseToDelete.Amount),
+            balance: totalBalance,
           };
 
           await postUpdatedTotal(updatedTotals);

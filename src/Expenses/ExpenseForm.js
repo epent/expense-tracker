@@ -9,6 +9,7 @@ import {
   postUpdatedBalance,
   postUpdatedTotal,
   getDataFromDB,
+  calculateTotalBalance,
 } from "../modules/fetch";
 
 import { checkFormValidity } from "../modules/validation";
@@ -130,13 +131,12 @@ const ExpenseForm = (props) => {
             return total.id === "expenses";
           });
 
-          // const totalBalance = fetchedBalanceList.filter((total) => {
-          //   return total.id === "balance";
-          // });
+          const totalBalance = await calculateTotalBalance();
 
           const updatedTotals = {
             expenses:
               Number(totalExpenses[0].expenses) - Number(expenseForm.Amount),
+            balance: totalBalance,
           };
 
           await postUpdatedTotal(updatedTotals);
@@ -259,9 +259,7 @@ const ExpenseForm = (props) => {
                 return total.id === "expenses";
               });
 
-              // const totalBalance = fetchedBalanceList.filter((total) => {
-              //   return total.id === "balance";
-              // });
+              const totalBalance = await calculateTotalBalance();
 
               let updatedTotals;
 
@@ -271,6 +269,7 @@ const ExpenseForm = (props) => {
                     Number(totalExpenses[0].expenses) -
                     (Number(expenseForm.Amount) -
                       Number(props.editedExpenseForm.Amount)),
+                  balance: totalBalance,
                 };
               }
 
@@ -280,6 +279,7 @@ const ExpenseForm = (props) => {
                     Number(totalExpenses[0].expenses) +
                     (Number(props.editedExpenseForm.Amount) -
                       Number(expenseForm.Amount)),
+                  balance: totalBalance,
                 };
               }
 
