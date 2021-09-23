@@ -1,17 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import { makeStyles } from "@material-ui/core/styles";
 
 import AccountForm from "../Accounts/AccountForm";
 import AccountLog from "../Accounts/AccountLog";
+import Donut from "../Charts/Donut";
+import { fetchAccountsFromDB } from "../modules/fetch";
+
+const useStyles = makeStyles({
+  root: {
+    width: 680,
+    backgroundColor: "#fafafa",
+    borderRadius: 10,
+  },
+});
 
 const Accounts = (props) => {
+  const classes = useStyles();
+
   const [accountFormShow, setAccountFormShow] = useState(false);
 
   const [updatedAccountLog, setUpdatedAccountLog] = useState(false);
+
+  const [accountBalances, setAccountBalances] = useState([]);
+
+  const [updateDonut, setUpdateDonut] = useState(false);
+
+  useEffect(() => {
+    const updateAccounts = async () => {
+      const fetchAccounts = async () => {
+        const accountList = await fetchAccountsFromDB();
+
+        const updateState = async () => {
+          const fetchedAccountBalances = accountList.map((account) => {
+            return Number(account.Balance);
+          });
+
+          setAccountBalances(fetchedAccountBalances);
+
+          setUpdateDonut((prevState) => !prevState);
+        };
+        await updateState();
+      };
+      await fetchAccounts();
+    };
+    updateAccounts();
+  }, [updatedAccountLog, props.updateHome]);
 
   // show the form when toggle "+Accounts" button
   const showAccountFormHandler = () => {
@@ -24,7 +64,7 @@ const Accounts = (props) => {
   };
 
   const accountForm = (
-    <Box mt={3}>
+    <Box>
       <Grid item xs={12}>
         <Grid item xs={12}>
           <Button
@@ -48,16 +88,44 @@ const Accounts = (props) => {
   return (
     <Grid container>
       {props.showAccountForm && accountForm}
-      <Grid item xs={12}>
-        <AccountLog
-          sliceLog={props.sliceLog}
-          showEditBtn={props.showEditBtn}
-          showDeleteBtn={props.showDeleteBtn}
-          updatedAccountLog={updatedAccountLog}
-          updateAccountLog={updateAccountLogHandler}
-          updateHome={props.updateHome}
-        />
-      </Grid>
+      <Paper elevation={3} className={classes.root}>
+        <Grid container direction="row" item xs={12}>
+          <Grid item xs={6}>
+            <Box mt={3} mx={3}>
+              <Typography variant="h5" gutterBottom color="textSecondary">
+                Accounts
+              </Typography>
+            </Box>
+            <Box px={3}>
+              <AccountLog
+                sliceLog={props.sliceLog}
+                showEditBtn={props.showEditBtn}
+                showDeleteBtn={props.showDeleteBtn}
+                updatedAccountLog={updatedAccountLog}
+                updateAccountLog={updateAccountLogHandler}
+                updateHome={props.updateHome}
+              />
+            </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <Box mt={2}>
+              <Donut
+                labels={[
+                  "Bank",
+                  "Visa One",
+                  "Visa Two",
+                  "Cash",
+                  "New account",
+                  "New card",
+                ]}
+                data={[8800, 0, 0, 0, 1000, 500]}
+                updatedData={accountBalances}
+                updateDonut={updateDonut}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Paper>
     </Grid>
   );
 };
