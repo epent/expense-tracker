@@ -8,7 +8,7 @@ const Donut = (props) => {
     series: props.data,
     chartOptions: {
       chart: {
-        id: props.chartId,
+        id: "donut-chart",
       },
       legend: {
         show: false,
@@ -34,7 +34,6 @@ const Donut = (props) => {
         ...donutState,
         series: props.updatedData,
       });
-      console.log("updatedData")
     }
 
     console.log(props.updatedData);

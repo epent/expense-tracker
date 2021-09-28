@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 
-import { getDataFromDB } from "../../modules/fetch";
+import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
 const useStyles = makeStyles({
   root: {
@@ -29,34 +29,6 @@ const TransactionList = (props) => {
       amount: "",
     },
   ]);
-
-  const pushFetchedDataToList = (data, transactionType) => {
-    const list = [];
-    transactionType === "expenses"
-      ? Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "expenses",
-          });
-        })
-      : transactionType === "income"
-      ? Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "income",
-          });
-        })
-      : Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "transfers",
-          });
-        });
-    return list;
-  };
 
   const columns = [
     { field: "date", headerName: "Date", type: "date", width: 200 },
