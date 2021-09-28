@@ -30,6 +30,8 @@ const Accounts = (props) => {
 
   const [accountBalances, setAccountBalances] = useState([]);
 
+  const [accountLabels, setAccountLabels] = useState([]);
+
   const [updateDonut, setUpdateDonut] = useState(false);
 
   useEffect(() => {
@@ -42,7 +44,13 @@ const Accounts = (props) => {
             return Number(account.Balance);
           });
 
+          const fetchedAccountLabels = accountList.map((account) => {
+            return account.Name;
+          });
+
           setAccountBalances(fetchedAccountBalances);
+
+          setAccountLabels(fetchedAccountLabels);
 
           setUpdateDonut((prevState) => !prevState);
         };
@@ -110,15 +118,9 @@ const Accounts = (props) => {
           <Grid item xs={6}>
             <Box mt={2}>
               <Donut
-                labels={[
-                  "Bank",
-                  "Visa One",
-                  "Visa Two",
-                  "Cash",
-                  "New account",
-                  "New card",
-                ]}
-                data={[8800, 0, 0, 0, 1000, 500]}
+                labels={[]}
+                data={[]}
+                updatedLabels={accountLabels}
                 updatedData={accountBalances}
                 updateDonut={updateDonut}
               />

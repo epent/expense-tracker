@@ -33,6 +33,10 @@ const Donut = (props) => {
       setDonutState({
         ...donutState,
         series: props.updatedData,
+        chartOptions: {
+          ...donutState.chartOptions,
+          labels: props.updatedLabels,
+        },
       });
     }
 

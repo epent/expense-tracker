@@ -30,6 +30,8 @@ const Categories = (props) => {
 
   const [categoryBalances, setCategoryBalances] = useState([]);
 
+  const [categoryLabels, setCategoryLabels] = useState([]);
+
   const [updateDonut, setUpdateDonut] = useState(false);
 
   useEffect(() => {
@@ -39,10 +41,16 @@ const Categories = (props) => {
 
         const updateState = async () => {
           const fetchedCategoryBalances = categoryList.map((category) => {
-            return category.Balance;
+            return Number(category.Balance);
+          });
+
+          const fetchedCategoryLabels = categoryList.map((category) => {
+            return category.Name;
           });
 
           setCategoryBalances(fetchedCategoryBalances);
+
+          setCategoryLabels(fetchedCategoryLabels);
 
           setUpdateDonut((prevState) => !prevState);
         };
@@ -110,16 +118,9 @@ const Categories = (props) => {
           <Grid item xs={6}>
             <Box mt={2}>
               <Donut
-                labels={[
-                  "Food",
-                  "Flat",
-                  "Transport",
-                  "Personal",
-                  "Internet",
-                  "Gym",
-                  "Health",
-                ]}
-                data={[200, 0, 100, 0, 100, 0]}
+                labels={[]}
+                data={[]}
+                updatedLabels={categoryLabels}
                 updatedData={categoryBalances}
                 updateDonut={updateDonut}
               />
