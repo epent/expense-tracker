@@ -17,7 +17,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
 import MoneyIcon from "@material-ui/icons/Money";
 
-const drawerWidth = 200;
+const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {

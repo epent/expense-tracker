@@ -58,23 +58,34 @@ const Home = () => {
         xs={12}
       >
         <Grid item>
-          <Balance
-            title="Balance"
-            amount={total.balance}
-            amountColor="textSecondary"
-          />
+          <Box mt={3}>
+            <Balance
+              title="Balance"
+              amount={total.balance}
+              amountColor="textSecondary"
+            />
+          </Box>
         </Grid>
         <Grid item>
-          <Balance title="Income" amount={total.income} amountColor="primary" />
+          <Box mt={3}>
+            <Balance
+              title="Income"
+              amount={total.income}
+              amountColor="primary"
+            />
+          </Box>
         </Grid>
         <Grid item>
-          <Balance
-            title="Expenses"
-            amount={total.expenses}
-            amountColor="secondary"
-          />
+          <Box mt={3}>
+            <Balance
+              title="Expenses"
+              amount={total.expenses}
+              amountColor="secondary"
+            />
+          </Box>
         </Grid>
       </Grid>
+
       <Grid
         container
         item
@@ -83,7 +94,7 @@ const Home = () => {
         xs={12}
       >
         <Grid item>
-          <Box>
+          <Box mt={3}>
             <TransactionList updateHome={updateHome} />
           </Box>
         </Grid>
@@ -145,7 +156,9 @@ const Home = () => {
         </Grid>
       </Grid>
       <Grid container item xs={12}>
-        <ExpensesIncomeChart />
+        <Box mt={3} mb={3}>
+          <ExpensesIncomeChart />
+        </Box>
       </Grid>
     </Grid>
   );

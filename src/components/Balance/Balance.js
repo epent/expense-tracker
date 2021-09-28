@@ -7,9 +7,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 250,
-    height: 85,
+    width: 450,
+    height: 155,
     backgroundColor: "#fafafa",
+    borderRadius: 10,
   },
 });
 
@@ -17,7 +18,7 @@ const Balance = (props) => {
   const classes = useStyles();
 
   return (
-    <Box my={3}>
+    <Box>
       <Paper elevation={3} className={classes.root}>
         <Box p={1}>
           <Typography variant="h5" gutterBottom color="textSecondary">

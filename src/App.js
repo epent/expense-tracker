@@ -11,6 +11,7 @@ import Accounts from "./Accounts/Accounts";
 import HistoryLog from "./components/History/HistoryLog";
 import Categories from "./Categories/Categories";
 
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -69,7 +70,7 @@ function App() {
           </Grid>
           <Grid item xs={10}>
             <Toolbar />
-            {routes}
+            <Box mr={10}>{routes}</Box>
           </Grid>
         </Grid>
       </Router>
