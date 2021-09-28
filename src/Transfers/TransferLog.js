@@ -66,7 +66,7 @@ const TransferLog = (props) => {
       setTransferLog(fetchedTransfersList);
     };
     fetchTransferLog();
-  }, [props.updatedTransferLog, props.updateHome]);
+  }, [props.updatedTransferLog]);
 
   const deleteTransferHandler = (transferToDelete) => {
     deleteTransactionFromDB("transfers", transferToDelete.id);
@@ -115,12 +115,6 @@ const TransferLog = (props) => {
       };
       await updateAccountBalance("From");
       await updateAccountBalance("To");
-
-      const triggerPageUpdates = async () => {
-        // trigger Home to rerender with updated accountLog/categoryLog
-        if (props.updateHomeHandler) await props.updateHomeHandler();
-      };
-      await triggerPageUpdates();
     };
     updateData();
   };
@@ -150,13 +144,10 @@ const TransferLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = transferLog;
-  if (props.sliceLog) transactions = transferLog.slice(0, 2);
-
   return (
     <Box>
       <History
-        transactions={transactions}
+        transactions={transferLog}
         transactionColor="textSecondary"
         arrowColor="disabled"
         amountColor="textSecondary"
@@ -172,7 +163,6 @@ const TransferLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={transferToDelete}
-        updateHomeHandler={props.updateHomeHandler}
         accountList={props.accountList}
       />
     </Box>

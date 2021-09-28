@@ -67,7 +67,7 @@ const ExpenseLog = (props) => {
       setExpenseLog(fetchedExpensesList);
     };
     fetchExpenseLog();
-  }, [props.updatedExpenseLog, props.updateHome]);
+  }, [props.updatedExpenseLog]);
 
   const deleteExpenseHandler = (expenseToDelete) => {
     deleteTransactionFromDB("expenses", expenseToDelete.id);
@@ -180,13 +180,10 @@ const ExpenseLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = expenseLog;
-  if (props.sliceLog) transactions = expenseLog.slice(0, 4);
-
   return (
     <Box>
       <History
-        transactions={transactions}
+        transactions={expenseLog}
         transactionColor="secondary"
         arrowColor="secondary"
         amountColor="secondary"
@@ -202,7 +199,6 @@ const ExpenseLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={expenseToDelete}
-        updateHomeHandler={props.updateHomeHandler}
         accountList={props.accountList}
         categoryList={props.categoryList}
       />

@@ -79,7 +79,7 @@ const TransactionList = (props) => {
       await updateRowList();
     };
     fetchTransactions();
-  }, []);
+  }, [props.updateHome]);
 
   return (
     <Grid container>

@@ -77,11 +77,11 @@ const Transfers = (props) => {
       <Grid item xs={12}>
         {props.showTransferLog && (
           <TransferLog
-            sliceLog={props.sliceLog}
+
             updatedTransferLog={updatedTransferLog}
             updateTransferLog={updateTransferLogHandler}
-            updateHome={props.updateHome}
-            updateHomeHandler={props.updateHomeHandler}
+
+            
             setEditExpenseFormShow={editTransferFormShowHandler}
             accountList={accountList}
           />

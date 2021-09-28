@@ -8,7 +8,7 @@ import {
   postUpdatedTotal,
   getDataFromDB,
   deleteTransactionFromDB,
-  calculateTotalBalance
+  calculateTotalBalance,
 } from "../modules/fetch";
 
 const IncomeLog = (props) => {
@@ -67,7 +67,7 @@ const IncomeLog = (props) => {
       setIncomeLog(fetchedIncomeList);
     };
     fetchIncomeLog();
-  }, [props.updatedIncomeLog, props.updateHome]);
+  }, [props.updatedIncomeLog]);
 
   const deleteIncomeHandler = (incometoDelete) => {
     deleteTransactionFromDB("income", incometoDelete.id);
@@ -123,12 +123,6 @@ const IncomeLog = (props) => {
         await updateBalanceInDB();
       };
       await updateTotalBalance();
-
-      const triggerPageUpdates = async () => {
-        // trigger Home to rerender with updated accountLog/categoryLog
-        if (props.updateHomeHandler) await props.updateHomeHandler();
-      };
-      await triggerPageUpdates();
     };
     updateData();
   };
@@ -159,13 +153,10 @@ const IncomeLog = (props) => {
     setShowModal(false);
   };
 
-  let transactions = incomeLog;
-  if (props.sliceLog) transactions = incomeLog.slice(0, 2);
-
   return (
     <Box>
       <History
-        transactions={transactions}
+        transactions={incomeLog}
         transactionColor="primary"
         arrowColor="primary"
         amountColor="primary"
@@ -181,7 +172,6 @@ const IncomeLog = (props) => {
         closeModal={closeModalHandler}
         showModal={showModal}
         transactionToDelete={incomeToDelete}
-        updateHomeHandler={props.updateHomeHandler}
         accountList={props.accountList}
       />
     </Box>

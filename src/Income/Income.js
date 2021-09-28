@@ -78,11 +78,11 @@ const Income = (props) => {
       <Grid item xs={12}>
         {props.showIncomeLog && (
           <IncomeLog
-            sliceLog={props.sliceLog}
+
             updatedIncomeLog={updatedIncomeLog}
             updateIncomeLog={updateIncomeLogHandler}
-            updateHome={props.updateHome}
-            updateHomeHandler={props.updateHomeHandler}
+
+
             setEditIncomeFormShow={editIncomeFormShowHandler}
             accountList={accountList}
           />

@@ -91,11 +91,8 @@ const Expenses = (props) => {
       <Grid item xs={12}>
         {props.showExpenseLog && (
           <ExpenseLog
-            sliceLog={props.sliceLog}
             updatedExpenseLog={updatedExpenseLog}
             updateExpenseLog={updateExpenseLogHandler}
-            updateHome={props.updateHome}
-            updateHomeHandler={props.updateHomeHandler}
             setEditExpenseFormShow={editExpenseFormShowHandler}
             accountList={accountList}
             categoryList={categoryList}

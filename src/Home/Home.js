@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 
 import Balance from "../components/Balance/Balance";
 import HistoryLog from "../components/History/HistoryLog";
@@ -11,6 +10,8 @@ import Categories from "../Categories/Categories";
 import Expenses from "../Expenses/Expenses";
 import Income from "../Income/Income";
 import Transfers from "../Transfers/Transfers";
+import TransactionList from "../components/History/TransactionList";
+import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
 import { getDataFromDB } from "../modules/fetch";
 
 const Home = () => {
@@ -53,10 +54,9 @@ const Home = () => {
         container
         item
         direction="row"
-        justifyContent="space-around"
+        justifyContent="space-between"
         xs={12}
       >
-        {/* this is not finished yet */}
         <Grid item>
           <Balance
             title="Balance"
@@ -78,15 +78,51 @@ const Home = () => {
       <Grid
         container
         item
-        direction="column"
+        direction="row"
         justifyContent="space-between"
-        xs={3}
+        xs={12}
       >
         <Grid item>
           <Box>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Accounts
-            </Typography>
+            <TransactionList updateHome={updateHome} />
+          </Box>
+        </Grid>
+        <Grid item>
+          <Expenses
+            showExpenseLog={false}
+            showExpenseForm={true}
+            updateHomeHandler={updateHomeHandler}
+          />
+        </Grid>
+        {/* <Grid item>
+            <Box my={4} mr={5}>
+              <Income
+                showIncomeLog={false}
+                showIncomeForm={true}
+                updateHomeHandler={updateHomeHandler}
+              />
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box my={4} mr={5}>
+              <Transfers
+                showTransferLog={false}
+                showTransferForm={true}
+                updateHomeHandler={updateHomeHandler}
+              />
+            </Box>
+          </Grid> */}
+      </Grid>
+      <Grid
+        container
+        item
+        direction="row"
+        justifyContent="space-between"
+        xs={12}
+        spacing={3}
+      >
+        <Grid item>
+          <Box mt={3}>
             <Accounts
               sliceLog={true}
               showAccountForm={false}
@@ -97,10 +133,7 @@ const Home = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Box mb={2}>
-            <Typography variant="h5" gutterBottom color="textSecondary">
-              Categories
-            </Typography>
+          <Box mt={3}>
             <Categories
               sliceLog={true}
               showCategoryForm={false}
@@ -111,54 +144,8 @@ const Home = () => {
           </Box>
         </Grid>
       </Grid>
-      <Grid container item direction="column" xs={6}>
-        <Grid item>
-          <Box>
-            <Grid item xs={12}>
-              <HistoryLog
-                sliceLog={true}
-                updateHome={updateHome}
-                updateHomeHandler={updateHomeHandler}
-              />
-            </Grid>
-          </Box>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        item
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-        xs={3}
-      >
-        <Grid item>
-          <Box mt={5} mb={4} mr={5}>
-            <Expenses
-              showExpenseLog={false}
-              showExpenseForm={true}
-              updateHomeHandler={updateHomeHandler}
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box my={4} mr={5}>
-            <Income
-              showIncomeLog={false}
-              showIncomeForm={true}
-              updateHomeHandler={updateHomeHandler}
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box my={4} mr={5}>
-            <Transfers
-              showTransferLog={false}
-              showTransferForm={true}
-              updateHomeHandler={updateHomeHandler}
-            />
-          </Box>
-        </Grid>
+      <Grid container item xs={12}>
+        <ExpensesIncomeChart />
       </Grid>
     </Grid>
   );
