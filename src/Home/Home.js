@@ -12,6 +12,7 @@ import Income from "../Income/Income";
 import Transfers from "../Transfers/Transfers";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
+import NewTransactionForm from "../components/Forms/NewTransactionForm";
 import { getDataFromDB } from "../modules/fetch";
 
 const Home = () => {
@@ -50,6 +51,7 @@ const Home = () => {
 
   return (
     <Grid container spacing={3}>
+      {/* Balances row */}
       <Grid
         container
         item
@@ -85,7 +87,7 @@ const Home = () => {
           </Box>
         </Grid>
       </Grid>
-
+      {/* Transactions + Form row */}
       <Grid
         container
         item
@@ -99,12 +101,17 @@ const Home = () => {
           </Box>
         </Grid>
         <Grid item>
+          <Box mt={3}>
+            <NewTransactionForm />
+          </Box>
+        </Grid>
+        {/* <Grid item>
           <Expenses
             showExpenseLog={false}
             showExpenseForm={true}
             updateHomeHandler={updateHomeHandler}
           />
-        </Grid>
+        </Grid> */}
         {/* <Grid item>
             <Box my={4} mr={5}>
               <Income
@@ -124,6 +131,7 @@ const Home = () => {
             </Box>
           </Grid> */}
       </Grid>
+      {/* Accounts + Categories row */}
       <Grid
         container
         item
@@ -155,6 +163,7 @@ const Home = () => {
           </Box>
         </Grid>
       </Grid>
+      {/* Income vs Expenses row */}
       <Grid container item xs={12}>
         <Box mt={3} mb={3}>
           <ExpensesIncomeChart />
