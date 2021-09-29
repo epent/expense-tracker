@@ -49,36 +49,42 @@ const NewForm = (props) => {
   };
 
   let windowFrom;
-  let windowTo;
 
   props.transactionType === "income"
-    ? (windowFrom = null)
-    : (windowFrom = accountsToChoose);
+    ? (windowFrom = (
+        <TextField {...commonProps} className={classes.root} label="From" />
+      ))
+    : (windowFrom = (
+        <TextField
+          {...commonProps}
+          select
+          className={classes.root}
+          label="From"
+        >
+          {accountsToChoose}
+        </TextField>
+      ));
+
+  let windowTo;
 
   props.transactionType === "expense"
-    ? (windowTo = categoriesToChoose)
-    : (windowTo = accountsToChoose);
+    ? (windowTo = (
+        <TextField {...commonProps} select className={classes.root} label="To">
+          {categoriesToChoose}
+        </TextField>
+      ))
+    : (windowTo = (
+        <TextField {...commonProps} select className={classes.root} label="To">
+          {accountsToChoose}
+        </TextField>
+      ));
 
   return (
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
         <Box>
-          <TextField
-            {...commonProps}
-            select
-            className={classes.root}
-            label="From"
-          >
-            {windowFrom}
-          </TextField>
-          <TextField
-            {...commonProps}
-            select
-            className={classes.root}
-            label="To"
-          >
-            {windowTo}
-          </TextField>
+          {windowFrom}
+          {windowTo}
           <TextField {...commonProps} className={classes.root} label="Amount" />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
