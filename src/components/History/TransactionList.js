@@ -11,7 +11,7 @@ import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
 const useStyles = makeStyles({
   root: {
-    width: 830,
+    width: 780,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -34,7 +34,7 @@ const TransactionList = (props) => {
     { field: "date", headerName: "Date", type: "date", width: 200 },
     { field: "from", headerName: "From", width: 200 },
     { field: "to", headerName: "To", width: 200 },
-    { field: "amount", headerName: "Amount", type: "number", width: 200 },
+    { field: "amount", headerName: "Amount", type: "number", width: 175 },
   ];
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const TransactionList = (props) => {
             Transactions
           </Typography>
         </Box>
-        <Box style={{ width: 830 }}>
+        <Box style={{ width: 780 }}>
           <DataGrid
             autoHeight={true}
             rowHeight={45}
