@@ -2,6 +2,8 @@ import React from "react";
 
 import Box from "@material-ui/core/Box";
 import FormGroup from "@material-ui/core/FormGroup";
+
+import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Grid from "@material-ui/core/Grid";
@@ -61,6 +63,7 @@ const NewForm = (props) => {
           select
           className={classes.root}
           label="From"
+          onChange={(e) => props.updateForm(e, "From")}
         >
           {accountsToChoose}
         </TextField>
@@ -70,12 +73,24 @@ const NewForm = (props) => {
 
   props.transactionType === "expense"
     ? (windowTo = (
-        <TextField {...commonProps} select className={classes.root} label="To">
+        <TextField
+          {...commonProps}
+          select
+          className={classes.root}
+          label="To"
+          onChange={(e) => props.updateForm(e, "To")}
+        >
           {categoriesToChoose}
         </TextField>
       ))
     : (windowTo = (
-        <TextField {...commonProps} select className={classes.root} label="To">
+        <TextField
+          {...commonProps}
+          select
+          className={classes.root}
+          label="To"
+          onChange={(e) => props.updateForm(e, "To")}
+        >
           {accountsToChoose}
         </TextField>
       ));
@@ -83,33 +98,42 @@ const NewForm = (props) => {
   return (
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
-        <FormGroup>
-          <Box>
-            {windowFrom}
-            {windowTo}
-            <TextField
+        <Box>
+          {windowFrom}
+          {windowTo}
+          <TextField
+            {...commonProps}
+            className={classes.root}
+            label="Amount"
+            onChange={(e) => props.updateForm(e, "Amount")}
+          />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
               {...commonProps}
               className={classes.root}
-              label="Amount"
+              label="Date"
+              variant="inline"
+              autoOk
+              disableToolbar
+              format="dd/MM/yyyy"
+              inputVariant="outlined"
             />
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                {...commonProps}
-                className={classes.root}
-                label="Date"
-                variant="inline"
-                autoOk
-                disableToolbar
-                format="dd/MM/yyyy"
-                inputVariant="outlined"
-              />
-            </MuiPickersUtilsProvider>
-            <TextField {...commonProps} fullWidth label="Comment" multiline minRows="2" />
-          </Box>
-          <IconButton size="medium">
+          </MuiPickersUtilsProvider>
+          <TextField
+            {...commonProps}
+            fullWidth
+            label="Comment"
+            multiline
+            minRows="2"
+            onChange={(e) => props.updateForm(e, "Comment")}
+          />
+        </Box>
+        {/* <IconButton size="medium" type="submit">
             <AddCircleIcon style={{ fontSize: 50 }}/>
-          </IconButton>
-        </FormGroup>
+          </IconButton> */}
+        <Button type="submit" variant="contained">
+          Add
+        </Button>
       </form>
     </Grid>
   );

@@ -102,7 +102,7 @@ const Home = () => {
         </Grid>
         <Grid item>
           <Box mt={3}>
-            <NewTransactionForm />
+            <NewTransactionForm updateHomeHandler={updateHomeHandler} />
           </Box>
         </Grid>
         {/* <Grid item>

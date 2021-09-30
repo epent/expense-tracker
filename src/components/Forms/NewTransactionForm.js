@@ -12,7 +12,14 @@ import NewForm from "./NewForm";
 import {
   fetchAccountsFromDB,
   fetchCategoriesFromDB,
+  postNewTransactionToDB,
 } from "../../modules/fetch";
+import {
+  updateAccountBalance,
+  updateCategoryBalance,
+  updateTotalBalance,
+  triggerPageUpdates,
+} from "../../modules/formsubmission";
 
 const useStyles = makeStyles({
   root: {
@@ -36,6 +43,14 @@ const NewTransactionForm = (props) => {
   const [categoryList, setCategoryList] = useState([]);
 
   const [openForm, setOpenForm] = useState("expense");
+
+  const [expenseForm, setExpenseForm] = useState({
+    From: "",
+    To: "",
+    Amount: "",
+    Date: new Date().toDateString(),
+    Comment: "",
+  });
 
   useEffect(() => {
     // fetch accountList from server when form is opened
@@ -71,6 +86,40 @@ const NewTransactionForm = (props) => {
   };
   const openTransferFormHandler = () => {
     setOpenForm("transfer");
+  };
+
+  // update the form
+  const updateFormHandler = (event, formKey) => {
+    formKey === "Date"
+      ? setExpenseForm({
+          ...expenseForm,
+          Date: event.toDateString(),
+        })
+      : setExpenseForm({
+          ...expenseForm,
+          [formKey]: event.target.value,
+        });
+  };
+
+  const expenseFormSubmitHandler = (event) => {
+    // event.preventDefault();
+    console.log("expenseFormSubmitHandler triggered");
+
+    // postNewTransactionToDB(expenseForm, "expenses");
+
+    // const updateData = async () => {
+    //   await updateAccountBalance(expenseForm);
+    //   await updateCategoryBalance(expenseForm);
+    //   await updateTotalBalance(expenseForm);
+    //   await triggerPageUpdates(setExpenseForm, props.updateHomeHandler);
+    // };
+    // updateData();
+  };
+
+  const formSubmitHandler = () => {
+    openForm === "expense"
+      ? expenseFormSubmitHandler()
+      : expenseFormSubmitHandler();
   };
 
   let buttonExpense = "outlined";
@@ -120,6 +169,8 @@ const NewTransactionForm = (props) => {
             accountList={accountList}
             categoryList={categoryList}
             transactionType={openForm}
+            formSubmitHandler={formSubmitHandler}
+            updateForm={updateFormHandler}
           />
         </Box>
       </Paper>
