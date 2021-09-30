@@ -1,8 +1,6 @@
 import React from "react";
 
 import Box from "@material-ui/core/Box";
-import FormGroup from "@material-ui/core/FormGroup";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Grid from "@material-ui/core/Grid";
@@ -49,50 +47,6 @@ const NewForm = (props) => {
     margin: "normal",
     size: "small",
   };
-
-  let windowFrom;
-
-  props.transactionType === "income"
-    ? (windowFrom = (
-        <TextField {...commonProps} className={classes.root} label="From" />
-      ))
-    : (windowFrom = (
-        <TextField
-          {...commonProps}
-          select
-          className={classes.root}
-          label="From"
-          onChange={(e) => props.updateForm(e, "From")}
-        >
-          {accountsToChoose}
-        </TextField>
-      ));
-
-  let windowTo;
-
-  props.transactionType === "expense"
-    ? (windowTo = (
-        <TextField
-          {...commonProps}
-          select
-          className={classes.root}
-          label="To"
-          onChange={(e) => props.updateForm(e, "To")}
-        >
-          {categoriesToChoose}
-        </TextField>
-      ))
-    : (windowTo = (
-        <TextField
-          {...commonProps}
-          select
-          className={classes.root}
-          label="To"
-          onChange={(e) => props.updateForm(e, "To")}
-        >
-          {accountsToChoose}
-        </TextField>
-      ));
 
   const formValues = props.form;
 
@@ -147,6 +101,22 @@ const NewForm = (props) => {
         minRows="2"
         onChange={(e) => props.updateForm(e, formKey)}
       />
+    ) : formKey === "Date" ? (
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <KeyboardDatePicker
+          autoOk
+          disableToolbar
+          variant="inline"
+          format="dd/MM/yyyy"
+          inputVariant="outlined"
+          label={formKey}
+          margin="normal"
+          size="small"
+          className={classes.root}
+          value={props.selectedDate}
+          onChange={(e) => props.updateForm(e, formKey)}
+        />
+      </MuiPickersUtilsProvider>
     ) : (
       <TextField
         {...commonProps}

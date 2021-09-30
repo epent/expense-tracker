@@ -185,6 +185,7 @@ const NewTransactionForm = (props) => {
             formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
             form={expenseForm}
+            selectedDate={expenseForm.Date}
           />
         </Box>
       </Paper>
