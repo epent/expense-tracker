@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: 650,
+    width: 600,
   },
 });
 
@@ -89,7 +89,7 @@ const NewTransactionForm = (props) => {
             Add new transaction
           </Typography>
         </Box>
-        <Box className={classes.root}>
+        <Box className={classes.buttonGroup} mx={3}>
           <ButtonGroup size="large" fullWidth>
             <Button
               color="secondary"

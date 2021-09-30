@@ -1,6 +1,7 @@
 import React from "react";
 
 import Box from "@material-ui/core/Box";
+import FormGroup from "@material-ui/core/FormGroup";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Grid from "@material-ui/core/Grid";
@@ -82,27 +83,33 @@ const NewForm = (props) => {
   return (
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
-        <Box>
-          {windowFrom}
-          {windowTo}
-          <TextField {...commonProps} className={classes.root} label="Amount" />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
+        <FormGroup>
+          <Box>
+            {windowFrom}
+            {windowTo}
+            <TextField
               {...commonProps}
               className={classes.root}
-              label="Date"
-              variant="inline"
-              autoOk
-              disableToolbar
-              format="dd/MM/yyyy"
-              inputVariant="outlined"
+              label="Amount"
             />
-          </MuiPickersUtilsProvider>
-          <TextField {...commonProps} fullWidth label="Comment" multiline />
-        </Box>
-        <IconButton>
-          <AddCircleIcon />
-        </IconButton>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                {...commonProps}
+                className={classes.root}
+                label="Date"
+                variant="inline"
+                autoOk
+                disableToolbar
+                format="dd/MM/yyyy"
+                inputVariant="outlined"
+              />
+            </MuiPickersUtilsProvider>
+            <TextField {...commonProps} fullWidth label="Comment" multiline />
+          </Box>
+          <IconButton>
+            <AddCircleIcon />
+          </IconButton>
+        </FormGroup>
       </form>
     </Grid>
   );

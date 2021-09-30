@@ -86,7 +86,7 @@ const TransactionList = (props) => {
       <Paper elevation={3} className={classes.root}>
         <Box mt={3} mx={3}>
           <Typography variant="h5" gutterBottom color="textSecondary">
-            Transactions
+            Recent transactions
           </Typography>
         </Box>
         <Box style={{ width: 780 }}>
