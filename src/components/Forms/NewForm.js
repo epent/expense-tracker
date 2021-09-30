@@ -2,7 +2,6 @@ import React from "react";
 
 import Box from "@material-ui/core/Box";
 import FormGroup from "@material-ui/core/FormGroup";
-
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -95,45 +94,77 @@ const NewForm = (props) => {
         </TextField>
       ));
 
+  const formValues = props.form;
+
+  let form = Object.keys(formValues).map((formKey) => {
+    return formKey === "From" && props.transactionType === "income" ? (
+      <TextField
+        {...commonProps}
+        className={classes.root}
+        label={formKey}
+        value={formValues[formKey]}
+      />
+    ) : formKey === "From" ? (
+      <TextField
+        {...commonProps}
+        select
+        className={classes.root}
+        label={formKey}
+        value={formValues[formKey]}
+        onChange={(e) => props.updateForm(e, formKey)}
+      >
+        {accountsToChoose}
+      </TextField>
+    ) : formKey === "To" && props.transactionType === "expense" ? (
+      <TextField
+        {...commonProps}
+        select
+        className={classes.root}
+        label={formKey}
+        value={formValues[formKey]}
+        onChange={(e) => props.updateForm(e, formKey)}
+      >
+        {categoriesToChoose}
+      </TextField>
+    ) : formKey === "To" ? (
+      <TextField
+        {...commonProps}
+        select
+        className={classes.root}
+        label={formKey}
+        value={formValues[formKey]}
+        onChange={(e) => props.updateForm(e, formKey)}
+      >
+        {accountsToChoose}
+      </TextField>
+    ) : formKey === "Comment" ? (
+      <TextField
+        {...commonProps}
+        fullWidth
+        label={formKey}
+        value={formValues[formKey]}
+        multiline
+        minRows="2"
+        onChange={(e) => props.updateForm(e, formKey)}
+      />
+    ) : (
+      <TextField
+        {...commonProps}
+        className={classes.root}
+        label={formKey}
+        value={formValues[formKey]}
+        onChange={(e) => props.updateForm(e, formKey)}
+      />
+    );
+  });
+
   return (
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
-        <Box>
-          {windowFrom}
-          {windowTo}
-          <TextField
-            {...commonProps}
-            className={classes.root}
-            label="Amount"
-            onChange={(e) => props.updateForm(e, "Amount")}
-          />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              {...commonProps}
-              className={classes.root}
-              label="Date"
-              variant="inline"
-              autoOk
-              disableToolbar
-              format="dd/MM/yyyy"
-              inputVariant="outlined"
-            />
-          </MuiPickersUtilsProvider>
-          <TextField
-            {...commonProps}
-            fullWidth
-            label="Comment"
-            multiline
-            minRows="2"
-            onChange={(e) => props.updateForm(e, "Comment")}
-          />
-        </Box>
-        {/* <IconButton size="medium" type="submit">
-            <AddCircleIcon style={{ fontSize: 50 }}/>
-          </IconButton> */}
-        <Button type="submit" variant="contained">
-          Add
-        </Button>
+        <Box>{form}</Box>
+        <IconButton size="medium" type="submit">
+          <AddCircleIcon style={{ fontSize: 50 }} />
+        </IconButton>
       </form>
     </Grid>
   );

@@ -18,7 +18,6 @@ import {
   updateAccountBalance,
   updateCategoryBalance,
   updateTotalBalance,
-  triggerPageUpdates,
 } from "../../modules/formsubmission";
 
 const useStyles = makeStyles({
@@ -102,24 +101,38 @@ const NewTransactionForm = (props) => {
   };
 
   const expenseFormSubmitHandler = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     console.log("expenseFormSubmitHandler triggered");
 
-    // postNewTransactionToDB(expenseForm, "expenses");
+    postNewTransactionToDB(expenseForm, "expenses");
 
-    // const updateData = async () => {
-    //   await updateAccountBalance(expenseForm);
-    //   await updateCategoryBalance(expenseForm);
-    //   await updateTotalBalance(expenseForm);
-    //   await triggerPageUpdates(setExpenseForm, props.updateHomeHandler);
-    // };
-    // updateData();
+    const updateData = async () => {
+      await updateAccountBalance(expenseForm);
+      await updateCategoryBalance(expenseForm);
+      await updateTotalBalance(expenseForm);
+      const triggerPageUpdates = async () => {
+        setExpenseForm({
+          From: "",
+          To: "",
+          Amount: "",
+          Date: new Date().toDateString(),
+          Comment: "",
+        });
+
+        // trigger the page to rerender with updated expenseLog
+        // await props.updateExpenseLog();
+        // trigger Home to rerender with updated accountLog/categoryLog
+        if (props.updateHomeHandler) await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
+    };
+    updateData();
   };
 
-  const formSubmitHandler = () => {
+  const formSubmitHandler = (event) => {
     openForm === "expense"
-      ? expenseFormSubmitHandler()
-      : expenseFormSubmitHandler();
+      ? expenseFormSubmitHandler(event)
+      : expenseFormSubmitHandler(event);
   };
 
   let buttonExpense = "outlined";
@@ -169,8 +182,9 @@ const NewTransactionForm = (props) => {
             accountList={accountList}
             categoryList={categoryList}
             transactionType={openForm}
-            formSubmitHandler={formSubmitHandler}
+            formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
+            form={expenseForm}
           />
         </Box>
       </Paper>

@@ -87,18 +87,3 @@ export const updateTotalBalance = async (form) => {
   };
   await updateBalanceInDB();
 };
-
-export const triggerPageUpdates = async (setExpenseForm, updateHomeHandler) => {
-  setExpenseForm({
-    From: "",
-    To: "",
-    Amount: "",
-    Date: new Date().toDateString(),
-    Comment: "",
-  });
-
-  // trigger the page to rerender with updated expenseLog
-  // await props.updateExpenseLog();
-  // trigger Home to rerender with updated accountLog/categoryLog
-  if (updateHomeHandler) await updateHomeHandler();
-};
