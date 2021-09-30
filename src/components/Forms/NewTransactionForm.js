@@ -16,7 +16,8 @@ import {
 
 const useStyles = makeStyles({
   root: {
-    width: 650,
+    width: 725,
+    height: 426,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: 600,
+    width: 680,
   },
 });
 
@@ -84,12 +85,12 @@ const NewTransactionForm = (props) => {
   return (
     <Grid container>
       <Paper elevation={3} className={classes.root}>
-        <Box mt={3} mx={3}>
+        <Box my={3} mx={3}>
           <Typography variant="h5" gutterBottom color="textSecondary">
             Add new transaction
           </Typography>
         </Box>
-        <Box className={classes.buttonGroup} mx={3}>
+        <Box className={classes.buttonGroup} mx={3} mb={2}>
           <ButtonGroup size="large" fullWidth>
             <Button
               color="secondary"

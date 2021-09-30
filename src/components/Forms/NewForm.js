@@ -16,7 +16,7 @@ import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles({
   root: {
-    width: 301,
+    width: 338,
   },
 });
 
@@ -104,10 +104,10 @@ const NewForm = (props) => {
                 inputVariant="outlined"
               />
             </MuiPickersUtilsProvider>
-            <TextField {...commonProps} fullWidth label="Comment" multiline />
+            <TextField {...commonProps} fullWidth label="Comment" multiline minRows="2" />
           </Box>
-          <IconButton>
-            <AddCircleIcon />
+          <IconButton size="medium">
+            <AddCircleIcon style={{ fontSize: 50 }}/>
           </IconButton>
         </FormGroup>
       </form>
