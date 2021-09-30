@@ -3,6 +3,7 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -51,20 +52,28 @@ const NewForm = (props) => {
   const formValues = props.form;
 
   let form = Object.keys(formValues).map((formKey) => {
+    const commonProps = {
+      variant: "outlined",
+      margin: "normal",
+      size: "small",
+      label: formKey,
+      value: formValues[formKey],
+    };
+
     return formKey === "From" && props.transactionType === "income" ? (
       <TextField
         {...commonProps}
         className={classes.root}
-        label={formKey}
-        value={formValues[formKey]}
+        error={props.invalidInputFrom}
+        helperText={props.helperTextFrom}
       />
     ) : formKey === "From" ? (
       <TextField
         {...commonProps}
         select
         className={classes.root}
-        label={formKey}
-        value={formValues[formKey]}
+        error={props.invalidInputFrom}
+        helperText={props.helperTextFrom}
         onChange={(e) => props.updateForm(e, formKey)}
       >
         {accountsToChoose}
@@ -74,8 +83,8 @@ const NewForm = (props) => {
         {...commonProps}
         select
         className={classes.root}
-        label={formKey}
-        value={formValues[formKey]}
+        error={props.invalidInputTo}
+        helperText={props.helperTextTo}
         onChange={(e) => props.updateForm(e, formKey)}
       >
         {categoriesToChoose}
@@ -85,8 +94,8 @@ const NewForm = (props) => {
         {...commonProps}
         select
         className={classes.root}
-        label={formKey}
-        value={formValues[formKey]}
+        error={props.invalidInputTo}
+        helperText={props.helperTextTo}
         onChange={(e) => props.updateForm(e, formKey)}
       >
         {accountsToChoose}
@@ -95,8 +104,6 @@ const NewForm = (props) => {
       <TextField
         {...commonProps}
         fullWidth
-        label={formKey}
-        value={formValues[formKey]}
         multiline
         minRows="2"
         onChange={(e) => props.updateForm(e, formKey)}
@@ -117,12 +124,18 @@ const NewForm = (props) => {
           onChange={(e) => props.updateForm(e, formKey)}
         />
       </MuiPickersUtilsProvider>
+    ) : formKey === "Amount" ? (
+      <TextField
+        {...commonProps}
+        className={classes.root}
+        onChange={(e) => props.updateForm(e, formKey)}
+        error={props.invalidInputAmount}
+        helperText={props.helperTextAmount}
+      />
     ) : (
       <TextField
         {...commonProps}
         className={classes.root}
-        label={formKey}
-        value={formValues[formKey]}
         onChange={(e) => props.updateForm(e, formKey)}
       />
     );
@@ -131,10 +144,12 @@ const NewForm = (props) => {
   return (
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
-        <Box>{form}</Box>
-        <IconButton size="medium" type="submit">
-          <AddCircleIcon style={{ fontSize: 50 }} />
-        </IconButton>
+        <FormControl>
+          <Box>{form}</Box>
+          <IconButton size="medium" type="submit">
+            <AddCircleIcon style={{ fontSize: 50 }} />
+          </IconButton>
+        </FormControl>
       </form>
     </Grid>
   );

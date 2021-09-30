@@ -19,6 +19,7 @@ import {
   updateCategoryBalance,
   updateTotalBalance,
 } from "../../modules/formsubmission";
+import { checkFormValidity } from "../../modules/validation";
 
 const useStyles = makeStyles({
   root: {
@@ -50,6 +51,13 @@ const NewTransactionForm = (props) => {
     Date: new Date().toDateString(),
     Comment: "",
   });
+
+  const validityRules = {
+    required: true,
+    greaterThanZero: true,
+  };
+
+  const [formIsValid, setFormIsValid] = useState(true);
 
   useEffect(() => {
     // fetch accountList from server when form is opened
@@ -102,9 +110,7 @@ const NewTransactionForm = (props) => {
 
   const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
-    console.log("expenseFormSubmitHandler triggered");
-
-    postNewTransactionToDB(expenseForm, "expenses");
+    setFormIsValid(false);
 
     const updateData = async () => {
       await updateAccountBalance(expenseForm);
@@ -126,7 +132,14 @@ const NewTransactionForm = (props) => {
       };
       await triggerPageUpdates();
     };
-    updateData();
+
+    const formIsValid = checkFormValidity(expenseForm, validityRules);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewTransactionToDB(expenseForm, "expenses");
+      updateData();
+    }
   };
 
   const formSubmitHandler = (event) => {
@@ -143,6 +156,31 @@ const NewTransactionForm = (props) => {
     : openForm === "transfer"
     ? (buttonTransfer = "contained")
     : (buttonExpense = "contained");
+
+  let helperTextFrom, helperTextTo, helperTextAmount;
+  let invalidInputFrom, invalidInputTo, invalidInputAmount;
+
+  if (formIsValid === false) {
+    if (expenseForm.From === "") {
+      helperTextFrom = "Please fill in";
+      invalidInputFrom = true;
+    }
+    if (expenseForm.To === "") {
+      helperTextTo = "Please fill in";
+      invalidInputTo = true;
+    }
+    if (
+      expenseForm.Amount <= 0 ||
+      expenseForm.Amount != Number(expenseForm.Amount)
+    ) {
+      helperTextAmount = "Invalid input";
+      invalidInputAmount = true;
+    }
+    if (expenseForm.Amount === "") {
+      helperTextAmount = "Please fill in";
+      invalidInputAmount = true;
+    }
+  }
 
   return (
     <Grid container>
@@ -186,6 +224,12 @@ const NewTransactionForm = (props) => {
             updateForm={updateFormHandler}
             form={expenseForm}
             selectedDate={expenseForm.Date}
+            helperTextFrom={helperTextFrom}
+            helperTextTo={helperTextTo}
+            helperTextAmount={helperTextAmount}
+            invalidInputFrom={invalidInputFrom}
+            invalidInputTo={invalidInputTo}
+            invalidInputAmount={invalidInputAmount}
           />
         </Box>
       </Paper>
