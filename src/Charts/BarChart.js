@@ -31,7 +31,8 @@ const BarChart = (props) => {
         options={barState.options}
         series={barState.series}
         type="bar"
-        width="830"
+        width="1480"
+        height="300"
       />
     </Box>
   );

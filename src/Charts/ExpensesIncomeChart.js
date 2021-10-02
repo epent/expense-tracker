@@ -10,7 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 900,
+    width: 1480,
+    height: 400,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -59,9 +60,28 @@ const ExpensesIncomeChart = (props) => {
           </Typography>
         </Box>
         <BarChart
-          months={["Apr", "May", "Jun", "Jul", "Aug", "Sep"]}
-          expensesData={[9230, 8450, 9000, 8374, 9283, 9282]}
-          incomeData={[9500, 8300, 8500, 8933, 9384, 8347]}
+          months={[
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ]}
+          expensesData={[
+            9230, 8450, 9000, 8374, 9283, 9282, 9230, 8450, 9000, 8374, 9283,
+            9282,
+          ]}
+          incomeData={[
+            9500, 8300, 8500, 8933, 9384, 8347, 9500, 8300, 8500, 8933, 9384,
+            8347,
+          ]}
         />
       </Paper>
     </Grid>

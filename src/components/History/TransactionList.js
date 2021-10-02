@@ -11,7 +11,7 @@ import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
 const useStyles = makeStyles({
   root: {
-    width: 725,
+    width: 740,
     height: 426,
     backgroundColor: "#fafafa",
     borderRadius: 10,

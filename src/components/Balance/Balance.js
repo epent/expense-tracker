@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 450,
+    width: 485,
     height: 155,
     backgroundColor: "#fafafa",
     borderRadius: 10,

@@ -96,12 +96,12 @@ const Home = () => {
         xs={12}
       >
         <Grid item>
-          <Box mt={3}>
+          <Box mt={1}>
             <TransactionList updateHome={updateHome} />
           </Box>
         </Grid>
         <Grid item>
-          <Box mt={3}>
+          <Box mt={1}>
             <NewTransactionForm updateHomeHandler={updateHomeHandler} />
           </Box>
         </Grid>
@@ -138,10 +138,9 @@ const Home = () => {
         direction="row"
         justifyContent="space-between"
         xs={12}
-        spacing={3}
       >
         <Grid item>
-          <Box mt={3}>
+          <Box mt={1}>
             <Accounts
               sliceLog={true}
               showAccountForm={false}
@@ -152,7 +151,7 @@ const Home = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Box mt={3}>
+          <Box mt={1}>
             <Categories
               sliceLog={true}
               showCategoryForm={false}
@@ -165,7 +164,7 @@ const Home = () => {
       </Grid>
       {/* Income vs Expenses row */}
       <Grid container item xs={12}>
-        <Box mt={3} mb={3}>
+        <Box mt={1} mb={3}>
           <ExpensesIncomeChart />
         </Box>
       </Grid>

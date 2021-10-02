@@ -15,7 +15,7 @@ import { fetchAccountsFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles({
   root: {
-    width: 680,
+    width: 740,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -99,7 +99,7 @@ const Accounts = (props) => {
       <Paper elevation={3} className={classes.root}>
         <Grid container direction="row" item xs={12}>
           <Grid item xs={6}>
-            <Box mt={3} mx={3}>
+            <Box my={3} mx={3}>
               <Typography variant="h5" gutterBottom color="textSecondary">
                 Accounts
               </Typography>
