@@ -43,12 +43,6 @@ const NewForm = (props) => {
       );
     });
 
-  const commonProps = {
-    variant: "outlined",
-    margin: "normal",
-    size: "small",
-  };
-
   const formValues = props.form;
 
   let form = Object.keys(formValues).map((formKey) => {
@@ -56,6 +50,7 @@ const NewForm = (props) => {
       variant: "outlined",
       margin: "normal",
       size: "small",
+      color: "secondary",
       label: formKey,
       value: formValues[formKey],
     };
@@ -147,7 +142,7 @@ const NewForm = (props) => {
       <form onSubmit={props.formSubmitHandler}>
         <FormControl>
           <Box>{form}</Box>
-          <IconButton size="medium" type="submit">
+          <IconButton size="medium" type="submit" color="secondary">
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>
         </FormControl>

@@ -19,14 +19,14 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      light: "#a5d6a7",
-      main: "#43a047",
-      dark: "#2e7d32",
+      light: "#b2dfdb",
+      main: "#26a69a",
+      dark: "#009688",
     },
     secondary: {
-      light: "#ce93d8",
-      main: "#ab47bc",
-      dark: "#2e7d32",
+      light: "#d1c4e9",
+      main: "#9575cd",
+      dark: "#673ab7",
     },
     action: {
       active: "#ce93d8",

@@ -12,6 +12,7 @@ const BarChart = (props) => {
       xaxis: {
         categories: props.months,
       },
+      colors: ["#9575cd", "#26a69a"],
     },
     series: [
       {

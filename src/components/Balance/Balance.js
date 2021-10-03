@@ -20,6 +20,11 @@ const useStyles = makeStyles({
 const Balance = (props) => {
   const classes = useStyles();
 
+  let prefix;
+  if (props.sign) {
+    prefix = "+";
+  }
+
   return (
     <Grid>
       <Paper elevation={3} className={classes.root}>
@@ -36,6 +41,7 @@ const Balance = (props) => {
                 displayType={"text"}
                 thousandSeparator={true}
                 suffix={" ILS"}
+                prefix={prefix}
               />
             </Typography>
           </Box>

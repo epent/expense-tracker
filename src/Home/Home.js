@@ -74,6 +74,7 @@ const Home = () => {
               title="Income"
               amount={total.income}
               amountColor="primary"
+              sign={true}
             />
           </Box>
         </Grid>

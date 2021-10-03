@@ -7,6 +7,7 @@ const Donut = (props) => {
   const [donutState, setDonutState] = useState({
     series: props.data,
     chartOptions: {
+      colors: ["#9575cd", "#ede7f6", "#d1c4e9", "#7e57c2", "#512da8", "#b39ddb"],
       chart: {
         id: "donut-chart",
       },
