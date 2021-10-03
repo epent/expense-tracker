@@ -1,6 +1,9 @@
 import React from "react";
 
+import NumberFormat from "react-number-format";
+
 import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,18 +21,35 @@ const Balance = (props) => {
   const classes = useStyles();
 
   return (
-    <Box>
+    <Grid>
       <Paper elevation={3} className={classes.root}>
-        <Box p={1}>
-          <Typography variant="h5" gutterBottom color="textSecondary">
+        <Box>
+          <Box pt={3}>
+            <Typography
+              variant="h3"
+              gutterBottom
+              color={props.amountColor}
+              align="center"
+            >
+              <NumberFormat
+                value={props.amount}
+                displayType={"text"}
+                thousandSeparator={true}
+                suffix={" ILS"}
+              />
+            </Typography>
+          </Box>
+          <Typography
+            variant="h5"
+            gutterBottom
+            color="textSecondary"
+            align="center"
+          >
             {`Total ${props.title}`}
-          </Typography>
-          <Typography variant="h5" gutterBottom color={props.amountColor}>
-            {`${props.amount} ILS`}
           </Typography>
         </Box>
       </Paper>
-    </Box>
+    </Grid>
   );
 };
 
