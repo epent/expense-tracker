@@ -39,7 +39,7 @@ const Donut = (props) => {
         },
       });
     }
-
+    console.log("donut updates");
     console.log(props.updatedData);
   }, [props.updateDonut]);
 

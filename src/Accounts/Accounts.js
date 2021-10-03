@@ -52,7 +52,7 @@ const Accounts = (props) => {
 
           setAccountLabels(fetchedAccountLabels);
 
-          setUpdateDonut((prevState) => !prevState);
+          setUpdateDonut(true);
         };
         await updateState();
       };

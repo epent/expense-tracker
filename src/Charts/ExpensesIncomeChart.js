@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 1480,
+    width: 1510,
     height: 400,
     backgroundColor: "#fafafa",
     borderRadius: 10,
@@ -22,34 +22,88 @@ const ExpensesIncomeChart = (props) => {
 
   const [months, setMonths] = useState([]);
 
+  const [expensesData, setExpensesData] = useState([]);
+
+  const [incomeData, setIncomeData] = useState([]);
+
+  const [updateBar, setUpdateBar] = useState(false);
+
   useEffect(() => {
-    const fetchTransactions = async () => {
-      const expenses = await getDataFromDB("expenses");
-      const income = await getDataFromDB("income");
-      const transfers = await getDataFromDB("transfers");
+    const updateBar = async () => {
+      const fetchTransactions = async () => {
+        const expenses = await getDataFromDB("expenses");
+        const income = await getDataFromDB("income");
 
-      const expenseList = pushFetchedDataToList(expenses, "expenses");
-      const incomeList = pushFetchedDataToList(income, "income");
-      const transferList = pushFetchedDataToList(transfers, "transfers");
+        const expenseList = pushFetchedDataToList(expenses, "expenses");
+        const incomeList = pushFetchedDataToList(income, "income");
 
-      const transactionList = [...expenseList, ...incomeList, ...transferList];
+        const transactionList = [...expenseList, ...incomeList];
+        transactionList.sort(
+          (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
+        );
 
-      const updateMonthsRowList = async () => {
-        const monthsRow = [];
+        const updateMonthsRowList = async () => {
+          const monthsRow = [];
 
-        transactionList.forEach((transaction) => {
-          const [weekday, month, day, year] = transaction.Date.split(" ");
+          transactionList.forEach((transaction) => {
+            const [weekday, month, day, year] = transaction.Date.split(" ");
 
-          if (!monthsRow.includes(month)) {
-            monthsRow.push(month);
-          }
-        });
-        setMonths(monthsRow);
+            if (!monthsRow.includes(month)) {
+              monthsRow.push(month);
+            }
+          });
+          setMonths(monthsRow);
+          return monthsRow;
+        };
+        const updatedMonthsRow = await updateMonthsRowList();
+
+        const updateExpensesData = async () => {
+          const expensesRow = [];
+
+          updatedMonthsRow.forEach((expenseMonth) => {
+            let sumOfExpenses = 0;
+
+            expenseList.forEach((expense) => {
+              const [weekday, month, day, year] = expense.Date.split(" ");
+
+              if (expenseMonth === month) {
+                sumOfExpenses += Number(expense.Amount);
+              }
+            });
+
+            expensesRow.push(sumOfExpenses);
+          });
+
+          setExpensesData(expensesRow);
+        };
+        await updateExpensesData();
+
+        const updateIncomeData = async () => {
+          const incomeRow = [];
+
+          updatedMonthsRow.forEach((incomeMonth) => {
+            let sumOfExpenses = 0;
+
+            incomeList.forEach((income) => {
+              const [weekday, month, day, year] = income.Date.split(" ");
+
+              if (incomeMonth === month) {
+                sumOfExpenses += Number(income.Amount);
+              }
+            });
+
+            incomeRow.push(sumOfExpenses);
+          });
+
+          setIncomeData(incomeRow);
+          setUpdateBar(true);
+        };
+        await updateIncomeData();
       };
-      await updateMonthsRowList();
+      await fetchTransactions();
     };
-    fetchTransactions();
-  }, []);
+    updateBar();
+  }, [props.updateHome]);
 
   return (
     <Grid container>
@@ -60,28 +114,13 @@ const ExpensesIncomeChart = (props) => {
           </Typography>
         </Box>
         <BarChart
-          months={[
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ]}
-          expensesData={[
-            9230, 8450, 9000, 8374, 9283, 9282, 9230, 8450, 9000, 8374, 9283,
-            9282,
-          ]}
-          incomeData={[
-            9500, 8300, 8500, 8933, 9384, 8347, 9500, 8300, 8500, 8933, 9384,
-            8347,
-          ]}
+          months={[]}
+          expensesData={[]}
+          incomeData={[]}
+          updateBar={updateBar}
+          updatedMonths={months}
+          updatedExpensesData={expensesData}
+          updatedIncomeData={incomeData}
         />
       </Paper>
     </Grid>
