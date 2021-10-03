@@ -66,6 +66,7 @@ const NewForm = (props) => {
         className={classes.root}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
+        onChange={(e) => props.updateForm(e, formKey)}
       />
     ) : formKey === "From" ? (
       <TextField
