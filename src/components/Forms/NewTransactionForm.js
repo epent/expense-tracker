@@ -24,7 +24,7 @@ import { checkFormValidity } from "../../modules/validation";
 const useStyles = makeStyles({
   root: {
     width: 740,
-    height: 426,
+    height: 415,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },

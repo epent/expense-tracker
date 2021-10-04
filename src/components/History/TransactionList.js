@@ -12,7 +12,7 @@ import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 const useStyles = makeStyles({
   root: {
     width: 740,
-    height: 426,
+    height: 415,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -90,7 +90,7 @@ const TransactionList = (props) => {
             Recent transactions
           </Typography>
         </Box>
-        <Box style={{ width: 725 }}>
+        <Box style={{ width: 740 }}>
           <DataGrid
             autoHeight={true}
             rowHeight={45}
