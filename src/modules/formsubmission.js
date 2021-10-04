@@ -31,22 +31,39 @@ const fetchDataToList = async (urlName, isTotal) => {
   return fetchedDataList;
 };
 
-export const updateAccountBalance = async (form) => {
+export const updateAccountBalance = async (form, typeOfTransaction) => {
   const fetchedAccountList = await fetchDataToList("accounts");
 
-  const updateBalanceInDB = () => {
-    const account = fetchedAccountList.filter(
-      (account) => account.Name === form.From
-    );
-    const updatedAccount = {
-      Balance: Number(account[0].Balance) - Number(form.Amount),
-    };
-    const accountId = account[0].id;
+  if (typeOfTransaction === "expense") {
+    const updateBalanceInDB = () => {
+      const account = fetchedAccountList.filter(
+        (account) => account.Name === form.From
+      );
+      const updatedAccount = {
+        Balance: Number(account[0].Balance) - Number(form.Amount),
+      };
+      const accountId = account[0].id;
 
-    postUpdatedBalance("accounts", accountId, updatedAccount);
-    console.log("updateAccountBalance triggered");
-  };
-  updateBalanceInDB();
+      postUpdatedBalance("accounts", accountId, updatedAccount);
+    };
+    updateBalanceInDB();
+  }
+
+  if (typeOfTransaction === "income") {
+    const updateBalanceInDB = () => {
+      const account = fetchedAccountList.filter(
+        (account) => account.Name === form.To
+      );
+      const updatedAccount = {
+        Balance: Number(account[0].Balance) + Number(form.Amount),
+      };
+      const accountId = account[0].id;
+
+      postUpdatedBalance("accounts", accountId, updatedAccount);
+      console.log("updatedAccount posted");
+    };
+    updateBalanceInDB();
+  }
 };
 
 export const updateCategoryBalance = async (form) => {
@@ -62,28 +79,46 @@ export const updateCategoryBalance = async (form) => {
     const categoryId = category[0].id;
 
     postUpdatedBalance("categories", categoryId, updatedCategory);
-    console.log("updateCategoryBalance triggered");
   };
   updateBalanceInDB();
 };
 
-export const updateTotalBalance = async (form) => {
+export const updateTotalBalance = async (form, typeOfTransaction) => {
   const fetchedTotalList = await fetchDataToList("total", true);
 
-  const updateBalanceInDB = async () => {
-    const totalExpenses = fetchedTotalList.filter((total) => {
-      return total.id === "expenses";
-    });
+  if (typeOfTransaction === "expenses") {
+    const updateBalanceInDB = async () => {
+      const totalExpenses = fetchedTotalList.filter((total) => {
+        return total.id === "expenses";
+      });
 
-    const totalBalance = await calculateTotalBalance();
+      const totalBalance = await calculateTotalBalance();
 
-    const updatedTotals = {
-      expenses: Number(totalExpenses[0].expenses) - Number(form.Amount),
-      balance: totalBalance,
+      const updatedTotals = {
+        expenses: Number(totalExpenses[0].expenses) - Number(form.Amount),
+        balance: totalBalance,
+      };
+
+      await postUpdatedTotal(updatedTotals);
     };
+    await updateBalanceInDB();
+  }
 
-    await postUpdatedTotal(updatedTotals);
-    console.log("updateTotalBalance triggered");
-  };
-  await updateBalanceInDB();
+  if (typeOfTransaction === "income") {
+    const updateBalanceInDB = async () => {
+      const totalIncome = fetchedTotalList.filter((total) => {
+        return total.id === "income";
+      });
+
+      const totalBalance = await calculateTotalBalance();
+
+      const updatedTotals = {
+        income: Number(totalIncome[0].income) + Number(form.Amount),
+        balance: totalBalance,
+      };
+
+      await postUpdatedTotal(updatedTotals);
+    };
+    await updateBalanceInDB();
+  }
 };

@@ -52,6 +52,14 @@ const NewTransactionForm = (props) => {
     Comment: "",
   });
 
+  const [incomeForm, setIncomeForm] = useState({
+    From: "",
+    To: "",
+    Amount: "",
+    Date: new Date().toDateString(),
+    Comment: "",
+  });
+
   const validityRules = {
     required: true,
     greaterThanZero: true,
@@ -97,15 +105,29 @@ const NewTransactionForm = (props) => {
 
   // update the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Date"
-      ? setExpenseForm({
-          ...expenseForm,
-          Date: event.toDateString(),
-        })
-      : setExpenseForm({
-          ...expenseForm,
-          [formKey]: event.target.value,
-        });
+    if (openForm === "expense") {
+      formKey === "Date"
+        ? setExpenseForm({
+            ...expenseForm,
+            Date: event.toDateString(),
+          })
+        : setExpenseForm({
+            ...expenseForm,
+            [formKey]: event.target.value,
+          });
+    }
+
+    if (openForm === "income") {
+      formKey === "Date"
+        ? setIncomeForm({
+            ...incomeForm,
+            Date: event.toDateString(),
+          })
+        : setIncomeForm({
+            ...incomeForm,
+            [formKey]: event.target.value,
+          });
+    }
   };
 
   const expenseFormSubmitHandler = (event) => {
@@ -113,9 +135,9 @@ const NewTransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(expenseForm);
+      await updateAccountBalance(expenseForm, "expense");
       await updateCategoryBalance(expenseForm);
-      await updateTotalBalance(expenseForm);
+      await updateTotalBalance(expenseForm, "expense");
       const triggerPageUpdates = async () => {
         setExpenseForm({
           From: "",
@@ -142,10 +164,47 @@ const NewTransactionForm = (props) => {
     }
   };
 
+  const incomeFormSubmitHandler = (event) => {
+    event.preventDefault();
+    setFormIsValid(false);
+    console.log("incomeFormSubmitHandler triggered");
+
+    const updateData = async () => {
+      await updateAccountBalance(incomeForm, "income");
+      await updateTotalBalance(incomeForm, "income");
+      const triggerPageUpdates = async () => {
+        setIncomeForm({
+          From: "",
+          To: "",
+          Amount: "",
+          Date: new Date().toDateString(),
+          Comment: "",
+        });
+
+        // trigger the page to rerender with updated expenseLog
+        // await props.updateExpenseLog();
+        // trigger Home to rerender with updated accountLog/categoryLog
+        if (props.updateHomeHandler) await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
+    };
+
+    const formIsValid = checkFormValidity(incomeForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewTransactionToDB(incomeForm, "income");
+      updateData();
+    }
+  };
+
   const formSubmitHandler = (event) => {
     openForm === "expense"
       ? expenseFormSubmitHandler(event)
-      : expenseFormSubmitHandler(event);
+      : openForm === "income"
+      ? incomeFormSubmitHandler(event)
+      : incomeFormSubmitHandler(event);
   };
 
   let buttonExpense = "outlined";
@@ -222,7 +281,7 @@ const NewTransactionForm = (props) => {
             transactionType={openForm}
             formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
-            form={expenseForm}
+            form={(openForm === "income") ? incomeForm : expenseForm}
             selectedDate={expenseForm.Date}
             helperTextFrom={helperTextFrom}
             helperTextTo={helperTextTo}
