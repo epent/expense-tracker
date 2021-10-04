@@ -1,6 +1,4 @@
 import {
-  postNewTransactionToDB,
-  postEditedTransactionToDB,
   postUpdatedBalance,
   postUpdatedTotal,
   getDataFromDB,
@@ -31,7 +29,11 @@ const fetchDataToList = async (urlName, isTotal) => {
   return fetchedDataList;
 };
 
-export const updateAccountBalance = async (form, typeOfTransaction) => {
+export const updateAccountBalance = async (
+  form,
+  typeOfTransaction,
+  fromOrTo
+) => {
   const fetchedAccountList = await fetchDataToList("accounts");
 
   if (typeOfTransaction === "expense") {
@@ -63,6 +65,30 @@ export const updateAccountBalance = async (form, typeOfTransaction) => {
       console.log("updatedAccount posted");
     };
     updateBalanceInDB();
+  }
+
+  if (typeOfTransaction === "transfer") {
+    const updateBalanceInDB = async () => {
+      let accountName;
+      fromOrTo === "From" ? (accountName = form.From) : (accountName = form.To);
+
+      const account = fetchedAccountList.filter(
+        (account) => account.Name === accountName
+      );
+
+      let updatedAccount;
+      fromOrTo === "From"
+        ? (updatedAccount = {
+            Balance: Number(account[0].Balance) - Number(form.Amount),
+          })
+        : (updatedAccount = {
+            Balance: Number(account[0].Balance) + Number(form.Amount),
+          });
+      const accountId = account[0].id;
+
+      await postUpdatedBalance("accounts", accountId, updatedAccount);
+    };
+    await updateBalanceInDB();
   }
 };
 

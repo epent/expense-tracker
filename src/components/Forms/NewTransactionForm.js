@@ -60,6 +60,14 @@ const NewTransactionForm = (props) => {
     Comment: "",
   });
 
+  const [transferForm, setTransferForm] = useState({
+    From: "",
+    To: "",
+    Amount: "",
+    Date: new Date().toDateString(),
+    Comment: "",
+  });
+
   const validityRules = {
     required: true,
     greaterThanZero: true,
@@ -128,6 +136,18 @@ const NewTransactionForm = (props) => {
             [formKey]: event.target.value,
           });
     }
+
+    if (openForm === "transfer") {
+      formKey === "Date"
+        ? setTransferForm({
+            ...transferForm,
+            Date: event.toDateString(),
+          })
+        : setTransferForm({
+            ...transferForm,
+            [formKey]: event.target.value,
+          });
+    }
   };
 
   const expenseFormSubmitHandler = (event) => {
@@ -167,7 +187,6 @@ const NewTransactionForm = (props) => {
   const incomeFormSubmitHandler = (event) => {
     event.preventDefault();
     setFormIsValid(false);
-    console.log("incomeFormSubmitHandler triggered");
 
     const updateData = async () => {
       await updateAccountBalance(incomeForm, "income");
@@ -199,12 +218,46 @@ const NewTransactionForm = (props) => {
     }
   };
 
+  const transferFormSubmitHandler = (event) => {
+    event.preventDefault();
+    setFormIsValid(false);
+
+    const updateData = async () => {
+      await updateAccountBalance(transferForm, "transfer", "From");
+      await updateAccountBalance(transferForm, "transfer", "To");
+      const triggerPageUpdates = async () => {
+        setTransferForm({
+          From: "",
+          To: "",
+          Amount: "",
+          Date: new Date().toDateString(),
+          Comment: "",
+        });
+
+        // trigger the page to rerender with updated expenseLog
+        // await props.updateExpenseLog();
+        // trigger Home to rerender with updated accountLog/categoryLog
+        if (props.updateHomeHandler) await props.updateHomeHandler();
+      };
+      await triggerPageUpdates();
+    };
+
+    const formIsValid = checkFormValidity(transferForm, validityRules);
+    console.log(formIsValid);
+
+    if (formIsValid) {
+      setFormIsValid(true);
+      postNewTransactionToDB(transferForm, "transfers");
+      updateData();
+    }
+  };
+
   const formSubmitHandler = (event) => {
     openForm === "expense"
       ? expenseFormSubmitHandler(event)
       : openForm === "income"
       ? incomeFormSubmitHandler(event)
-      : incomeFormSubmitHandler(event);
+      : transferFormSubmitHandler(event);
   };
 
   let buttonExpense = "outlined";
@@ -281,7 +334,13 @@ const NewTransactionForm = (props) => {
             transactionType={openForm}
             formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
-            form={(openForm === "income") ? incomeForm : expenseForm}
+            form={
+              openForm === "expense"
+                ? expenseForm
+                : openForm === "income"
+                ? incomeForm
+                : transferForm
+            }
             selectedDate={expenseForm.Date}
             helperTextFrom={helperTextFrom}
             helperTextTo={helperTextTo}
