@@ -29,7 +29,7 @@ const ExpensesIncomeChart = (props) => {
   const [updateBar, setUpdateBar] = useState(false);
 
   useEffect(() => {
-    const updateBar = async () => {
+    const updateBarChart = async () => {
       const fetchTransactions = async () => {
         const expenses = await getDataFromDB("expenses");
         const income = await getDataFromDB("income");
@@ -96,13 +96,13 @@ const ExpensesIncomeChart = (props) => {
           });
 
           setIncomeData(incomeRow);
-          setUpdateBar(true);
+          setUpdateBar((prevState) => !prevState);
         };
         await updateIncomeData();
       };
       await fetchTransactions();
     };
-    updateBar();
+    updateBarChart();
   }, [props.updateHome]);
 
   return (

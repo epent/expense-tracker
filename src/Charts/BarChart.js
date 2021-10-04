@@ -27,7 +27,7 @@ const BarChart = (props) => {
   });
 
   useEffect(() => {
-    if (props.updatedExpensesData || props.updatedIncomeData) {
+    if (props.updatedExpensesData || props.updatedIncomeData || props.updatedMonths) {
       setBarState({
         ...barState,
         options: {

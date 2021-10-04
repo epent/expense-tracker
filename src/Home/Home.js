@@ -166,7 +166,7 @@ const Home = () => {
       {/* Income vs Expenses row */}
       <Grid container item xs={12}>
         <Box mt={1} mb={3}>
-          <ExpensesIncomeChart />
+          <ExpensesIncomeChart updateHome={updateHome} />
         </Box>
       </Grid>
     </Grid>
