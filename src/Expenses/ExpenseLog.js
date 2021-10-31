@@ -134,7 +134,7 @@ const ExpenseLog = (props) => {
 
           const updatedTotals = {
             expenses:
-              Number(totalExpenses[0].expenses) +
+              Number(totalExpenses[0].expenses) -
               Number(expenseToDelete.Amount),
             balance: totalBalance,
           };

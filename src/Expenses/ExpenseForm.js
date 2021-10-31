@@ -135,7 +135,7 @@ const ExpenseForm = (props) => {
 
           const updatedTotals = {
             expenses:
-              Number(totalExpenses[0].expenses) - Number(expenseForm.Amount),
+              Number(totalExpenses[0].expenses) + Number(expenseForm.Amount),
             balance: totalBalance,
           };
 
