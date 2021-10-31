@@ -112,7 +112,7 @@ export const updateCategoryBalance = async (form) => {
 export const updateTotalBalance = async (form, typeOfTransaction) => {
   const fetchedTotalList = await fetchDataToList("total", true);
 
-  if (typeOfTransaction === "expenses") {
+  if (typeOfTransaction === "expense") {
     const updateBalanceInDB = async () => {
       const totalExpenses = fetchedTotalList.filter((total) => {
         return total.id === "expenses";
@@ -121,7 +121,7 @@ export const updateTotalBalance = async (form, typeOfTransaction) => {
       const totalBalance = await calculateTotalBalance();
 
       const updatedTotals = {
-        expenses: Number(totalExpenses[0].expenses) - Number(form.Amount),
+        expenses: Number(totalExpenses[0].expenses) + Number(form.Amount),
         balance: totalBalance,
       };
 
