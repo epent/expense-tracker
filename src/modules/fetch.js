@@ -91,28 +91,30 @@ export const calculateTotalBalance = async () => {
 
 export const pushFetchedDataToList = (data, transactionType) => {
   const list = [];
-  transactionType === "expenses"
-    ? Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-          type: "expenses",
+  if (data) {
+    transactionType === "expenses"
+      ? Object.keys(data).map((key) => {
+          list.push({
+            ...data[key],
+            id: key,
+            type: "expenses",
+          });
+        })
+      : transactionType === "income"
+      ? Object.keys(data).map((key) => {
+          list.push({
+            ...data[key],
+            id: key,
+            type: "income",
+          });
+        })
+      : Object.keys(data).map((key) => {
+          list.push({
+            ...data[key],
+            id: key,
+            type: "transfers",
+          });
         });
-      })
-    : transactionType === "income"
-    ? Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-          type: "income",
-        });
-      })
-    : Object.keys(data).map((key) => {
-        list.push({
-          ...data[key],
-          id: key,
-          type: "transfers",
-        });
-      });
+  }
   return list;
 };
