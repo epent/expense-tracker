@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Appbar from "./components/Appbar/Appbar";
 import SideBar from "./components/SideBar/SideBar";
 import Home from "./Home/Home";
 import Expenses from "./Expenses/Expenses";
@@ -62,7 +61,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Appbar />
       <Router>
         <Grid container>
           <Grid item xs={2}>
