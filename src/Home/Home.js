@@ -98,12 +98,12 @@ const Home = () => {
       >
         <Grid item>
           <Box mt={1}>
-            <TransactionList updateHome={updateHome} />
+            <NewTransactionForm updateHomeHandler={updateHomeHandler} />
           </Box>
         </Grid>
         <Grid item>
           <Box mt={1}>
-            <NewTransactionForm updateHomeHandler={updateHomeHandler} />
+            <TransactionList updateHome={updateHome} />
           </Box>
         </Grid>
         {/* <Grid item>
