@@ -29,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   appBar: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("lg")]: {
       width: `calc(100% - ${drawerWidth}px)`,
       marginLeft: drawerWidth,
     },
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("lg")]: {
       width: drawerWidth,
       flexShrink: 0,
     },
@@ -48,15 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("lg")]: {
       display: "none",
     },
   },
   toolbar: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
 }));
 
 const SideBar = (props) => {
@@ -97,7 +93,6 @@ const SideBar = (props) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
@@ -114,16 +109,19 @@ const SideBar = (props) => {
           </Typography>
         </Toolbar>
       </AppBar>
-
       <nav className={classes.drawer}>
-        <Hidden smUp implementation="css">
+        <Hidden lgUp implementation="css">
           <Drawer
             container={container}
             variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
               paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
             }}
           >
             <div className={classes.drawerContainer}>
@@ -131,7 +129,7 @@ const SideBar = (props) => {
             </div>
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="css">
+        <Hidden mdDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,

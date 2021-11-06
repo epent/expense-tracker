@@ -9,6 +9,7 @@ import Transfers from "./Transfers/Transfers";
 import Accounts from "./Accounts/Accounts";
 import HistoryLog from "./components/History/HistoryLog";
 import Categories from "./Categories/Categories";
+import Appbar from "./components/Appbar/Appbar";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -63,12 +64,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <Grid container>
-          <Grid item xs={2}>
+          <Grid item lg={2}>
             <SideBar />
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={12} lg={10}>
             <Toolbar />
-            <Box mr={10}>{routes}</Box>
+            <Box>{routes}</Box>
           </Grid>
         </Grid>
       </Router>
