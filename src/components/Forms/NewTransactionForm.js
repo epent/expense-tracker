@@ -21,10 +21,8 @@ import {
 } from "../../modules/formsubmission";
 import { checkFormValidity } from "../../modules/validation";
 
-const useStyles = makeStyles({
-  root: {
-    width: 740,
-    height: 415,
+const useStyles = makeStyles((theme) => ({
+  paper: {
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -32,9 +30,8 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: 680,
   },
-});
+}));
 
 const NewTransactionForm = (props) => {
   const classes = useStyles();
@@ -295,14 +292,14 @@ const NewTransactionForm = (props) => {
   }
 
   return (
-    <Grid container>
-      <Paper elevation={3} className={classes.root}>
-        <Box my={3} mx={3}>
-          <Typography variant="h5" gutterBottom color="textSecondary">
+    <Box sx={{ height: 550, width: "100%" }}>
+      <Paper elevation={3} className={classes.paper}>
+        <Box p={3}>
+          <Typography variant="h5"  color="textSecondary">
             Add new transaction
           </Typography>
         </Box>
-        <Box className={classes.buttonGroup} mx={3} mb={2}>
+        <Box className={classes.buttonGroup} mx={3}>
           <ButtonGroup size="large" fullWidth>
             <Button
               color="secondary"
@@ -351,7 +348,7 @@ const NewTransactionForm = (props) => {
           />
         </Box>
       </Paper>
-    </Grid>
+    </Box>
   );
 };
 

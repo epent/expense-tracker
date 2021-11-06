@@ -14,11 +14,20 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: 338,
+    display: "flex",
+    flexWrap: "wrap",
   },
-});
+  textField: {
+    [theme.breakpoints.up("xs")]: {
+      width: "100%",
+    },
+    [theme.breakpoints.up("xl")]: {
+      width: "50%",
+    },
+  },
+}));
 
 const NewForm = (props) => {
   const classes = useStyles();
@@ -58,7 +67,7 @@ const NewForm = (props) => {
     return formKey === "From" && props.transactionType === "income" ? (
       <TextField
         {...commonProps}
-        className={classes.root}
+        className={classes.textField}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
         onChange={(e) => props.updateForm(e, formKey)}
@@ -67,7 +76,7 @@ const NewForm = (props) => {
       <TextField
         {...commonProps}
         select
-        className={classes.root}
+        className={classes.textField}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
         onChange={(e) => props.updateForm(e, formKey)}
@@ -78,7 +87,7 @@ const NewForm = (props) => {
       <TextField
         {...commonProps}
         select
-        className={classes.root}
+        className={classes.textField}
         error={props.invalidInputTo}
         helperText={props.helperTextTo}
         onChange={(e) => props.updateForm(e, formKey)}
@@ -89,7 +98,7 @@ const NewForm = (props) => {
       <TextField
         {...commonProps}
         select
-        className={classes.root}
+        className={classes.textField}
         error={props.invalidInputTo}
         helperText={props.helperTextTo}
         onChange={(e) => props.updateForm(e, formKey)}
@@ -115,7 +124,7 @@ const NewForm = (props) => {
           label={formKey}
           margin="normal"
           size="small"
-          className={classes.root}
+          className={classes.textField}
           value={props.selectedDate}
           onChange={(e) => props.updateForm(e, formKey)}
         />
@@ -123,7 +132,7 @@ const NewForm = (props) => {
     ) : formKey === "Amount" ? (
       <TextField
         {...commonProps}
-        className={classes.root}
+        className={classes.textField}
         onChange={(e) => props.updateForm(e, formKey)}
         error={props.invalidInputAmount}
         helperText={props.helperTextAmount}
@@ -131,7 +140,7 @@ const NewForm = (props) => {
     ) : (
       <TextField
         {...commonProps}
-        className={classes.root}
+        className={classes.textField}
         onChange={(e) => props.updateForm(e, formKey)}
       />
     );
@@ -141,7 +150,7 @@ const NewForm = (props) => {
     <Grid container>
       <form onSubmit={props.formSubmitHandler}>
         <FormControl>
-          <Box>{form}</Box>
+          <Box className={classes.root}>{form}</Box>
           <IconButton size="medium" type="submit" color="secondary">
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>

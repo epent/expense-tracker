@@ -95,7 +95,17 @@ const Home = () => {
               </Grid>
             </Grid>
           </Grid>
-
+          {/* Transactions + Form row */}
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} md={6}>
+                <NewTransactionForm updateHomeHandler={updateHomeHandler} />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
+                <TransactionList updateHome={updateHome} />
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </Box>
     </div>

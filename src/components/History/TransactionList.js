@@ -9,14 +9,13 @@ import { DataGrid } from "@material-ui/data-grid";
 
 import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    width: 740,
-    height: 415,
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
-});
+  dataGrid: {},
+}));
 
 const TransactionList = (props) => {
   const classes = useStyles();
@@ -32,10 +31,10 @@ const TransactionList = (props) => {
   ]);
 
   const columns = [
-    { field: "date", headerName: "Date", type: "date", width: 180 },
-    { field: "from", headerName: "From", width: 180 },
-    { field: "to", headerName: "To", width: 180 },
-    { field: "amount", headerName: "Amount", type: "number", width: 185 },
+    { field: "date", headerName: "Date", type: "date", flex: 1 },
+    { field: "from", headerName: "From", flex: 1 },
+    { field: "to", headerName: "To", flex: 1 },
+    { field: "amount", headerName: "Amount", type: "number", flex: 1 },
   ];
 
   useEffect(() => {
@@ -83,24 +82,28 @@ const TransactionList = (props) => {
   }, [props.updateHome]);
 
   return (
-    <Grid container>
-      <Paper elevation={3} className={classes.root}>
-        <Box my={3} mx={3}>
-          <Typography variant="h5" gutterBottom color="textSecondary">
-            Recent transactions
-          </Typography>
+    <Box sx={{ height: 500, width: "100%" }}>
+      <Box sx={{ display: "flex", height: "100%" }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Paper elevation={3} className={classes.root}>
+            <Box p={3}>
+              <Typography variant="h5" color="textSecondary">
+                Recent transactions
+              </Typography>
+            </Box>
+            <Box className={classes.dataGrid}>
+              <DataGrid
+                autoHeight={true}
+                rowHeight={49}
+                columns={columns}
+                rows={rows}
+                pageSize={7}
+              />
+            </Box>
+          </Paper>
         </Box>
-        <Box style={{ width: 740 }}>
-          <DataGrid
-            autoHeight={true}
-            rowHeight={45}
-            columns={columns}
-            rows={rows}
-            pageSize={5}
-          />
-        </Box>
-      </Paper>
-    </Grid>
+      </Box>
+    </Box>
   );
 };
 
