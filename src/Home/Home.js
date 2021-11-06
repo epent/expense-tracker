@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Balance from "../components/Balance/Balance";
 import HistoryLog from "../components/History/HistoryLog";
@@ -15,7 +16,17 @@ import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
 import NewTransactionForm from "../components/Forms/NewTransactionForm";
 import { getDataFromDB } from "../modules/fetch";
 
+const drawerWidth = 220;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+}));
+
 const Home = () => {
+  const classes = useStyles();
+
   const [updateHome, setUpdateHome] = useState(false);
 
   const [total, setTotal] = useState({
@@ -50,126 +61,44 @@ const Home = () => {
   }, [updateHome]);
 
   return (
-    <Grid container spacing={3}>
-      {/* Balances row */}
-      <Grid
-        container
-        item
-        direction="row"
-        justifyContent="space-between"
-        xs={12}
-      >
-        <Grid item>
-          <Box mt={3}>
-            <Balance
-              title="Balance"
-              amount={total.balance}
-              amountColor="textSecondary"
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={3}>
-            <Balance
-              title="Income"
-              amount={total.income}
-              amountColor="primary"
-              sign={true}
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={3}>
-            <Balance
-              title="Expenses"
-              amount={total.expenses}
-              amountColor="secondary"
-            />
-          </Box>
-        </Grid>
-      </Grid>
-      {/* Transactions + Form row */}
-      <Grid
-        container
-        item
-        direction="row"
-        justifyContent="space-between"
-        xs={12}
-      >
-        <Grid item>
-          <Box mt={1}>
-            <NewTransactionForm updateHomeHandler={updateHomeHandler} />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={1}>
-            <TransactionList updateHome={updateHome} />
-          </Box>
-        </Grid>
-        {/* <Grid item>
-          <Expenses
-            showExpenseLog={false}
-            showExpenseForm={true}
-            updateHomeHandler={updateHomeHandler}
-          />
-        </Grid> */}
-        {/* <Grid item>
-            <Box my={4} mr={5}>
-              <Income
-                showIncomeLog={false}
-                showIncomeForm={true}
-                updateHomeHandler={updateHomeHandler}
-              />
-            </Box>
+    <div className={classes.root}>
+      <Box m={3}>
+        <Grid container spacing={3}>
+          {/* Balances row */}
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={12} md={4} lg={4}>
+                <Balance
+                  title="Balance"
+                  amount={total.balance}
+                  amountColor="textSecondary"
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={8} lg={8}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Balance
+                      title="Income"
+                      amount={total.income}
+                      amountColor="primary"
+                      sign={true}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={6}>
+                    <Balance
+                      title="Expenses"
+                      amount={total.expenses}
+                      amountColor="secondary"
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Box my={4} mr={5}>
-              <Transfers
-                showTransferLog={false}
-                showTransferForm={true}
-                updateHomeHandler={updateHomeHandler}
-              />
-            </Box>
-          </Grid> */}
-      </Grid>
-      {/* Accounts + Categories row */}
-      <Grid
-        container
-        item
-        direction="row"
-        justifyContent="space-between"
-        xs={12}
-      >
-        <Grid item>
-          <Box mt={1}>
-            <Accounts
-              sliceLog={true}
-              showAccountForm={false}
-              showEditBtn={false}
-              showDeleteBtn={false}
-              updateHome={updateHome}
-            />
-          </Box>
+
         </Grid>
-        <Grid item>
-          <Box mt={1}>
-            <Categories
-              sliceLog={true}
-              showCategoryForm={false}
-              showEditBtn={false}
-              showDeleteBtn={false}
-              updateHome={updateHome}
-            />
-          </Box>
-        </Grid>
-      </Grid>
-      {/* Income vs Expenses row */}
-      <Grid container item xs={12}>
-        <Box mt={1} mb={3}>
-          <ExpensesIncomeChart updateHome={updateHome} />
-        </Box>
-      </Grid>
-    </Grid>
+      </Box>
+    </div>
   );
 };
 
