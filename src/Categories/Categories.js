@@ -14,8 +14,7 @@ import Donut from "../Charts/Donut";
 import { fetchCategoriesFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles({
-  root: {
-    width: 740,
+  paper: {
     backgroundColor: "#fafafa",
     borderRadius: 10,
   },
@@ -96,38 +95,40 @@ const Categories = (props) => {
   return (
     <Grid container>
       {props.showCategoryForm && categoryForm}
-      <Paper elevation={3} className={classes.root}>
-        <Grid container direction="row" item xs={12}>
-          <Grid item xs={6}>
-            <Box my={3} mx={3}>
-              <Typography variant="h5" gutterBottom color="textSecondary">
-                Categories
-              </Typography>
-            </Box>
-            <Box px={3}>
-              <CategoryLog
-                sliceLog={props.sliceLog}
-                showEditBtn={props.showEditBtn}
-                showDeleteBtn={props.showDeleteBtn}
-                updatedCategoryLog={updatedCategoryLog}
-                updateCategoryLog={updateCategoryLogHandler}
-                updateHome={props.updateHome}
-              />
-            </Box>
+      <Box sx={{ height: "100%", width: "100%" }}>
+        <Paper elevation={3} className={classes.paper}>
+          <Grid container>
+            <Grid item xs={12} sm={6}>
+              <Box my={3} mx={3}>
+                <Typography variant="h5" gutterBottom color="textSecondary">
+                  Categories
+                </Typography>
+              </Box>
+              <Box px={3}>
+                <CategoryLog
+                  sliceLog={props.sliceLog}
+                  showEditBtn={props.showEditBtn}
+                  showDeleteBtn={props.showDeleteBtn}
+                  updatedCategoryLog={updatedCategoryLog}
+                  updateCategoryLog={updateCategoryLogHandler}
+                  updateHome={props.updateHome}
+                />
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box mt={2}>
+                <Donut
+                  labels={[]}
+                  data={[]}
+                  updatedLabels={categoryLabels}
+                  updatedData={categoryBalances}
+                  updateDonut={updateDonut}
+                />
+              </Box>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <Box mt={2}>
-              <Donut
-                labels={[]}
-                data={[]}
-                updatedLabels={categoryLabels}
-                updatedData={categoryBalances}
-                updateDonut={updateDonut}
-              />
-            </Box>
-          </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </Box>
     </Grid>
   );
 };

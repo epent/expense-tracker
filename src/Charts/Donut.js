@@ -50,7 +50,6 @@ const Donut = (props) => {
         options={donutState.chartOptions}
         series={donutState.series}
         type="donut"
-        width="380"
       />
     </Box>
   );

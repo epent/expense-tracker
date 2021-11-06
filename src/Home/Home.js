@@ -106,6 +106,29 @@ const Home = () => {
               </Grid>
             </Grid>
           </Grid>
+          {/* Accounts + Categories row */}
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <Accounts
+                  sliceLog={true}
+                  showAccountForm={false}
+                  showEditBtn={false}
+                  showDeleteBtn={false}
+                  updateHome={updateHome}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Categories
+                  sliceLog={true}
+                  showCategoryForm={false}
+                  showEditBtn={false}
+                  showDeleteBtn={false}
+                  updateHome={updateHome}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
       </Box>
     </div>

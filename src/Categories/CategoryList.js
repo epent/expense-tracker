@@ -8,6 +8,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import Divider from '@material-ui/core/Divider';
 import { makeStyles } from "@material-ui/core/styles";
 
 import CategoryForm from "./CategoryForm";
@@ -56,6 +57,7 @@ const CategoryList = (props) => {
                 </IconButton>
               )}
             </ListItem>
+            <Divider />
           </Grid>
           <Grid item xs={12}>
             {props.showCategoryForm &&
