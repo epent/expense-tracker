@@ -62,7 +62,7 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <Box m={3}>
+      <Box>
         <Grid container spacing={3}>
           {/* Balances row */}
           <Grid item xs={12}>

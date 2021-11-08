@@ -7,6 +7,7 @@ import NewExpenses from "./Expenses/NewExpenses";
 import NewIncome from "./Income/NewIncome";
 import NewTransfers from "./Transfers/NewTransfers";
 import Accounts from "./Accounts/Accounts";
+import TransactionList from "./components/History/TransactionList";
 import HistoryLog from "./components/History/HistoryLog";
 import Categories from "./Categories/Categories";
 
@@ -49,7 +50,9 @@ function App() {
       <Route path="/transfers">
         <NewTransfers />
       </Route>
-      <Route path="/history" component={HistoryLog} />
+      <Route path="/history">
+        <TransactionList />
+      </Route>
       <Route path="/categories">
         <Categories showCategoryForm showEditBtn showDeleteBtn />
       </Route>
@@ -68,7 +71,7 @@ function App() {
           </Grid>
           <Grid item xs={12} lg={10}>
             <Toolbar />
-            <Box>{routes}</Box>
+            <Box m={3}>{routes}</Box>
           </Grid>
         </Grid>
       </Router>

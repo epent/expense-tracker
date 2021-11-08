@@ -10,7 +10,7 @@ import TransactionList from "../components/History/TransactionList";
 
 const NewTransfers = () => {
   return (
-    <Box m={3}>
+    <Box>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TransactionForm showButtonGroup={false} transactionType="transfer" />
