@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewTransactionForm = (props) => {
+const TransactionForm = (props) => {
   const classes = useStyles();
 
   const [accountList, setAccountList] = useState([]);
@@ -41,23 +41,7 @@ const NewTransactionForm = (props) => {
 
   const [openForm, setOpenForm] = useState("expense");
 
-  const [expenseForm, setExpenseForm] = useState({
-    From: "",
-    To: "",
-    Amount: "",
-    Date: new Date().toDateString(),
-    Comment: "",
-  });
-
-  const [incomeForm, setIncomeForm] = useState({
-    From: "",
-    To: "",
-    Amount: "",
-    Date: new Date().toDateString(),
-    Comment: "",
-  });
-
-  const [transferForm, setTransferForm] = useState({
+  const [form, setForm] = useState({
     From: "",
     To: "",
     Amount: "",
@@ -98,53 +82,21 @@ const NewTransactionForm = (props) => {
     fetchCategories();
   }, []);
 
-  const openExpenseFormHandler = () => {
-    setOpenForm("expense");
-  };
-  const openIncomeFormHandler = () => {
-    setOpenForm("income");
-  };
-  const openTransferFormHandler = () => {
-    setOpenForm("transfer");
+  const openFormHandler = (type) => {
+    setOpenForm(type);
   };
 
   // update the form
   const updateFormHandler = (event, formKey) => {
-    if (openForm === "expense") {
-      formKey === "Date"
-        ? setExpenseForm({
-            ...expenseForm,
-            Date: event.toDateString(),
-          })
-        : setExpenseForm({
-            ...expenseForm,
-            [formKey]: event.target.value,
-          });
-    }
-
-    if (openForm === "income") {
-      formKey === "Date"
-        ? setIncomeForm({
-            ...incomeForm,
-            Date: event.toDateString(),
-          })
-        : setIncomeForm({
-            ...incomeForm,
-            [formKey]: event.target.value,
-          });
-    }
-
-    if (openForm === "transfer") {
-      formKey === "Date"
-        ? setTransferForm({
-            ...transferForm,
-            Date: event.toDateString(),
-          })
-        : setTransferForm({
-            ...transferForm,
-            [formKey]: event.target.value,
-          });
-    }
+    formKey === "Date"
+      ? setForm({
+          ...form,
+          Date: event.toDateString(),
+        })
+      : setForm({
+          ...form,
+          [formKey]: event.target.value,
+        });
   };
 
   const expenseFormSubmitHandler = (event) => {
@@ -152,11 +104,11 @@ const NewTransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(expenseForm, "expense");
-      await updateCategoryBalance(expenseForm);
-      await updateTotalBalance(expenseForm, "expense");
+      await updateAccountBalance(form, "expense");
+      await updateCategoryBalance(form);
+      await updateTotalBalance(form, "expense");
       const triggerPageUpdates = async () => {
-        setExpenseForm({
+        setForm({
           From: "",
           To: "",
           Amount: "",
@@ -172,11 +124,11 @@ const NewTransactionForm = (props) => {
       await triggerPageUpdates();
     };
 
-    const formIsValid = checkFormValidity(expenseForm, validityRules);
+    const formIsValid = checkFormValidity(form, validityRules);
 
     if (formIsValid) {
       setFormIsValid(true);
-      postNewTransactionToDB(expenseForm, "expenses");
+      postNewTransactionToDB(form, "expenses");
       updateData();
     }
   };
@@ -186,10 +138,10 @@ const NewTransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(incomeForm, "income");
-      await updateTotalBalance(incomeForm, "income");
+      await updateAccountBalance(form, "income");
+      await updateTotalBalance(form, "income");
       const triggerPageUpdates = async () => {
-        setIncomeForm({
+        setForm({
           From: "",
           To: "",
           Amount: "",
@@ -205,12 +157,11 @@ const NewTransactionForm = (props) => {
       await triggerPageUpdates();
     };
 
-    const formIsValid = checkFormValidity(incomeForm, validityRules);
-    console.log(formIsValid);
+    const formIsValid = checkFormValidity(form, validityRules);
 
     if (formIsValid) {
       setFormIsValid(true);
-      postNewTransactionToDB(incomeForm, "income");
+      postNewTransactionToDB(form, "income");
       updateData();
     }
   };
@@ -220,10 +171,10 @@ const NewTransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(transferForm, "transfer", "From");
-      await updateAccountBalance(transferForm, "transfer", "To");
+      await updateAccountBalance(form, "transfer", "From");
+      await updateAccountBalance(form, "transfer", "To");
       const triggerPageUpdates = async () => {
-        setTransferForm({
+        setForm({
           From: "",
           To: "",
           Amount: "",
@@ -239,12 +190,11 @@ const NewTransactionForm = (props) => {
       await triggerPageUpdates();
     };
 
-    const formIsValid = checkFormValidity(transferForm, validityRules);
-    console.log(formIsValid);
+    const formIsValid = checkFormValidity(form, validityRules);
 
     if (formIsValid) {
       setFormIsValid(true);
-      postNewTransactionToDB(transferForm, "transfers");
+      postNewTransactionToDB(form, "transfers");
       updateData();
     }
   };
@@ -270,32 +220,29 @@ const NewTransactionForm = (props) => {
   let invalidInputFrom, invalidInputTo, invalidInputAmount;
 
   if (formIsValid === false) {
-    if (expenseForm.From === "") {
+    if (form.From === "") {
       helperTextFrom = "Please fill in";
       invalidInputFrom = true;
     }
-    if (expenseForm.To === "") {
+    if (form.To === "") {
       helperTextTo = "Please fill in";
       invalidInputTo = true;
     }
-    if (
-      expenseForm.Amount <= 0 ||
-      expenseForm.Amount != Number(expenseForm.Amount)
-    ) {
+    if (form.Amount <= 0 || form.Amount != Number(form.Amount)) {
       helperTextAmount = "Invalid input";
       invalidInputAmount = true;
     }
-    if (expenseForm.Amount === "") {
+    if (form.Amount === "") {
       helperTextAmount = "Please fill in";
       invalidInputAmount = true;
     }
   }
 
   return (
-    <Box sx={{ height: 550, width: "100%" }}>
+    <Box sx={{ height: 535, width: "100%" }}>
       <Paper elevation={3} className={classes.paper}>
         <Box p={3}>
-          <Typography variant="h5"  color="textSecondary">
+          <Typography variant="h5" color="textSecondary">
             Add new transaction
           </Typography>
         </Box>
@@ -304,21 +251,27 @@ const NewTransactionForm = (props) => {
             <Button
               color="secondary"
               variant={buttonExpense}
-              onClick={openExpenseFormHandler}
+              onClick={() => {
+                openFormHandler("expense");
+              }}
             >
               Expense
             </Button>
             <Button
               color="primary"
               variant={buttonIncome}
-              onClick={openIncomeFormHandler}
+              onClick={() => {
+                openFormHandler("income");
+              }}
             >
               Income
             </Button>
             <Button
               color="default"
               variant={buttonTransfer}
-              onClick={openTransferFormHandler}
+              onClick={() => {
+                openFormHandler("transfer");
+              }}
             >
               Transfer
             </Button>
@@ -331,14 +284,8 @@ const NewTransactionForm = (props) => {
             transactionType={openForm}
             formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
-            form={
-              openForm === "expense"
-                ? expenseForm
-                : openForm === "income"
-                ? incomeForm
-                : transferForm
-            }
-            selectedDate={expenseForm.Date}
+            form={form}
+            selectedDate={form.Date}
             helperTextFrom={helperTextFrom}
             helperTextTo={helperTextTo}
             helperTextAmount={helperTextAmount}
@@ -352,4 +299,4 @@ const NewTransactionForm = (props) => {
   );
 };
 
-export default NewTransactionForm;
+export default TransactionForm;
