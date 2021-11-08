@@ -6,13 +6,17 @@ import Button from "@material-ui/core/Button";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import TransactionForm from "../components/Forms/TransactionForm";
+import TransactionList from "../components/History/TransactionList";
 
 const NewExpenses = () => {
   return (
     <Box m={3}>
-      <Grid container elevation={3}>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TransactionForm showButtonGroup={false} />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TransactionList />
         </Grid>
       </Grid>
     </Box>

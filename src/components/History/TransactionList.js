@@ -82,7 +82,7 @@ const TransactionList = (props) => {
   }, [props.updateHome]);
 
   return (
-    <Box sx={{ height: 500, width: "100%" }}>
+    <Box sx={{ height: 535, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
           <Paper elevation={3} className={classes.root}>
