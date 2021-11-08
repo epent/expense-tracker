@@ -120,6 +120,7 @@ const TransactionForm = (props) => {
         // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
+        if (props.updateExpensesHandler) await props.updateExpensesHandler();
       };
       await triggerPageUpdates();
     };
@@ -153,6 +154,7 @@ const TransactionForm = (props) => {
         // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
+        if (props.updateIncomeHandler) await props.updateIncomeHandler();
       };
       await triggerPageUpdates();
     };
@@ -186,6 +188,7 @@ const TransactionForm = (props) => {
         // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
+        if (props.updateTransfersHandler) await props.updateTransfersHandler();
       };
       await triggerPageUpdates();
     };

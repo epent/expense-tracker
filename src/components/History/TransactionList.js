@@ -79,7 +79,12 @@ const TransactionList = (props) => {
       await updateRowList();
     };
     fetchTransactions();
-  }, [props.updateHome]);
+  }, [
+    props.updateHome,
+    props.updateExpenses,
+    props.updateIncome,
+    props.updateTransfers,
+  ]);
 
   return (
     <Box sx={{ height: 535, width: "100%" }}>

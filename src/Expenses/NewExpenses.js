@@ -9,14 +9,23 @@ import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 
 const NewExpenses = () => {
+  const [updateExpenses, setUpdateExpenses] = useState(false);
+
+  const updateExpensesHandler = () => {
+    setUpdateExpenses((prevState) => !prevState);
+  };
+
   return (
     <Box>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TransactionForm showButtonGroup={false} />
+          <TransactionForm
+            showButtonGroup={false}
+            updateExpensesHandler={updateExpensesHandler}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TransactionList />
+          <TransactionList updateExpenses={updateExpenses} />
         </Grid>
       </Grid>
     </Box>
