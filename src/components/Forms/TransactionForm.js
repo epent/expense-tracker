@@ -200,11 +200,11 @@ const TransactionForm = (props) => {
   };
 
   const formSubmitHandler = (event) => {
-    openForm === "expense"
-      ? expenseFormSubmitHandler(event)
-      : openForm === "income"
+    openForm === "transfer"
+      ? transferFormSubmitHandler(event)
+      : openForm === "income" || props.transactionType === "income"
       ? incomeFormSubmitHandler(event)
-      : transferFormSubmitHandler(event);
+      : expenseFormSubmitHandler(event);
   };
 
   let buttonExpense = "outlined";
@@ -288,7 +288,9 @@ const TransactionForm = (props) => {
           <NewForm
             accountList={accountList}
             categoryList={categoryList}
-            transactionType={openForm}
+            transactionType={
+              props.transactionType ? props.transactionType : openForm
+            }
             formSubmitHandler={(e) => formSubmitHandler(e)}
             updateForm={updateFormHandler}
             form={form}
