@@ -238,14 +238,9 @@ const TransactionForm = (props) => {
     }
   }
 
-  return (
-    <Box sx={{ height: 535, width: "100%" }}>
-      <Paper elevation={3} className={classes.paper}>
-        <Box p={3}>
-          <Typography variant="h5" color="textSecondary">
-            Add new transaction
-          </Typography>
-        </Box>
+  let buttonGroup;
+  props.showButtonGroup
+    ? (buttonGroup = (
         <Box className={classes.buttonGroup} mx={3}>
           <ButtonGroup size="large" fullWidth>
             <Button
@@ -277,6 +272,18 @@ const TransactionForm = (props) => {
             </Button>
           </ButtonGroup>
         </Box>
+      ))
+    : (buttonGroup = null);
+
+  return (
+    <Box sx={{ height: 535, width: "100%" }}>
+      <Paper elevation={3} className={classes.paper}>
+        <Box p={3}>
+          <Typography variant="h5" color="textSecondary">
+            Add new transaction
+          </Typography>
+        </Box>
+        {buttonGroup}
         <Box mx={3}>
           <NewForm
             accountList={accountList}

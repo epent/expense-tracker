@@ -13,7 +13,7 @@ import Income from "../Income/Income";
 import Transfers from "../Transfers/Transfers";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
-import NewTransactionForm from "../components/Forms/NewTransactionForm";
+import TransactionForm from "../components/Forms/TransactionForm";
 import { getDataFromDB } from "../modules/fetch";
 
 const drawerWidth = 220;
@@ -51,13 +51,13 @@ const Home = () => {
     };
     fetchTotals();
 
-    fetch(
-      "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      });
+    // fetch(
+    //   "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
+    // )
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   }, [updateHome]);
 
   return (
@@ -99,7 +99,7 @@ const Home = () => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} md={6}>
-                <NewTransactionForm updateHomeHandler={updateHomeHandler} />
+                <TransactionForm updateHomeHandler={updateHomeHandler} showButtonGroup/>
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <TransactionList updateHome={updateHome} />
