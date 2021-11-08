@@ -200,7 +200,7 @@ const TransactionForm = (props) => {
   };
 
   const formSubmitHandler = (event) => {
-    openForm === "transfer"
+    openForm === "transfer" || props.transactionType === "transfer"
       ? transferFormSubmitHandler(event)
       : openForm === "income" || props.transactionType === "income"
       ? incomeFormSubmitHandler(event)

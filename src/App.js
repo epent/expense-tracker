@@ -3,13 +3,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import SideBar from "./components/SideBar/SideBar";
 import Home from "./Home/Home";
-import Expenses from "./Expenses/Expenses";
-import Income from "./Income/Income";
-import Transfers from "./Transfers/Transfers";
+import NewExpenses from "./Expenses/NewExpenses";
+import NewIncome from "./Income/NewIncome";
+import NewTransfers from "./Transfers/NewTransfers";
 import Accounts from "./Accounts/Accounts";
 import HistoryLog from "./components/History/HistoryLog";
 import Categories from "./Categories/Categories";
-import Appbar from "./components/Appbar/Appbar";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -42,13 +41,13 @@ function App() {
         <Accounts showAccountForm showEditBtn showDeleteBtn />
       </Route>
       <Route path="/expenses">
-        <Expenses showExpenseLog showExpenseForm />
+        <NewExpenses />
       </Route>
       <Route path="/income">
-        <Income showIncomeLog showIncomeForm />
+        <NewIncome />
       </Route>
       <Route path="/transfers">
-        <Transfers showTransferLog showTransferForm />
+        <NewTransfers />
       </Route>
       <Route path="/history" component={HistoryLog} />
       <Route path="/categories">
