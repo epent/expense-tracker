@@ -9,6 +9,7 @@ import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
@@ -60,6 +61,10 @@ const SideBar = (props) => {
   const theme = useTheme();
   const { window } = props;
 
+  function ListItemLink(props) {
+    return <ListItem button component="a" {...props} />;
+  }
+
   const listOfPages = [
     { name: "Home", icon: <HomeIcon />, link: "/" },
     { name: "Accounts", icon: <AccountBalanceIcon />, link: "/accounts" },
@@ -72,12 +77,10 @@ const SideBar = (props) => {
 
   const pages = listOfPages.map((page) => {
     return (
-      <ListItem button>
+      <ListItemLink href={page.link}>
         <ListItemIcon>{page.icon}</ListItemIcon>
-        <Link href={page.link} variant="body1" underline="none">
-          {page.name}
-        </Link>
-      </ListItem>
+        <ListItemText primary={page.name} />
+      </ListItemLink>
     );
   });
 
