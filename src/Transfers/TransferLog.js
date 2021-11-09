@@ -8,6 +8,7 @@ import {
   postUpdatedTotal,
   getDataFromDB,
   deleteTransactionFromDB,
+  fetchDataToList,
 } from "../modules/fetch";
 
 const TransferLog = (props) => {
@@ -30,32 +31,6 @@ const TransferLog = (props) => {
   // needed for modal when deleting transaction
   const [showModal, setShowModal] = useState(false);
   const [transferToDelete, setTransferToDelete] = useState("");
-
-  const fetchDataToList = async (urlName, isTotal) => {
-    const pushFetchedDataToList = (data) => {
-      const list = [];
-      if (data) {
-        isTotal
-          ? Object.keys(data).map((key) => {
-              list.push({
-                [key]: data[key],
-                id: key,
-              });
-            })
-          : Object.keys(data).map((key) => {
-              list.push({
-                ...data[key],
-                id: key,
-              });
-            });
-      }
-      return list;
-    };
-
-    const fetchedData = await getDataFromDB(urlName);
-    const fetchedDataList = pushFetchedDataToList(fetchedData);
-    return fetchedDataList;
-  };
 
   useEffect(() => {
     const fetchTransferLog = async () => {

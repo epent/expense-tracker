@@ -4,6 +4,8 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@material-ui/data-grid";
 
@@ -19,6 +21,10 @@ const useStyles = makeStyles((theme) => ({
 
 const TransactionList = (props) => {
   const classes = useStyles();
+
+  const [fullList, setFullList] = useState([]);
+
+  const [selectionModel, setSelectionModel] = useState([]);
 
   const [rows, setRows] = useState([
     {
@@ -53,6 +59,8 @@ const TransactionList = (props) => {
           ...incomeList,
           ...transferList,
         ];
+        setFullList(transactionList);
+
         const rowList = [];
 
         transactionList.map((transaction) => {
@@ -86,6 +94,16 @@ const TransactionList = (props) => {
     props.updateTransfers,
   ]);
 
+  const deleteButton = (
+    <IconButton aria-label="delete">
+      <DeleteIcon
+        onClick={() => {
+          props.deleteRowsHandler(selectionModel, fullList);
+        }}
+      />
+    </IconButton>
+  );
+
   return (
     <Box sx={{ height: 535, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
@@ -103,7 +121,13 @@ const TransactionList = (props) => {
                 columns={columns}
                 rows={rows}
                 pageSize={7}
+                checkboxSelection
+                onSelectionModelChange={(newSelectionModel) => {
+                  setSelectionModel(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
               />
+              {props.showDeleteButton && deleteButton}
             </Box>
           </Paper>
         </Box>

@@ -89,6 +89,32 @@ export const calculateTotalBalance = async () => {
   return sum;
 };
 
+export const fetchDataToList = async (urlName, isTotal) => {
+  const pushFetchedDataToList = (data) => {
+    const list = [];
+    if (data) {
+      isTotal
+        ? Object.keys(data).map((key) => {
+            list.push({
+              [key]: data[key],
+              id: key,
+            });
+          })
+        : Object.keys(data).map((key) => {
+            list.push({
+              ...data[key],
+              id: key,
+            });
+          });
+    }
+    return list;
+  };
+
+  const fetchedData = await getDataFromDB(urlName);
+  const fetchedDataList = pushFetchedDataToList(fetchedData);
+  return fetchedDataList;
+};
+
 export const pushFetchedDataToList = (data, transactionType) => {
   const list = [];
   if (data) {
