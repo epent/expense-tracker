@@ -21,19 +21,19 @@ import {
 } from "../../modules/formsubmission";
 import { checkFormValidity } from "../../modules/validation";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: "#fafafa",
-    borderRadius: 10,
-  },
-  buttonGroup: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-}));
-
 const TransactionForm = (props) => {
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      backgroundColor: "#fafafa",
+      borderRadius: 10,
+      height: props.paperHeight,
+    },
+    buttonGroup: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+  }));
   const classes = useStyles();
 
   const [accountList, setAccountList] = useState([]);
@@ -279,7 +279,7 @@ const TransactionForm = (props) => {
     : (buttonGroup = null);
 
   return (
-    <Box sx={{ height: 535, width: "100%" }}>
+    <Box>
       <Paper elevation={3} className={classes.paper}>
         <Box p={3}>
           <Typography variant="h5" color="textSecondary">

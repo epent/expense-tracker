@@ -97,6 +97,7 @@ const NewIncome = () => {
             showButtonGroup={false}
             transactionType="income"
             updateIncomeHandler={updateIncomeHandler}
+            paperHeight={495}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -104,6 +105,8 @@ const NewIncome = () => {
             updateIncome={updateIncome}
             showDeleteButton
             deleteRowsHandler={deleteRowsHandler}
+            pageSize={5}
+            paperHeight={495}
           />
         </Grid>
       </Grid>

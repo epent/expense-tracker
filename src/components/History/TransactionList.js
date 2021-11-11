@@ -11,15 +11,15 @@ import { DataGrid } from "@material-ui/data-grid";
 
 import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: "#fafafa",
-    borderRadius: 10,
-  },
-  dataGrid: {},
-}));
-
 const TransactionList = (props) => {
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      backgroundColor: "#fafafa",
+      borderRadius: 10,
+      height: props.paperHeight,
+    },
+    dataGrid: {},
+  }));
   const classes = useStyles();
 
   const [fullList, setFullList] = useState([]);
@@ -108,7 +108,7 @@ const TransactionList = (props) => {
     <Box sx={{ height: 535, width: "100%" }}>
       <Box sx={{ display: "flex", height: "100%" }}>
         <Box sx={{ flexGrow: 1 }}>
-          <Paper elevation={3} className={classes.root}>
+          <Paper elevation={3} className={classes.paper}>
             <Box p={3}>
               <Typography variant="h5" color="textSecondary">
                 Recent transactions
@@ -120,7 +120,7 @@ const TransactionList = (props) => {
                 rowHeight={49}
                 columns={columns}
                 rows={rows}
-                pageSize={7}
+                pageSize={props.pageSize}
                 checkboxSelection
                 onSelectionModelChange={(newSelectionModel) => {
                   setSelectionModel(newSelectionModel);

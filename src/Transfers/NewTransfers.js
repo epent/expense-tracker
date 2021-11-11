@@ -89,6 +89,7 @@ const NewTransfers = () => {
             showButtonGroup={false}
             transactionType="transfer"
             updateTransfersHandler={updateTransfersHandler}
+            paperHeight={495}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -96,6 +97,8 @@ const NewTransfers = () => {
             updateTransfers={updateTransfers}
             showDeleteButton
             deleteRowsHandler={deleteRowsHandler}
+            pageSize={5}
+            paperHeight={495}
           />
         </Grid>
       </Grid>

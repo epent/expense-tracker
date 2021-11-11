@@ -118,6 +118,7 @@ const NewExpenses = () => {
           <TransactionForm
             showButtonGroup={false}
             updateExpensesHandler={updateExpensesHandler}
+            paperHeight={495}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -125,6 +126,8 @@ const NewExpenses = () => {
             updateExpenses={updateExpenses}
             showDeleteButton
             deleteRowsHandler={deleteRowsHandler}
+            pageSize={5}
+            paperHeight={495}
           />
         </Grid>
       </Grid>
