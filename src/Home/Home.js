@@ -72,6 +72,7 @@ const Home = () => {
                   title="Balance"
                   amount={total.balance}
                   amountColor="textSecondary"
+                  route="/accounts"
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={8} lg={8}>
@@ -82,6 +83,7 @@ const Home = () => {
                       amount={total.income}
                       amountColor="primary"
                       sign={true}
+                      route="/income"
                     />
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -89,6 +91,7 @@ const Home = () => {
                       title="Expenses"
                       amount={total.expenses}
                       amountColor="secondary"
+                      route="/expenses"
                     />
                   </Grid>
                 </Grid>
