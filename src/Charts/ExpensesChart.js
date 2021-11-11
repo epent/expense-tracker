@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    width: 1510,
+    width: 1550,
     height: 400,
     backgroundColor: "#fafafa",
     borderRadius: 10,
