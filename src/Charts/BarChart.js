@@ -56,7 +56,6 @@ const BarChart = (props) => {
         options={barState.options}
         series={barState.series}
         type="bar"
-        width="1510"
         height="300"
       />
     </Box>
