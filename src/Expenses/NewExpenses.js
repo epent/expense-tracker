@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 
 import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
+import ExpensesChart from "../Charts/ExpensesChart";
 import {
   postUpdatedBalance,
   postUpdatedTotal,
@@ -129,6 +130,9 @@ const NewExpenses = () => {
             pageSize={5}
             paperHeight={495}
           />
+        </Grid>
+        <Grid item xs={12}>
+          <ExpensesChart updateExpenses={updateExpenses} />
         </Grid>
       </Grid>
     </Box>
