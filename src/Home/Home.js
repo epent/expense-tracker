@@ -99,7 +99,10 @@ const Home = () => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={12} md={6}>
-                <TransactionForm updateHomeHandler={updateHomeHandler} showButtonGroup/>
+                <TransactionForm
+                  updateHomeHandler={updateHomeHandler}
+                  showButtonGroup
+                />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
                 <TransactionList updateHome={updateHome} />
@@ -126,6 +129,14 @@ const Home = () => {
                   showDeleteBtn={false}
                   updateHome={updateHome}
                 />
+              </Grid>
+            </Grid>
+          </Grid>
+          {/* Income vs Expenses row */}
+          <Grid item xs={12}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <ExpensesIncomeChart updateHome={updateHome} />
               </Grid>
             </Grid>
           </Grid>
