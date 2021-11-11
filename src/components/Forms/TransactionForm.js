@@ -294,7 +294,7 @@ const TransactionForm = (props) => {
             transactionType={
               props.transactionType ? props.transactionType : openForm
             }
-            formSubmitHandler={(e) => formSubmitHandler(e)}
+            formSubmitHandler={formSubmitHandler}
             updateForm={updateFormHandler}
             form={form}
             selectedDate={form.Date}

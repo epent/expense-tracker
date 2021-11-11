@@ -62,6 +62,7 @@ const NewForm = (props) => {
       color: "secondary",
       label: formKey,
       value: formValues[formKey],
+      onChange: (e) => props.updateForm(e, formKey),
     };
 
     return formKey === "From" && props.transactionType === "income" ? (
@@ -70,7 +71,6 @@ const NewForm = (props) => {
         className={classes.textField}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
-        onChange={(e) => props.updateForm(e, formKey)}
       />
     ) : formKey === "From" ? (
       <TextField
@@ -79,7 +79,6 @@ const NewForm = (props) => {
         className={classes.textField}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
-        onChange={(e) => props.updateForm(e, formKey)}
       >
         {accountsToChoose}
       </TextField>
@@ -90,7 +89,6 @@ const NewForm = (props) => {
         className={classes.textField}
         error={props.invalidInputTo}
         helperText={props.helperTextTo}
-        onChange={(e) => props.updateForm(e, formKey)}
       >
         {categoriesToChoose}
       </TextField>
@@ -101,18 +99,11 @@ const NewForm = (props) => {
         className={classes.textField}
         error={props.invalidInputTo}
         helperText={props.helperTextTo}
-        onChange={(e) => props.updateForm(e, formKey)}
       >
         {accountsToChoose}
       </TextField>
     ) : formKey === "Comment" ? (
-      <TextField
-        {...commonProps}
-        fullWidth
-        multiline
-        minRows="2"
-        onChange={(e) => props.updateForm(e, formKey)}
-      />
+      <TextField {...commonProps} fullWidth multiline minRows="2" />
     ) : formKey === "Date" ? (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
@@ -126,23 +117,17 @@ const NewForm = (props) => {
           size="small"
           className={classes.textField}
           value={props.selectedDate}
-          onChange={(e) => props.updateForm(e, formKey)}
         />
       </MuiPickersUtilsProvider>
     ) : formKey === "Amount" ? (
       <TextField
         {...commonProps}
         className={classes.textField}
-        onChange={(e) => props.updateForm(e, formKey)}
         error={props.invalidInputAmount}
         helperText={props.helperTextAmount}
       />
     ) : (
-      <TextField
-        {...commonProps}
-        className={classes.textField}
-        onChange={(e) => props.updateForm(e, formKey)}
-      />
+      <TextField {...commonProps} className={classes.textField} />
     );
   });
 
