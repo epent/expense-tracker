@@ -26,6 +26,10 @@ Listed below you can find all the actions you are able to perform in this app:
 * Delete the transaction
 
 ### Income page
+
+#### Desktop view
+<img src="./public/DesktopIncome.png">
+
 * Create new income transaction (From: simply write down where this money comes from, e.g. Salary)
 * Edit details of the existing transaction
 * Delete the transaction
@@ -42,6 +46,16 @@ Lists all the transactions of all three types (expense/income/transfer)
 * Delete the transaction
 
 ### Home page
+
+#### Desktop view
+<img src="./public/DesktopHome.png">
+
+#### Mobile view
+<img src="./public/MobileHomeBalances.png">
+<img src="./public/MobileHomeForm.png">
+<img src="./public/MobileHomeAccounts.png">
+<img src="./public/MobileHomeChart.png">
+
 Summarizes all the previous information
 * Total Expenses: total of how much you spent
 * Total Income: total of how much you earned
