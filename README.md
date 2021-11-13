@@ -29,7 +29,7 @@ Listed below you can find all the actions you are able to perform in this app:
 ### Income page
 
 #### Desktop view
-<img src="./public/DesktopIncome.png">
+![DesktopIncome view](public/DesktopIncome.png)
 
 * Create new income transaction (From: simply write down where this money comes from, e.g. Salary)
 * Edit details of the existing transaction
