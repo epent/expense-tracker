@@ -7,6 +7,7 @@ An app to track how much money you earn, how much you spend and what you spend i
 * React (CRA) 17
 * Material-UI 4.12
 * Firebase
+* ApexCharts 3.28
 
 ## Description
 Listed below you can find all the actions you are able to perform in this app:
@@ -57,6 +58,7 @@ Lists all the transactions of all three types (expense/income/transfer)
 <img src="./public/MobileHomeChart.png">
 
 Summarizes all the previous information
+* Total Balance: total amount on your Accounts
 * Total Expenses: total of how much you spent
 * Total Income: total of how much you earned
 
