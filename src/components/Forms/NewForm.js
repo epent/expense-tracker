@@ -117,6 +117,7 @@ const NewForm = (props) => {
           size="small"
           className={classes.textField}
           value={props.selectedDate}
+          onChange={(e) => props.updateForm(e, formKey)}
         />
       </MuiPickersUtilsProvider>
     ) : formKey === "Amount" ? (
