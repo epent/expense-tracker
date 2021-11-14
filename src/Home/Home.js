@@ -105,10 +105,17 @@ const Home = () => {
                 <TransactionForm
                   updateHomeHandler={updateHomeHandler}
                   showButtonGroup
+                  paperHeight={533}
+                  pageTitle="Add new transaction"
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
-                <TransactionList updateHome={updateHome} pageSize={7} />
+                <TransactionList
+                  updateHome={updateHome}
+                  paperHeight={533}
+                  pageSize={7}
+                  pageTitle="Recent transactions"
+                />
               </Grid>
             </Grid>
           </Grid>

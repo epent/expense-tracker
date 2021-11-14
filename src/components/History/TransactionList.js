@@ -105,32 +105,30 @@ const TransactionList = (props) => {
   );
 
   return (
-    <Box sx={{ height: 500, width: "100%" }}>
-      <Box sx={{ display: "flex", height: "100%" }}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Paper elevation={3} className={classes.paper}>
-            <Box p={3}>
-              <Typography variant="h5" color="textSecondary">
-                Recent transactions
-              </Typography>
-            </Box>
-            <Box className={classes.dataGrid}>
-              <DataGrid
-                autoHeight={true}
-                rowHeight={49}
-                columns={columns}
-                rows={rows}
-                pageSize={props.pageSize}
-                checkboxSelection
-                onSelectionModelChange={(newSelectionModel) => {
-                  setSelectionModel(newSelectionModel);
-                }}
-                selectionModel={selectionModel}
-              />
-              {props.showDeleteButton && deleteButton}
-            </Box>
-          </Paper>
-        </Box>
+    <Box sx={{ display: "flex", height: "100%" }}>
+      <Box sx={{ flexGrow: 1 }}>
+        <Paper elevation={3} className={classes.paper}>
+          <Box p={3}>
+            <Typography variant="h5" color="textSecondary">
+              {props.pageTitle}
+            </Typography>
+          </Box>
+          <Box className={classes.dataGrid}>
+            <DataGrid
+              autoHeight={true}
+              rowHeight={49}
+              columns={columns}
+              rows={rows}
+              pageSize={props.pageSize}
+              checkboxSelection
+              onSelectionModelChange={(newSelectionModel) => {
+                setSelectionModel(newSelectionModel);
+              }}
+              selectionModel={selectionModel}
+            />
+            {props.showDeleteButton && deleteButton}
+          </Box>
+        </Paper>
       </Box>
     </Box>
   );

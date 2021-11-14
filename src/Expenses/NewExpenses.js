@@ -120,6 +120,7 @@ const NewExpenses = () => {
             showButtonGroup={false}
             updateExpensesHandler={updateExpensesHandler}
             paperHeight={495}
+            pageTitle="Add new expense"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -129,6 +130,7 @@ const NewExpenses = () => {
             deleteRowsHandler={deleteRowsHandler}
             pageSize={5}
             paperHeight={495}
+            pageTitle="Recent transactions"
           />
         </Grid>
         <Grid item xs={12}>

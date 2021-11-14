@@ -51,7 +51,7 @@ function App() {
         <NewTransfers />
       </Route>
       <Route path="/history">
-        <TransactionList pageSize={14} />
+        <TransactionList pageSize={14} pageTitle="Transaction History" />
       </Route>
       <Route path="/categories">
         <Categories showCategoryForm showEditBtn showDeleteBtn />

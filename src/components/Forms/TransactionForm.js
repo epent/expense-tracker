@@ -283,7 +283,7 @@ const TransactionForm = (props) => {
       <Paper elevation={3} className={classes.paper}>
         <Box p={3}>
           <Typography variant="h5" color="textSecondary">
-            Add new transaction
+            {props.pageTitle}
           </Typography>
         </Box>
         {buttonGroup}
