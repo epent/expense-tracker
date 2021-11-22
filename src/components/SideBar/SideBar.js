@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
-import Link from "@material-ui/core/Link";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -61,6 +61,18 @@ const SideBar = (props) => {
   const theme = useTheme();
   const { window } = props;
 
+  const [path, setPath] = useState("");
+
+  let location = useLocation();
+
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [location, setPath]);
+
+  const activetRoute = (route) => {
+    return route === path;
+  };
+
   function ListItemLink(props) {
     return <ListItem button component="a" {...props} />;
   }
@@ -77,7 +89,11 @@ const SideBar = (props) => {
 
   const pages = listOfPages.map((page) => {
     return (
-      <ListItemLink href={page.link}>
+      <ListItemLink
+        key={page.name}
+        href={page.link}
+        selected={activetRoute(page.link)}
+      >
         <ListItemIcon>{page.icon}</ListItemIcon>
         <ListItemText primary={page.name} />
       </ListItemLink>
