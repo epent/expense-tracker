@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import AddBoxIcon from "@material-ui/icons/AddBox";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AccountForm from "../Accounts/AccountForm";
 import AccountLog from "../Accounts/AccountLog";
 import Donut from "../Charts/Donut";
 import NewAccountForm from "./NewAccountForm";
@@ -33,6 +30,15 @@ const NewAccounts = (props) => {
   const [accountLabels, setAccountLabels] = useState([]);
 
   const [updateDonut, setUpdateDonut] = useState(false);
+
+  const colors = [
+    "#26a69a",
+    "#b2dfdb",
+    "#80cbc4",
+    "#009688",
+    "#00796b",
+    "#004d40",
+  ];
 
   useEffect(() => {
     const updateAccounts = async () => {
@@ -87,33 +93,42 @@ const NewAccounts = (props) => {
           <NewAccountForm pageTitle="Add new account" />
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography>List of Accounts</Typography>
+          <Box sx={{ height: "100%", width: "100%" }}>
+            <Paper elevation={3} className={classes.paper}>
+              <Grid container>
+                <Grid item xs={12} sm={6}>
+                  <Box my={3} mx={3}>
+                    <Typography variant="h5" gutterBottom color="textSecondary">
+                      List of Accounts
+                    </Typography>
+                  </Box>
+                  <Box px={3}>
+                    <AccountLog
+                      sliceLog={props.sliceLog}
+                      showEditBtn={props.showEditBtn}
+                      showDeleteBtn={props.showDeleteBtn}
+                      updatedAccountLog={updatedAccountLog}
+                      updateAccountLog={updateAccountLogHandler}
+                      updateHome={props.updateHome}
+                    />
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Box mt={2}>
+                    <Donut
+                      labels={[]}
+                      data={[]}
+                      updatedLabels={accountLabels}
+                      updatedData={accountBalances}
+                      updateDonut={updateDonut}
+                      colors={colors}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Box>
         </Grid>
-        {/* <Box sx={{ height: "100%", width: "100%" }}>
-          <Paper elevation={3} className={classes.paper}>
-            <Grid container>
-              <Grid item xs={12} sm={6}>
-                <Box my={3} mx={3}>
-                  <Typography variant="h5" gutterBottom color="textSecondary">
-                    Accounts
-                  </Typography>
-                </Box>
-                <Box px={3}></Box>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Box mt={2}>
-                  <Donut
-                    labels={[]}
-                    data={[]}
-                    updatedLabels={accountLabels}
-                    updatedData={accountBalances}
-                    updateDonut={updateDonut}
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Box> */}
       </Grid>
     </Box>
   );
