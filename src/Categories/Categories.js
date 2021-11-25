@@ -33,6 +33,15 @@ const Categories = (props) => {
 
   const [updateDonut, setUpdateDonut] = useState(false);
 
+  const colors = [
+    "#9575cd",
+    "#ede7f6",
+    "#d1c4e9",
+    "#7e57c2",
+    "#512da8",
+    "#b39ddb",
+  ];
+
   useEffect(() => {
     const updateCategories = async () => {
       const fetchCategories = async () => {
@@ -123,6 +132,7 @@ const Categories = (props) => {
                   updatedLabels={categoryLabels}
                   updatedData={categoryBalances}
                   updateDonut={updateDonut}
+                  colors={colors}
                 />
               </Box>
             </Grid>
