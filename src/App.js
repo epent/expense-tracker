@@ -6,9 +6,8 @@ import Home from "./Home/Home";
 import NewExpenses from "./Expenses/NewExpenses";
 import NewIncome from "./Income/NewIncome";
 import NewTransfers from "./Transfers/NewTransfers";
-import Accounts from "./Accounts/Accounts";
+import NewAccounts from "./Accounts/NewAccounts";
 import TransactionList from "./components/History/TransactionList";
-import HistoryLog from "./components/History/HistoryLog";
 import Categories from "./Categories/Categories";
 
 import Box from "@material-ui/core/Box";
@@ -39,7 +38,7 @@ function App() {
   let routes = (
     <Switch>
       <Route path="/accounts">
-        <Accounts showAccountForm showEditBtn showDeleteBtn />
+        <NewAccounts />
       </Route>
       <Route path="/expenses">
         <NewExpenses />
