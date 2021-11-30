@@ -80,7 +80,7 @@ const NewAccountForm = (props) => {
         });
 
         // trigger the page to rerender with updated categoryLog
-        await props.updateAccounts();
+        await props.updateAccountsHandler();
       };
       await triggerUpdates();
     };
