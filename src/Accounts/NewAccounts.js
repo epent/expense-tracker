@@ -7,8 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AccountList from "./AccountList";
-import Donut from "../Charts/Donut";
 import NewAccountForm from "./NewAccountForm";
+import AccountsDonut from "../Charts/AccountsDonut";
 import { fetchAccountsFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,49 +26,7 @@ const NewAccounts = (props) => {
 
   const [accountList, setAccountList] = useState([]);
 
-  const [updatedAccountLog, setUpdatedAccountLog] = useState(false);
-
-  const [accountBalances, setAccountBalances] = useState([]);
-
-  const [accountLabels, setAccountLabels] = useState([]);
-
-  const [updateDonut, setUpdateDonut] = useState(false);
-
-  const colors = [
-    "#26a69a",
-    "#b2dfdb",
-    "#80cbc4",
-    "#009688",
-    "#00796b",
-    "#004d40",
-  ];
-
-  useEffect(() => {
-    const updateAccounts = async () => {
-      const fetchAccounts = async () => {
-        const accountList = await fetchAccountsFromDB();
-
-        const updateState = async () => {
-          const fetchedAccountBalances = accountList.map((account) => {
-            return Number(account.Balance);
-          });
-
-          const fetchedAccountLabels = accountList.map((account) => {
-            return account.Name;
-          });
-
-          setAccountBalances(fetchedAccountBalances);
-
-          setAccountLabels(fetchedAccountLabels);
-
-          setUpdateDonut((prevState) => !prevState);
-        };
-        await updateState();
-      };
-      await fetchAccounts();
-    };
-    updateAccounts();
-  }, [updatedAccountLog, props.updateHome]);
+  const [updateAccounts, setUpdateAccounts] = useState(false);
 
   useEffect(() => {
     // fetch accountList from server when form is opened
@@ -76,14 +34,13 @@ const NewAccounts = (props) => {
       const fetchedAccountList = await fetchAccountsFromDB();
 
       setAccountList(fetchedAccountList);
-      console.log(fetchedAccountList);
     };
     fetchAccounts();
-  }, [updatedAccountLog]);
+  }, [updateAccounts]);
 
   // update the list of accounts
-  const updateAccountLogHandler = () => {
-    setUpdatedAccountLog((prevState) => !prevState);
+  const updateAccountsHandler = () => {
+    setUpdateAccounts((prevState) => !prevState);
   };
 
   return (
@@ -91,7 +48,7 @@ const NewAccounts = (props) => {
       <Grid item xs={12} md={6}>
         <NewAccountForm
           pageTitle="Add new account"
-          updateAccountLog={updateAccountLogHandler}
+          updateAccounts={updateAccountsHandler}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -106,16 +63,7 @@ const NewAccounts = (props) => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Box mt={2}>
-                <Donut
-                  labels={[]}
-                  data={[]}
-                  updatedLabels={accountLabels}
-                  updatedData={accountBalances}
-                  updateDonut={updateDonut}
-                  colors={colors}
-                />
-              </Box>
+              <AccountsDonut updateAccounts={updateAccounts} />
             </Grid>
           </Grid>
         </Paper>
