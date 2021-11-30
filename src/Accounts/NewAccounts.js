@@ -15,11 +15,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: "#fafafa",
     borderRadius: 10,
-    [theme.breakpoints.up("xs")]: {
-      height: 700,
-    },
-    [theme.breakpoints.up("xl")]: {
-      height: 350,
+    [theme.breakpoints.up("md")]: {
+      height: 345,
     },
   },
 }));
