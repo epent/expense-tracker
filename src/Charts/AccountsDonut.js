@@ -46,7 +46,7 @@ const AccountsDonut = (props) => {
       await fetchAccounts();
     };
     updateAccounts();
-  }, [props.updateAccounts]);
+  }, [props.updateAccounts, props.updateHome]);
 
   return (
     <Box mt={2}>

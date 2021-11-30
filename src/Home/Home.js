@@ -5,12 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Balance from "../components/Balance/Balance";
-import HistoryLog from "../components/History/HistoryLog";
-import Accounts from "../Accounts/Accounts";
+import AccountPaper from "../Accounts/AccountPaper";
 import Categories from "../Categories/Categories";
-import Expenses from "../Expenses/Expenses";
-import Income from "../Income/Income";
-import Transfers from "../Transfers/Transfers";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
 import TransactionForm from "../components/Forms/TransactionForm";
@@ -123,9 +119,8 @@ const Home = () => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
-                <Accounts
+                <AccountPaper
                   sliceLog={true}
-                  showAccountForm={false}
                   showEditBtn={false}
                   showDeleteBtn={false}
                   updateHome={updateHome}
