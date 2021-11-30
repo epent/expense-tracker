@@ -59,7 +59,7 @@ const NewForm = (props) => {
       variant: "outlined",
       margin: "normal",
       size: "small",
-      color: "secondary",
+      color: props.transactionType === "expense" ? "secondary" : "primary",
       label: formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
