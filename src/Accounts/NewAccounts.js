@@ -6,17 +6,23 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AccountLog from "../Accounts/AccountLog";
+import AccountList from "./AccountList";
 import Donut from "../Charts/Donut";
 import NewAccountForm from "./NewAccountForm";
 import { fetchAccountsFromDB } from "../modules/fetch";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: "#fafafa",
     borderRadius: 10,
+    [theme.breakpoints.up("xs")]: {
+      height: 700,
+    },
+    [theme.breakpoints.up("xl")]: {
+      height: 350,
+    },
   },
-});
+}));
 
 const NewAccounts = (props) => {
   const classes = useStyles();
@@ -71,15 +77,12 @@ const NewAccounts = (props) => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
       const fetchedAccountList = await fetchAccountsFromDB();
-      const accountList = fetchedAccountList.map((account) => {
-        return account.Name;
-      });
 
-      setAccountList(accountList);
-      console.log(accountList);
+      setAccountList(fetchedAccountList);
+      console.log(fetchedAccountList);
     };
     fetchAccounts();
-  }, []);
+  }, [updatedAccountLog]);
 
   // update the list of accounts
   const updateAccountLogHandler = () => {
@@ -87,50 +90,40 @@ const NewAccounts = (props) => {
   };
 
   return (
-    <Box>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <NewAccountForm pageTitle="Add new account" />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Box sx={{ height: "100%", width: "100%" }}>
-            <Paper elevation={3} className={classes.paper}>
-              <Grid container>
-                <Grid item xs={12} sm={6}>
-                  <Box my={3} mx={3}>
-                    <Typography variant="h5" gutterBottom color="textSecondary">
-                      List of Accounts
-                    </Typography>
-                  </Box>
-                  <Box px={3}>
-                    <AccountLog
-                      sliceLog={props.sliceLog}
-                      showEditBtn={props.showEditBtn}
-                      showDeleteBtn={props.showDeleteBtn}
-                      updatedAccountLog={updatedAccountLog}
-                      updateAccountLog={updateAccountLogHandler}
-                      updateHome={props.updateHome}
-                    />
-                  </Box>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Box mt={2}>
-                    <Donut
-                      labels={[]}
-                      data={[]}
-                      updatedLabels={accountLabels}
-                      updatedData={accountBalances}
-                      updateDonut={updateDonut}
-                      colors={colors}
-                    />
-                  </Box>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Box>
-        </Grid>
+    <Grid container spacing={3}>
+      <Grid item xs={12} md={6}>
+        <NewAccountForm
+          pageTitle="Add new account"
+          updateAccountLog={updateAccountLogHandler}
+        />
       </Grid>
-    </Box>
+      <Grid item xs={12} md={6}>
+        <Paper elevation={3} className={classes.paper}>
+          <Grid container>
+            <Grid item xs={12} sm={6}>
+              <AccountList
+                accountList={accountList}
+                sliceLog={props.sliceLog}
+                showEditBtn={props.showEditBtn}
+                showDeleteBtn={props.showDeleteBtn}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box mt={2}>
+                <Donut
+                  labels={[]}
+                  data={[]}
+                  updatedLabels={accountLabels}
+                  updatedData={accountBalances}
+                  updateDonut={updateDonut}
+                  colors={colors}
+                />
+              </Box>
+            </Grid>
+          </Grid>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
