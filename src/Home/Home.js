@@ -124,6 +124,7 @@ const Home = () => {
                   showEditBtn={false}
                   showDeleteBtn={false}
                   updateHome={updateHome}
+                  title="Accounts"
                 />
               </Grid>
               <Grid item xs={12} md={6}>

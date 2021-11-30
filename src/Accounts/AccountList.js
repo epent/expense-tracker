@@ -88,7 +88,7 @@ const AccountList = (props) => {
     <Box>
       <Box p={3}>
         <Typography variant="h5" color="textSecondary">
-          List of Accounts
+          {props.title}
         </Typography>
       </Box>
       <Box mx={3}>

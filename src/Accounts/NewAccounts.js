@@ -23,7 +23,7 @@ const NewAccounts = (props) => {
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <AccountPaper updateAccounts={updateAccounts} />
+        <AccountPaper updateAccounts={updateAccounts} title="List of accounts"/>
       </Grid>
     </Grid>
   );
