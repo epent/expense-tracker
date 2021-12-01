@@ -2,6 +2,8 @@
 
 An app to track how much money you earn, how much you spend and what you spend it on
 
+<img src="./public/Homepage.png">
+
 ## Stack
 
 * React (CRA) 17
@@ -28,9 +30,6 @@ Listed below you can find all the actions you are able to perform in this app:
 
 ### Income page
 
-#### Desktop view
-![DesktopIncome view](public/DesktopIncome.png)
-
 * Create new income transaction (From: simply write down where this money comes from, e.g. Salary)
 * Edit details of the existing transaction
 * Delete the transaction
@@ -47,15 +46,6 @@ Lists all the transactions of all three types (expense/income/transfer)
 * Delete the transaction
 
 ### Home page
-
-#### Desktop view
-<img src="./public/DesktopHome.png">
-
-#### Mobile view
-<img src="./public/MobileHomeBalances.png">
-<img src="./public/MobileHomeForm.png">
-<img src="./public/MobileHomeAccounts.png">
-<img src="./public/MobileHomeChart.png">
 
 Summarizes all the previous information
 * Total Balance: total amount on your Accounts
