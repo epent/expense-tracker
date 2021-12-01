@@ -1,6 +1,6 @@
 # Expense Tracker
 
-An app to track how much money you earn, how much you spend and what you spend it on
+An app to track your personal finance. Create categories of expenses, track multiple bank accounts/credit cards, add transactions and compare your budget on a monthly basis.
 
 <img src="./public/Homepage.png">
 
