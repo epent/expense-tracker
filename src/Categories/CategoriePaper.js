@@ -45,13 +45,13 @@ const CategoriePaper = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={5}>
           <CategoriesDonut
             updateCategories={props.updateCategories}
             updateHome={props.updateHome}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={7}>
           <CategorieList
             categorieList={categorieList}
             sliceLog={props.sliceLog}
