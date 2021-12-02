@@ -70,10 +70,10 @@ const AccountList = (props) => {
         <Grid item key={account.id}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Typography>{account.Name}</Typography>
+              <Typography variant="subtitle2">{account.Name}</Typography>
             </Grid>
             <Grid item>
-              <Typography>{account.Balance}</Typography>
+              <Typography variant="subtitle2">{account.Balance}</Typography>
             </Grid>
           </Grid>
           <Box my={1}>
@@ -86,12 +86,7 @@ const AccountList = (props) => {
 
   return (
     <Box>
-      <Box p={3}>
-        <Typography variant="h5" color="textSecondary">
-          {props.title}
-        </Typography>
-      </Box>
-      <Box mx={3}>
+      <Box mx={5}>
         <Grid container direction="column" spacing={1}>
           {accountList}
         </Grid>

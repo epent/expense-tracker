@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AccountList from "./AccountList";
@@ -37,6 +38,19 @@ const AccountPaper = (props) => {
   return (
     <Paper elevation={3} className={classes.paper}>
       <Grid container>
+        <Grid item xs={12}>
+          <Box p={3}>
+            <Typography variant="h5" color="textSecondary">
+              {props.title}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <AccountsDonut
+            updateAccounts={props.updateAccounts}
+            updateHome={props.updateHome}
+          />
+        </Grid>
         <Grid item xs={12} sm={6}>
           <AccountList
             accountList={accountList}
@@ -44,12 +58,6 @@ const AccountPaper = (props) => {
             showEditBtn={props.showEditBtn}
             showDeleteBtn={props.showDeleteBtn}
             title={props.title}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <AccountsDonut
-            updateAccounts={props.updateAccounts}
-            updateHome={props.updateHome}
           />
         </Grid>
       </Grid>
