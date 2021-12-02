@@ -15,17 +15,16 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
+  form: {
+    width: "1000px",
+  },
+  formControl: {
+    width: "100%",
   },
   textField: {
     [theme.breakpoints.up("xs")]: {
       width: "100%",
     },
-    // [theme.breakpoints.up("xl")]: {
-    //   width: "50%",
-    // },
   },
 }));
 
@@ -134,9 +133,9 @@ const NewForm = (props) => {
 
   return (
     <Grid container>
-      <form onSubmit={props.formSubmitHandler}>
-        <FormControl>
-          <Box className={classes.root}>{form}</Box>
+      <form onSubmit={props.formSubmitHandler} className={classes.form}>
+        <FormControl className={classes.formControl}>
+          <Box>{form}</Box>
           <IconButton size="medium" type="submit" color="secondary">
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>
