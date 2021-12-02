@@ -14,15 +14,15 @@ import {
 
 import { checkCategoryFormValidity } from "../modules/validation";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: "#fafafa",
-    borderRadius: 10,
-    height: props.paperHeight,
-  },
-}));
-
 const NewCategorieForm = (props) => {
+  const useStyles = makeStyles((theme) => ({
+    paper: {
+      backgroundColor: "#fafafa",
+      borderRadius: 10,
+      height: props.paperHeight,
+    },
+  }));
+
   const classes = useStyles();
 
   const [categoryForm, setCategoryForm] = useState({
@@ -54,7 +54,7 @@ const NewCategorieForm = (props) => {
       });
 
       // trigger the page to rerender with updated categoryLog
-      await props.updateCategoryLog();
+      await props.updateCategoriesHandler();
     };
 
     const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
