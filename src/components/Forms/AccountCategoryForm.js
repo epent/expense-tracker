@@ -11,9 +11,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
+  form: {
+    width: "1000px",
+  },
+  formControl: {
     width: "100%",
   },
   textField: {
@@ -26,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const AccountCategoryForm = (props) => {
   const classes = useStyles();
 
-  const formValues = props.form;
-
   let accountCategoriesToChoose;
   if (props.accountCategoriesList)
     accountCategoriesToChoose = props.accountCategoriesList.map((category) => {
@@ -38,9 +37,10 @@ const AccountCategoryForm = (props) => {
       );
     });
 
+  const formValues = props.form;
+
   let form = Object.keys(formValues).map((formKey) => {
     const commonProps = {
-      className: classes.textField,
       variant: "outlined",
       margin: "normal",
       size: "small",
@@ -48,6 +48,7 @@ const AccountCategoryForm = (props) => {
       label: formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
+      className: classes.textField,
     };
 
     return formKey === "Category" ? (
@@ -76,9 +77,9 @@ const AccountCategoryForm = (props) => {
 
   return (
     <Grid container>
-      <form onSubmit={props.formSubmitHandler}>
-        <FormControl>
-          <Box className={classes.root}>{form}</Box>
+      <form onSubmit={props.formSubmitHandler} className={classes.form}>
+        <FormControl className={classes.formControl}>
+          <Box>{form}</Box>
           <IconButton size="medium" type="submit" color={props.formColor}>
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>
