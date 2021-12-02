@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Balance from "../components/Balance/Balance";
 import AccountPaper from "../Accounts/AccountPaper";
-import Categories from "../Categories/Categories";
+import CategoriePaper from "../Categories/CategoriePaper";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
 import TransactionForm from "../components/Forms/TransactionForm";
@@ -46,14 +46,6 @@ const Home = () => {
       });
     };
     fetchTotals();
-
-    // fetch(
-    //   "https://expense-tracker-fd99a-default-rtdb.firebaseio.com/total.json"
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //   });
   }, [updateHome]);
 
   return (
@@ -128,12 +120,12 @@ const Home = () => {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <Categories
+                <CategoriePaper
                   sliceLog={true}
-                  showCategoryForm={false}
                   showEditBtn={false}
                   showDeleteBtn={false}
                   updateHome={updateHome}
+                  title="Categories"
                 />
               </Grid>
             </Grid>

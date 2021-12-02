@@ -7,6 +7,7 @@ import NewExpenses from "./Expenses/NewExpenses";
 import NewIncome from "./Income/NewIncome";
 import NewTransfers from "./Transfers/NewTransfers";
 import NewAccounts from "./Accounts/NewAccounts";
+import NewCategories from "./Categories/NewCategories";
 import TransactionList from "./components/History/TransactionList";
 import Categories from "./Categories/Categories";
 
@@ -53,7 +54,7 @@ function App() {
         <TransactionList pageSize={14} pageTitle="Transaction History" />
       </Route>
       <Route path="/categories">
-        <Categories showCategoryForm showEditBtn showDeleteBtn />
+        <NewCategories />
       </Route>
       <Route path="/">
         <Home />
