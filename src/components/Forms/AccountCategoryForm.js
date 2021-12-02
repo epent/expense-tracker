@@ -44,7 +44,7 @@ const AccountCategoryForm = (props) => {
       variant: "outlined",
       margin: "normal",
       size: "small",
-      color: "primary",
+      color: props.formColor,
       label: formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
@@ -79,7 +79,7 @@ const AccountCategoryForm = (props) => {
       <form onSubmit={props.formSubmitHandler}>
         <FormControl>
           <Box className={classes.root}>{form}</Box>
-          <IconButton size="medium" type="submit" color="primary">
+          <IconButton size="medium" type="submit" color={props.formColor}>
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>
         </FormControl>

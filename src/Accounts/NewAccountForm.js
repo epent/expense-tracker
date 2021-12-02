@@ -159,6 +159,7 @@ const NewAccountForm = (props) => {
         </Box>
         <Box mx={3}>
           <AccountCategoryForm
+            formColor="primary"
             form={accountForm}
             updateForm={updateFormHandler}
             accountCategoriesList={accountCategoriesList}

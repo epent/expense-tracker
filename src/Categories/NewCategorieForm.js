@@ -98,6 +98,7 @@ const NewCategorieForm = (props) => {
         </Box>
         <Box mx={3}>
           <AccountCategoryForm
+            formColor="secondary"
             form={categoryForm}
             updateForm={updateFormHandler}
             formSubmitHandler={categoryFormSubmitHandler}
