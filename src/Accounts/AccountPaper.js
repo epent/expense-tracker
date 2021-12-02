@@ -45,13 +45,13 @@ const AccountPaper = (props) => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={5}>
           <AccountsDonut
             updateAccounts={props.updateAccounts}
             updateHome={props.updateHome}
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={6} lg={7}>
           <AccountList
             accountList={accountList}
             sliceLog={props.sliceLog}
