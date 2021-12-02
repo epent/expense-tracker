@@ -37,7 +37,7 @@ const AccountPaper = (props) => {
 
   return (
     <Paper elevation={3} className={classes.paper}>
-      <Grid container>
+      <Grid container alignItems="center">
         <Grid item xs={12}>
           <Box p={3}>
             <Typography variant="h5" color="textSecondary">

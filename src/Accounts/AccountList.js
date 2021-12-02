@@ -86,7 +86,7 @@ const AccountList = (props) => {
 
   return (
     <Box>
-      <Box mx={5}>
+      <Box mx={5} my={2}>
         <Grid container direction="column" spacing={1}>
           {accountList}
         </Grid>
