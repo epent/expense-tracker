@@ -21,7 +21,9 @@ const NewAccountForm = (props) => {
     paper: {
       backgroundColor: "#fafafa",
       borderRadius: 10,
-      height: props.paperHeight,
+      [theme.breakpoints.up("md")]: {
+        height: 345,
+      },
     },
   }));
   const classes = useStyles();
