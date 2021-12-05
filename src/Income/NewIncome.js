@@ -14,7 +14,7 @@ import {
   fetchDataToList,
 } from "../modules/fetch";
 
-const NewIncome = () => {
+const NewIncome = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
   const updateIncomeHandler = () => {
@@ -90,6 +90,153 @@ const NewIncome = () => {
     incomesToDelete.forEach((incomeToDelete) => updateData(incomeToDelete));
   };
 
+  // const editRowsHandler = (row, oldRow) => {
+  //   let incomeForm;
+
+  //   const updateTransaction = () => {
+  //     let id;
+  //     Object.keys(row).map((key) => {
+  //       id = key;
+
+  //       let amountString = row[key].amount.value;
+  //       console.log(typeof amountString);
+  //       let amountArray = amountString.toString().split("");
+  //       amountArray.shift();
+  //       let amount = amountArray.join("");
+
+  //       incomeForm = {
+  //         Amount: amount,
+  //         From: row[key].from.value,
+  //         To: row[key].to.value,
+  //         Date: row[key].date.value.toDateString(),
+  //       };
+  //     });
+  //     console.log(incomeForm);
+  //     postEditedTransactionToDB(incomeForm, "income", id);
+  //   };
+  //   updateTransaction();
+
+  //   const updateData = async () => {
+  //     const updateAmount = async () => {
+  //       if (oldRow.Amount !== incomeForm.Amount) {
+  //         const updateAccountBalance = async () => {
+  //           const fetchedAccountList = await fetchDataToList("accounts");
+
+  //           const updateBalanceInDB = () => {
+  //             const account = fetchedAccountList.filter(
+  //               (account) => account.Name === oldRow.To
+  //             );
+
+  //             let updatedAccount;
+  //             let accountId;
+
+  //             if (oldRow.Amount > incomeForm.Amount) {
+  //               updatedAccount = {
+  //                 Balance:
+  //                   Number(account[0].Balance) -
+  //                   (Number(props.editedIncomeForm.Amount) -
+  //                     Number(incomeForm.Amount)),
+  //               };
+  //               accountId = account[0].id;
+  //             }
+
+  //             if (oldRow.Amount < incomeForm.Amount) {
+  //               updatedAccount = {
+  //                 Balance:
+  //                   Number(account[0].Balance) +
+  //                   (Number(incomeForm.Amount) - Number(oldRow.Amount)),
+  //               };
+  //               accountId = account[0].id;
+  //             }
+  //             postUpdatedBalance("accounts", accountId, updatedAccount);
+  //           };
+  //           updateBalanceInDB();
+  //         };
+  //         await updateAccountBalance();
+
+  //         const updateTotalBalance = async () => {
+  //           const fetchedTotalList = await fetchDataToList("total", true);
+
+  //           const updateBalanceInDB = async () => {
+  //             const totalIncome = fetchedTotalList.filter((total) => {
+  //               return total.id === "income";
+  //             });
+
+  //             const totalBalance = await calculateTotalBalance();
+
+  //             let updatedTotals;
+
+  //             if (oldRow.Amount > incomeForm.Amount) {
+  //               updatedTotals = {
+  //                 income:
+  //                   Number(totalIncome[0].income) -
+  //                   (Number(oldRow.Amount) - Number(incomeForm.Amount)),
+  //                 balace: totalBalance,
+  //               };
+  //             }
+
+  //             if (oldRow.Amount < incomeForm.Amount) {
+  //               updatedTotals = {
+  //                 income:
+  //                   Number(totalIncome[0].income) +
+  //                   (Number(incomeForm.Amount) - Number(oldRow.Amount)),
+  //                 balace: totalBalance,
+  //               };
+  //             }
+  //             await postUpdatedTotal(updatedTotals);
+  //           };
+  //           await updateBalanceInDB();
+  //         };
+  //         await updateTotalBalance();
+  //       }
+  //     };
+  //     await updateAmount();
+
+  //     const updateAccount = async () => {
+  //       if (oldRow.To !== incomeForm.To) {
+  //         const updateAccountBalance = async (PrevOrCurr) => {
+  //           const fetchedAccountList = await fetchDataToList("accounts");
+
+  //           const updateBalanceInDB = async () => {
+  //             let accountName;
+  //             PrevOrCurr === "Previous"
+  //               ? (accountName = oldRow.To)
+  //               : (accountName = incomeForm.To);
+
+  //             const account = fetchedAccountList.filter(
+  //               (account) => account.Name === accountName
+  //             );
+  //             let updatedAccount;
+
+  //             PrevOrCurr === "Previous"
+  //               ? (updatedAccount = {
+  //                   Balance:
+  //                     Number(account[0].Balance) - Number(incomeForm.Amount),
+  //                 })
+  //               : (updatedAccount = {
+  //                   Balance:
+  //                     Number(account[0].Balance) + Number(incomeForm.Amount),
+  //                 });
+
+  //             const accountId = account[0].id;
+  //             await postUpdatedBalance("accounts", accountId, updatedAccount);
+  //           };
+  //           await updateBalanceInDB();
+  //         };
+  //         await updateAccountBalance("Previous");
+  //         await updateAccountBalance("Current");
+  //       }
+  //     };
+  //     await updateAccount();
+
+  //     const triggerPageUpdates = async () => {
+  //       setUpdateIncome((presvState) => !presvState);
+  //     };
+  //     await triggerPageUpdates();
+  //   };
+  //   updateData();
+  // };
+
   return (
     <Box>
       <Grid container spacing={3}>
@@ -114,7 +261,7 @@ const NewIncome = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <IncomeChart updateIncome={updateIncome}/>
+          <IncomeChart updateIncome={updateIncome} />
         </Grid>
       </Grid>
     </Box>
