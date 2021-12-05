@@ -7,9 +7,8 @@ import Expenses from "./Expenses/Expenses";
 import Income from "./Income/Income";
 import Transfers from "./Transfers/Transfers";
 import Accounts from "./Accounts/Accounts";
-import NewCategories from "./Categories/NewCategories";
-import TransactionList from "./components/History/TransactionList";
 import Categories from "./Categories/Categories";
+import TransactionList from "./components/History/TransactionList";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -54,7 +53,7 @@ function App() {
         <TransactionList pageSize={14} pageTitle="Transaction History" />
       </Route>
       <Route path="/categories">
-        <NewCategories />
+        <Categories />
       </Route>
       <Route path="/">
         <Home />

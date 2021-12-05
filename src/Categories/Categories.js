@@ -3,8 +3,8 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
-import NewCategorieForm from "./NewCategorieForm";
-import CategoriePaper from "./CategoriePaper";
+import CategoryForm from "./CategoryForm";
+import CategoryPaper from "./CategoryPaper";
 
 const NewCategories = (props) => {
   const [updateCategories, setUpdateCategories] = useState(false);
@@ -17,13 +17,13 @@ const NewCategories = (props) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
-        <NewCategorieForm
+        <CategoryForm
           pageTitle="Add new categorie"
           updateCategoriesHandler={updateCategoriesHandler}
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <CategoriePaper
+        <CategoryPaper
           updateCategories={updateCategories}
           title="List of categories"
         />

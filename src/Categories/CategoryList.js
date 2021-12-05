@@ -16,6 +16,31 @@ const useStyles = makeStyles({
 const CategorieList = (props) => {
   const classes = useStyles();
 
+  // const deleteCategoryHandler = (categoryId) => {
+  //   deleteCategoryFromDB("categories", categoryId);
+
+  //   const updateCategoryLog = () => {
+  //     const updatedCategoryLog = categoryLog.filter(
+  //       (category) => category.id !== categoryId
+  //     );
+  //     setCategoryLog(updatedCategoryLog);
+  //   };
+  //   updateCategoryLog();
+  // };
+
+  // const editCategoryHandler = (category) => {
+  //   setCategoryForm({
+  //     Name: category.Name,
+  //     Balance: category.Balance,
+  //   });
+
+  //   setEditedCategoryId(category.id);
+
+  //   if (editedCategoryId === category.id) {
+  //     setShowCategoryForm((prevState) => !prevState);
+  //   }
+  // };
+
   let categorieList = <p>Loading...</p>;
   if (props.categorieList && props.categorieList.length > 0) {
     categorieList = props.categorieList.map((category) => {

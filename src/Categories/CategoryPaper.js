@@ -6,7 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import CategorieList from "./CategorieList";
+import CategoryList from "./CategoryList";
 import CategoriesDonut from "../Charts/Donut/CategoriesDonut";
 import { fetchCategoriesFromDB } from "../modules/fetch";
 
@@ -52,7 +52,7 @@ const CategoriePaper = (props) => {
           />
         </Grid>
         <Grid item xs={12} sm={6} lg={7}>
-          <CategorieList
+          <CategoryList
             categorieList={categorieList}
             sliceLog={props.sliceLog}
             showEditBtn={props.showEditBtn}

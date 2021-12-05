@@ -6,7 +6,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Balance from "../components/Balance/Balance";
 import AccountPaper from "../Accounts/AccountPaper";
-import CategoriePaper from "../Categories/CategoriePaper";
+import CategoryPaper from "../Categories/CategoryPaper";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../components/Forms/TransactionForm";
@@ -120,7 +120,7 @@ const Home = () => {
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <CategoriePaper
+                <CategoryPaper
                   sliceLog={true}
                   showEditBtn={false}
                   showDeleteBtn={false}
