@@ -121,6 +121,7 @@ const ExpensesIncomeChart = (props) => {
           updatedMonths={months}
           updatedExpensesData={expensesData}
           updatedIncomeData={incomeData}
+          colors={["#9575cd", "#26a69a"]}
         />
       </Paper>
     </Grid>
