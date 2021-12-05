@@ -91,6 +91,7 @@ const NewTransfers = () => {
             updateTransfersHandler={updateTransfersHandler}
             paperHeight={495}
             pageTitle="Add new transfer"
+            addButtonColor="default"
           />
         </Grid>
         <Grid item xs={12} md={6}>

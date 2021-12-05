@@ -342,6 +342,7 @@ const NewExpenses = () => {
             updateExpensesHandler={updateExpensesHandler}
             paperHeight={495}
             pageTitle="Add new expense"
+            addButtonColor="secondary"
           />
         </Grid>
         <Grid item xs={12} md={6}>

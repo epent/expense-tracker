@@ -304,6 +304,7 @@ const TransactionForm = (props) => {
             invalidInputFrom={invalidInputFrom}
             invalidInputTo={invalidInputTo}
             invalidInputAmount={invalidInputAmount}
+            addButtonColor={props.addButtonColor}
           />
         </Box>
       </Paper>

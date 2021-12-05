@@ -100,6 +100,7 @@ const NewIncome = () => {
             updateIncomeHandler={updateIncomeHandler}
             paperHeight={495}
             pageTitle="Add new income"
+            addButtonColor="primary"
           />
         </Grid>
         <Grid item xs={12} md={6}>

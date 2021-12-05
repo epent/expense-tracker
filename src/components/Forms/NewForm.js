@@ -136,7 +136,7 @@ const NewForm = (props) => {
       <form onSubmit={props.formSubmitHandler} className={classes.form}>
         <FormControl className={classes.formControl}>
           <Box>{form}</Box>
-          <IconButton size="medium" type="submit" color="secondary">
+          <IconButton size="medium" type="submit" color={props.addButtonColor}>
             <AddCircleIcon style={{ fontSize: 50 }} />
           </IconButton>
         </FormControl>
