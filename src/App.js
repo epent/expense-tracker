@@ -5,7 +5,7 @@ import SideBar from "./components/SideBar/SideBar";
 import Home from "./Home/Home";
 import Expenses from "./Expenses/Expenses";
 import Income from "./Income/Income";
-import NewTransfers from "./Transfers/NewTransfers";
+import Transfers from "./Transfers/Transfers";
 import NewAccounts from "./Accounts/NewAccounts";
 import NewCategories from "./Categories/NewCategories";
 import TransactionList from "./components/History/TransactionList";
@@ -48,7 +48,7 @@ function App() {
         <Income />
       </Route>
       <Route path="/transfers">
-        <NewTransfers />
+        <Transfers />
       </Route>
       <Route path="/history">
         <TransactionList pageSize={14} pageTitle="Transaction History" />
