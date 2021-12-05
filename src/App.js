@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SideBar from "./components/SideBar/SideBar";
 import Home from "./Home/Home";
 import Expenses from "./Expenses/Expenses";
-import NewIncome from "./Income/NewIncome";
+import Income from "./Income/Income";
 import NewTransfers from "./Transfers/NewTransfers";
 import NewAccounts from "./Accounts/NewAccounts";
 import NewCategories from "./Categories/NewCategories";
@@ -45,7 +45,7 @@ function App() {
         <Expenses />
       </Route>
       <Route path="/income">
-        <NewIncome />
+        <Income />
       </Route>
       <Route path="/transfers">
         <NewTransfers />
