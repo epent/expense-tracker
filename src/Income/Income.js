@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 
 import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
-import IncomeChart from "../Charts/IncomeChart";
+import IncomeChart from "../Charts/Bar/IncomeChart";
 import {
   postUpdatedBalance,
   postUpdatedTotal,

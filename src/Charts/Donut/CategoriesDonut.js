@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
-import Donut from "../Charts/Donut";
-import { fetchCategoriesFromDB } from "../modules/fetch";
+import Donut from "./Donut";
+import { fetchCategoriesFromDB } from "../../modules/fetch";
 
 const CategoriesDonut = (props) => {
   const [categoryBalances, setCategoryBalances] = useState([]);

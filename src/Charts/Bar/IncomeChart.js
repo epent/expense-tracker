@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import BarChart from "../Charts/BarChart";
-import { getDataFromDB, pushFetchedDataToList } from "../modules/fetch";
+import BarChart from "./BarChart";
+import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -17,22 +17,22 @@ const useStyles = makeStyles({
   },
 });
 
-const ExpensesChart = (props) => {
+const IncomeChart = (props) => {
   const classes = useStyles();
 
   const [months, setMonths] = useState([]);
 
-  const [expensesData, setExpensesData] = useState([]);
+  const [incomeData, setIncomeData] = useState([]);
 
   const [updateBar, setUpdateBar] = useState(false);
 
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const expenses = await getDataFromDB("expenses");
-        const expenseList = pushFetchedDataToList(expenses, "expenses");
+        const income = await getDataFromDB("income");
+        const incomeList = pushFetchedDataToList(income, "income");
 
-        const transactionList = [...expenseList];
+        const transactionList = [...incomeList];
         transactionList.sort(
           (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
         );
@@ -48,57 +48,57 @@ const ExpensesChart = (props) => {
             }
           });
           setMonths(monthsRow);
-
           return monthsRow;
         };
         const updatedMonthsRow = await updateMonthsRowList();
 
-        const updateExpensesData = async () => {
-          const expensesRow = [];
+        const updateIncomeData = async () => {
+          const incomeRow = [];
 
-          updatedMonthsRow.forEach((expenseMonth) => {
+          updatedMonthsRow.forEach((incomeMonth) => {
             let sumOfExpenses = 0;
 
-            expenseList.forEach((expense) => {
-              const [weekday, month, day, year] = expense.Date.split(" ");
+            incomeList.forEach((income) => {
+              const [weekday, month, day, year] = income.Date.split(" ");
 
-              if (expenseMonth === month) {
-                sumOfExpenses += Number(expense.Amount);
+              if (incomeMonth === month) {
+                sumOfExpenses += Number(income.Amount);
               }
             });
 
-            expensesRow.push(sumOfExpenses);
+            incomeRow.push(sumOfExpenses);
           });
 
-          setExpensesData(expensesRow);
+          setIncomeData(incomeRow);
+          console.log(incomeRow);
           setUpdateBar((prevState) => !prevState);
         };
-        await updateExpensesData();
+        await updateIncomeData();
       };
       await fetchTransactions();
     };
     updateBarChart();
-  }, [props.updateExpenses]);
+  }, [props.updateIncome]);
 
   return (
     <Grid container>
       <Paper elevation={3} className={classes.root}>
         <Box mt={3} mx={3}>
           <Typography variant="h5" gutterBottom color="textSecondary">
-            Expenses
+            Income
           </Typography>
         </Box>
         <BarChart
           months={[]}
-          expensesData={[]}
+          incomeData={[]}
           updateBar={updateBar}
           updatedMonths={months}
-          updatedExpensesData={expensesData}
-          colors={["#9575cd", "#26a69a"]}
+          updatedIncomeData={incomeData}
+          colors={["#26a69a", "#9575cd"]}
         />
       </Paper>
     </Grid>
   );
 };
 
-export default ExpensesChart;
+export default IncomeChart;

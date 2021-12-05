@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 
-import Donut from "../Charts/Donut";
-import { fetchAccountsFromDB } from "../modules/fetch";
+import Donut from "./Donut";
+import { fetchAccountsFromDB } from "../../modules/fetch";
 
 const AccountsDonut = (props) => {
   const [accountBalances, setAccountBalances] = useState([]);

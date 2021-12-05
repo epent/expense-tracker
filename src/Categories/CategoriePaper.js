@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import CategorieList from "./CategorieList";
-import CategoriesDonut from "../Charts/CategoriesDonut";
+import CategoriesDonut from "../Charts/Donut/CategoriesDonut";
 import { fetchCategoriesFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({

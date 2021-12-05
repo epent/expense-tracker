@@ -8,7 +8,7 @@ import Balance from "../components/Balance/Balance";
 import AccountPaper from "../Accounts/AccountPaper";
 import CategoriePaper from "../Categories/CategoriePaper";
 import TransactionList from "../components/History/TransactionList";
-import ExpensesIncomeChart from "../Charts/ExpensesIncomeChart";
+import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../components/Forms/TransactionForm";
 import { getDataFromDB } from "../modules/fetch";
 

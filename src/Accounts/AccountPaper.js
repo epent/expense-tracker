@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import AccountList from "./AccountList";
-import AccountsDonut from "../Charts/AccountsDonut";
+import AccountsDonut from "../Charts/Donut/AccountsDonut";
 import { fetchAccountsFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
