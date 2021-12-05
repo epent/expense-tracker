@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
 
-import NewForm from "./NewForm";
+import Form from "./Form";
 import {
   fetchAccountsFromDB,
   fetchCategoriesFromDB,
@@ -288,7 +288,7 @@ const TransactionForm = (props) => {
         </Box>
         {buttonGroup}
         <Box mx={3}>
-          <NewForm
+          <Form
             accountList={accountList}
             categoryList={categoryList}
             transactionType={
