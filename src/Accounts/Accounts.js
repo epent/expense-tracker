@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
-import NewAccountForm from "./NewAccountForm";
+import AccountForm from "./AccountForm";
 import AccountPaper from "./AccountPaper";
 
 const NewAccounts = (props) => {
@@ -17,13 +17,16 @@ const NewAccounts = (props) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6}>
-        <NewAccountForm
+        <AccountForm
           pageTitle="Add new account"
           updateAccountsHandler={updateAccountsHandler}
         />
       </Grid>
       <Grid item xs={12} md={6}>
-        <AccountPaper updateAccounts={updateAccounts} title="List of accounts"/>
+        <AccountPaper
+          updateAccounts={updateAccounts}
+          title="List of accounts"
+        />
       </Grid>
     </Grid>
   );

@@ -6,7 +6,7 @@ import Home from "./Home/Home";
 import Expenses from "./Expenses/Expenses";
 import Income from "./Income/Income";
 import Transfers from "./Transfers/Transfers";
-import NewAccounts from "./Accounts/NewAccounts";
+import Accounts from "./Accounts/Accounts";
 import NewCategories from "./Categories/NewCategories";
 import TransactionList from "./components/History/TransactionList";
 import Categories from "./Categories/Categories";
@@ -39,7 +39,7 @@ function App() {
   let routes = (
     <Switch>
       <Route path="/accounts">
-        <NewAccounts />
+        <Accounts />
       </Route>
       <Route path="/expenses">
         <Expenses />
