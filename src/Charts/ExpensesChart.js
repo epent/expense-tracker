@@ -94,6 +94,7 @@ const ExpensesChart = (props) => {
           updateBar={updateBar}
           updatedMonths={months}
           updatedExpensesData={expensesData}
+          colors={["#9575cd", "#26a69a"]}
         />
       </Paper>
     </Grid>
