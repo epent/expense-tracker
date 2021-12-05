@@ -18,28 +18,19 @@ import {
 const NewExpenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [expensesToDelete, setExpensesToDelete] = useState("");
+
   const updateExpensesHandler = () => {
     setUpdateExpenses((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (selectedRowsArray, transactionList) => {
-    let expensesToDelete = [];
-    let updatedTransactionList;
+  const deleteRowsHandler = (expensesToDelete) => {
+    expensesToDelete.forEach((expenseToDelete) => {
+      deleteTransactionFromDB("expenses", expenseToDelete.id);
+    });
 
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      expensesToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-      deleteTransactionFromDB("expenses", id);
-    }
+    setShowModal(false);
 
     const updateData = async (expenseToDelete) => {
       const updateAccountBalance = async () => {
@@ -333,6 +324,32 @@ const NewExpenses = () => {
     updateData();
   };
 
+  const openModalHandler = (selectedRowsArray, transactionList) => {
+    let expensesToDelete = [];
+    let updatedTransactionList;
+
+    for (let id of selectedRowsArray) {
+      let filteredTransactions = transactionList.filter((transaction) => {
+        return transaction.id === id;
+      });
+      expensesToDelete.push(...filteredTransactions);
+    }
+
+    for (let id of selectedRowsArray) {
+      updatedTransactionList = transactionList.filter((transaction) => {
+        return transaction.id !== id;
+      });
+      transactionList = updatedTransactionList;
+    }
+
+    setShowModal(true);
+    setExpensesToDelete(expensesToDelete);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
+  };
+
   return (
     <Box>
       <Grid container spacing={3}>
@@ -349,11 +366,16 @@ const NewExpenses = () => {
           <TransactionList
             updateExpenses={updateExpenses}
             showDeleteButton
-            deleteRowsHandler={deleteRowsHandler}
+            deleteTransaction={deleteRowsHandler}
             editRowsHandler={editRowsHandler}
             pageSize={5}
             paperHeight={495}
             pageTitle="Recent transactions"
+            openModal={openModalHandler}
+            closeModal={closeModalHandler}
+            showModal={showModal}
+            transactionsToDelete={expensesToDelete}
+            sign="-"
           />
         </Grid>
         <Grid item xs={12}>

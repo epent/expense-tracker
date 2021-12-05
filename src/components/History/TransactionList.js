@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
+import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import ListItem from "@material-ui/core/ListItem";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
@@ -129,11 +136,71 @@ const TransactionList = (props) => {
   const deleteButton = (
     <IconButton aria-label="delete">
       <DeleteIcon
-        onClick={() => {
-          props.deleteRowsHandler(selectionModel, fullList);
-        }}
+        onClick={() => props.openModal(selectionModel, fullList)}
       />
     </IconButton>
+  );
+
+  let listOfTransactionsToDelete;
+  if (props.transactionsToDelete)
+    listOfTransactionsToDelete = props.transactionsToDelete.map(
+      (transactionToDelete) => {
+        return (
+          <ListItem className={classes.modal}>
+            <Grid item xs={2}>
+              <Typography color="textSecondary" variant="body1">
+                {`${transactionToDelete.Date.split(" ")[2]} ${
+                  transactionToDelete.Date.split(" ")[1]
+                }`}
+              </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <Typography
+                color={props.transactionColor}
+                variant="body1"
+              >{`${transactionToDelete.From}`}</Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <ArrowRightAltIcon color={props.arrowColor} />
+            </Grid>
+            <Grid item xs={2}>
+              <Typography
+                color={props.transactionColor}
+                variant="body1"
+              >{`${transactionToDelete.To}`}</Typography>
+            </Grid>
+            <Grid item xs={3}>
+              <Typography
+                color={props.amountColor}
+                variant="body1"
+                align="right"
+              >{`${props.sign}${transactionToDelete.Amount} ILS`}</Typography>
+            </Grid>
+          </ListItem>
+        );
+      }
+    );
+
+  const deleteModal = (
+    <Dialog open={props.showModal} onClose={props.closeModal}>
+      <DialogContent>
+        <DialogContentText>
+          Are you sure you want to delete these transactions?
+        </DialogContentText>
+        {listOfTransactionsToDelete}
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={props.closeModal}>
+          Close
+        </Button>
+        <Button
+          color="secondary"
+          onClick={() => props.deleteTransaction(props.transactionsToDelete)}
+        >
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 
   return (
@@ -163,6 +230,7 @@ const TransactionList = (props) => {
               onRowEditStop={handleRowUpdate}
             />
             {props.showDeleteButton && deleteButton}
+            {props.transactionsToDelete && deleteModal}
           </Box>
         </Paper>
       </Box>
