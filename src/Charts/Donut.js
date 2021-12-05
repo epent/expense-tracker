@@ -18,14 +18,6 @@ const Donut = (props) => {
       dataLabels: {
         enabled: false,
       },
-      plotOptions: {
-        pie: {
-          size: 100,
-          donut: {
-            size: "55%",
-          },
-        },
-      },
     },
   });
 
@@ -45,7 +37,7 @@ const Donut = (props) => {
   }, [props.updateDonut]);
 
   return (
-    <Box py={3}>
+    <Box>
       <Chart
         options={donutState.chartOptions}
         series={donutState.series}
