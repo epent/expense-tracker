@@ -28,8 +28,8 @@ const theme = createTheme({
       dark: "#673ab7",
     },
     action: {
-      active: "#ce93d8",
-      hover: "#ce93d8",
+      active: "#d1c4e9",
+      hover: "#d1c4e9",
     },
   },
 });

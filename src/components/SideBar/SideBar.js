@@ -54,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   toolbar: theme.mixins.toolbar,
+  icons: {
+    color: theme.palette.secondary.main,
+  },
 }));
 
 const SideBar = (props) => {
@@ -94,7 +97,7 @@ const SideBar = (props) => {
         href={page.link}
         selected={activetRoute(page.link)}
       >
-        <ListItemIcon>{page.icon}</ListItemIcon>
+        <ListItemIcon className={classes.icons}>{page.icon}</ListItemIcon>
         <ListItemText primary={page.name} />
       </ListItemLink>
     );

@@ -95,6 +95,7 @@ const Home = () => {
                   showButtonGroup
                   paperHeight={533}
                   pageTitle="Add new transaction"
+                  addButtonColor="secondary"
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
