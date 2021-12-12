@@ -275,6 +275,7 @@ const NewTransfers = (props) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TransactionList
+            onlyTransfers
             updateTransfers={updateTransfers}
             showDeleteButton
             deleteRowsHandler={deleteRowsHandler}

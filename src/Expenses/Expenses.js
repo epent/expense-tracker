@@ -364,6 +364,7 @@ const NewExpenses = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TransactionList
+            onlyExpenses
             updateExpenses={updateExpenses}
             showDeleteButton
             deleteTransaction={deleteRowsHandler}

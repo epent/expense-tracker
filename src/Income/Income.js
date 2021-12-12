@@ -252,6 +252,7 @@ const NewIncome = (props) => {
         </Grid>
         <Grid item xs={12} md={6}>
           <TransactionList
+            onlyIncome
             updateIncome={updateIncome}
             showDeleteButton
             deleteRowsHandler={deleteRowsHandler}

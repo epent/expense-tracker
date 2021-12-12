@@ -93,11 +93,19 @@ const TransactionList = (props) => {
       const transferList = pushFetchedDataToList(transfers, "transfers");
 
       const updateRowList = async () => {
-        const transactionList = [
-          ...expenseList,
-          ...incomeList,
-          ...transferList,
-        ];
+        let transactionList;
+        props.onlyExpenses
+          ? (transactionList = [...expenseList])
+          : props.onlyIncome
+          ? (transactionList = [...incomeList])
+          : props.onlyTransfers
+          ? (transactionList = [...transferList])
+          : (transactionList = [
+              ...expenseList,
+              ...incomeList,
+              ...transferList,
+            ]);
+
         setFullList(transactionList);
 
         const rowList = [];
@@ -135,9 +143,7 @@ const TransactionList = (props) => {
 
   const deleteButton = (
     <IconButton aria-label="delete">
-      <DeleteIcon
-        onClick={() => props.openModal(selectionModel, fullList)}
-      />
+      <DeleteIcon onClick={() => props.openModal(selectionModel, fullList)} />
     </IconButton>
   );
 
