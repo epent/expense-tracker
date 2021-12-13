@@ -7,8 +7,8 @@ import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 import IncomeChart from "../Charts/Bar/IncomeChart";
 import {
-  postUpdatedBalance,
   postUpdatedTotal,
+  patchUpdatedDataToDB as patchUpdatedBalance,
   deleteTransactionFromDB,
   calculateTotalBalance,
   fetchDataToList,
@@ -53,7 +53,7 @@ const NewIncome = (props) => {
           };
           const accountId = account[0].id;
 
-          postUpdatedBalance("accounts", accountId, updatedAccount);
+          patchUpdatedBalance(updatedAccount, "accounts", accountId);
         };
         updateBalanceInDB();
       };

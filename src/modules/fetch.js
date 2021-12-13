@@ -13,17 +13,10 @@ export const postNewTransactionToDB = (form, type) => {
   });
 };
 
-export const postEditedTransactionToDB = async (form, type, id) => {
-  await fetch(`${baseURL}/${type}/${id}.json`, {
+export const patchUpdatedDataToDB = async (data, typeOfData, id) => {
+  await fetch(`${baseURL}/${typeOfData}/${id}.json`, {
     method: "PATCH",
-    body: JSON.stringify(form),
-  });
-};
-
-export const postUpdatedBalance = async (type, id, updatedBalance) => {
-  await fetch(`${baseURL}/${type}/${id}.json`, {
-    method: "PATCH",
-    body: JSON.stringify(updatedBalance),
+    body: JSON.stringify(data),
   });
 };
 

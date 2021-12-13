@@ -7,12 +7,12 @@ import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesChart from "../Charts/Bar/ExpensesChart";
 import {
-  postUpdatedBalance,
   postUpdatedTotal,
+  patchUpdatedDataToDB as patchUpdatedBalance,
+  patchUpdatedDataToDB as patchUpdatedExpenseToDB,
   deleteTransactionFromDB,
   calculateTotalBalance,
   fetchDataToList,
-  postEditedTransactionToDB,
 } from "../modules/fetch";
 
 const NewExpenses = () => {
@@ -46,7 +46,7 @@ const NewExpenses = () => {
           };
           const accountId = account[0].id;
 
-          postUpdatedBalance("accounts", accountId, updatedAccount);
+          patchUpdatedBalance(updatedAccount, "accounts", accountId);
         };
         updateBalanceInDB();
       };
@@ -65,7 +65,7 @@ const NewExpenses = () => {
           };
           const categoryId = category[0].id;
 
-          postUpdatedBalance("categories", categoryId, updatedCategory);
+          patchUpdatedBalance(updatedCategory, "categories", categoryId);
         };
         updateBalanceInDB();
       };
@@ -125,7 +125,7 @@ const NewExpenses = () => {
         };
       });
       console.log(expenseForm);
-      postEditedTransactionToDB(expenseForm, "expenses", id);
+      patchUpdatedExpenseToDB(expenseForm, "expenses", id);
     };
     updateTransaction();
 
@@ -159,7 +159,7 @@ const NewExpenses = () => {
                 };
                 accountId = account[0].id;
               }
-              postUpdatedBalance("accounts", accountId, updatedAccount);
+              patchUpdatedBalance(updatedAccount, "accounts", accountId);
             };
             updateBalanceInDB();
           };
@@ -192,7 +192,7 @@ const NewExpenses = () => {
                 };
                 categoryId = category[0].id;
               }
-              postUpdatedBalance("categories", categoryId, updatedCategory);
+              patchUpdatedBalance(updatedCategory, "categories", categoryId);
             };
             updateBalanceInDB();
           };
@@ -264,7 +264,7 @@ const NewExpenses = () => {
                   });
 
               const accountId = account[0].id;
-              await postUpdatedBalance("accounts", accountId, updatedAccount);
+              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
             };
             await updateBalanceInDB();
           };
@@ -302,10 +302,10 @@ const NewExpenses = () => {
 
               const categoryId = category[0].id;
 
-              await postUpdatedBalance(
+              await patchUpdatedBalance(
+                updatedCategory,
                 "categories",
-                categoryId,
-                updatedCategory
+                categoryId
               );
             };
             await updateBalanceInDB();

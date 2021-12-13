@@ -1,6 +1,6 @@
 import {
-  postUpdatedBalance,
   postUpdatedTotal,
+  patchUpdatedDataToDB as patchUpdatedBalance,
   getDataFromDB,
   calculateTotalBalance,
 } from "./fetch";
@@ -46,7 +46,7 @@ export const updateAccountBalance = async (
       };
       const accountId = account[0].id;
 
-      postUpdatedBalance("accounts", accountId, updatedAccount);
+      patchUpdatedBalance(updatedAccount, "accounts", accountId);
     };
     updateBalanceInDB();
   }
@@ -61,7 +61,7 @@ export const updateAccountBalance = async (
       };
       const accountId = account[0].id;
 
-      postUpdatedBalance("accounts", accountId, updatedAccount);
+      patchUpdatedBalance(updatedAccount, "accounts", accountId);
       console.log("updatedAccount posted");
     };
     updateBalanceInDB();
@@ -86,7 +86,7 @@ export const updateAccountBalance = async (
           });
       const accountId = account[0].id;
 
-      await postUpdatedBalance("accounts", accountId, updatedAccount);
+      await patchUpdatedBalance(updatedAccount, "accounts", accountId);
     };
     await updateBalanceInDB();
   }
@@ -104,7 +104,7 @@ export const updateCategoryBalance = async (form) => {
     };
     const categoryId = category[0].id;
 
-    postUpdatedBalance("categories", categoryId, updatedCategory);
+    patchUpdatedBalance(updatedCategory, "categories", categoryId);
   };
   updateBalanceInDB();
 };

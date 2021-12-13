@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 import {
-  postUpdatedBalance,
+  patchUpdatedDataToDB as patchUpdatedBalance,
   deleteTransactionFromDB,
   fetchDataToList,
   postEditedTransactionToDB,
@@ -64,7 +64,7 @@ const NewTransfers = (props) => {
               });
           const accountId = account[0].id;
 
-          await postUpdatedBalance("accounts", accountId, updatedAccount);
+          await patchUpdatedBalance(updatedAccount, "accounts", accountId,);
         };
         await updateBalanceInDB();
       };
