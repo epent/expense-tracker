@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AccountList from "./AccountList";
 import AccountsDonut from "../Charts/Donut/AccountsDonut";
-import { fetchAccountsFromDB } from "../modules/fetch";
+import { fetchDataFromDB as fetchAccountsFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,7 +28,7 @@ const AccountPaper = (props) => {
   useEffect(() => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const fetchedAccountList = await fetchAccountsFromDB();
+      const fetchedAccountList = await fetchAccountsFromDB("accounts");
 
       setAccountList(fetchedAccountList);
     };

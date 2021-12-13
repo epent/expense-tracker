@@ -40,7 +40,7 @@ export const deleteTransactionFromDB = (type, transactionId) => {
   });
 };
 
-export const fetchAccountsFromDB = async () => {
+export const fetchDataFromDB = async (typeOfData) => {
   const pushFetchedDataToList = (data) => {
     const list = [];
     Object.keys(data).map((key) => {
@@ -52,25 +52,7 @@ export const fetchAccountsFromDB = async () => {
     return list;
   };
 
-  const fetchedData = await getDataFromDB("accounts");
-  const fetchedDataList = pushFetchedDataToList(fetchedData);
-
-  return fetchedDataList;
-};
-
-export const fetchCategoriesFromDB = async () => {
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    Object.keys(data).map((key) => {
-      list.push({
-        ...data[key],
-        id: key,
-      });
-    });
-    return list;
-  };
-
-  const fetchedData = await getDataFromDB("categories");
+  const fetchedData = await getDataFromDB(typeOfData);
   const fetchedDataList = pushFetchedDataToList(fetchedData);
 
   return fetchedDataList;
@@ -78,7 +60,7 @@ export const fetchCategoriesFromDB = async () => {
 
 export const calculateTotalBalance = async () => {
   const fetchAccounts = async () => {
-    const accountList = await fetchAccountsFromDB();
+    const accountList = await fetchDataFromDB("accounts");
     return accountList;
   };
   const fetchedAccounts = await fetchAccounts();
