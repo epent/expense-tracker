@@ -15,6 +15,8 @@ import {
   getDataFromDBasList,
 } from "../modules/fetch";
 
+import { increaseBalance as increaseAccountBalance, decreaseBalance as deacreaseCategoryBalance} from "../modules/deletetransaction";
+
 const NewExpenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
@@ -36,38 +38,24 @@ const NewExpenses = () => {
       const updateAccountBalance = async () => {
         const fetchedAccountList = await getDataFromDBasList("accounts");
 
-        const updateBalanceInDB = () => {
-          const account = fetchedAccountList.filter(
-            (account) => account.Name === expenseToDelete.From
-          );
-          const updatedAccount = {
-            Balance:
-              Number(account[0].Balance) + Number(expenseToDelete.Amount),
-          };
-          const accountId = account[0].id;
+        const [updatedAccount, accountId] = increaseAccountBalance(
+          fetchedAccountList,
+          expenseToDelete
+        );
 
-          patchUpdatedBalance(updatedAccount, "accounts", accountId);
-        };
-        updateBalanceInDB();
+        patchUpdatedBalance(updatedAccount, "accounts", accountId);
       };
       await updateAccountBalance();
 
       const updateCategoryBalance = async () => {
         const fetchedCategoryList = await getDataFromDBasList("categories");
 
-        const updateBalanceInDB = () => {
-          const category = fetchedCategoryList.filter(
-            (category) => category.Name === expenseToDelete.To
-          );
-          const updatedCategory = {
-            Balance:
-              Number(category[0].Balance) - Number(expenseToDelete.Amount),
-          };
-          const categoryId = category[0].id;
+        const [updatedCategory, categoryId] = deacreaseCategoryBalance(
+          fetchedCategoryList,
+          expenseToDelete
+        );
 
-          patchUpdatedBalance(updatedCategory, "categories", categoryId);
-        };
-        updateBalanceInDB();
+        patchUpdatedBalance(updatedCategory, "categories", categoryId);
       };
       await updateCategoryBalance();
 
@@ -125,7 +113,7 @@ const NewExpenses = () => {
           Date: row[key].date.value.toDateString(),
         };
       });
-      
+
       patchUpdatedExpenseToDB(expenseForm, "expenses", id);
     };
     updateTransaction();

@@ -12,6 +12,11 @@ import {
   getDataFromDBasList,
 } from "../modules/fetch";
 
+import {
+  increaseBalance as increaseAccountBalance,
+  decreaseBalance as decreaseAccountBalance,
+} from "../modules/deletetransaction";
+
 const NewTransfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
@@ -30,37 +35,28 @@ const NewTransfers = (props) => {
     setShowModal(false);
 
     const updateData = async (transferToDelete) => {
-      const updateAccountBalance = async (fromOrTo) => {
+      const updateAccountBalance = async () => {
         const fetchedAccountList = await getDataFromDBasList("accounts");
 
-        const updateBalanceInDB = async () => {
-          let accountName;
-          fromOrTo === "From"
-            ? (accountName = transferToDelete.From)
-            : (accountName = transferToDelete.To);
+        const [updatedAccountFrom, accountIdFrom] = increaseAccountBalance(
+          fetchedAccountList,
+          transferToDelete
+        );
 
-          const account = fetchedAccountList.filter(
-            (account) => account.Name === accountName
-          );
+        await patchUpdatedBalance(
+          updatedAccountFrom,
+          "accounts",
+          accountIdFrom
+        );
 
-          let updatedAccount;
-          fromOrTo === "From"
-            ? (updatedAccount = {
-                Balance:
-                  Number(account[0].Balance) + Number(transferToDelete.Amount),
-              })
-            : (updatedAccount = {
-                Balance:
-                  Number(account[0].Balance) - Number(transferToDelete.Amount),
-              });
-          const accountId = account[0].id;
+        const [updatedAccountTo, accountIdTo] = decreaseAccountBalance(
+          fetchedAccountList,
+          transferToDelete
+        );
 
-          await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-        };
-        await updateBalanceInDB();
+        await patchUpdatedBalance(updatedAccountTo, "accounts", accountIdTo);
       };
-      await updateAccountBalance("From");
-      await updateAccountBalance("To");
+      await updateAccountBalance();
 
       const triggerPageUpdate = async () => {
         setUpdateTransfers((prevState) => !prevState);

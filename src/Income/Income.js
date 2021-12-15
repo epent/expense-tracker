@@ -15,6 +15,8 @@ import {
   getDataFromDBasList,
 } from "../modules/fetch";
 
+import { decreaseBalance as decreaseAccountBalance } from "../modules/deletetransaction";
+
 const NewIncome = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
@@ -36,18 +38,12 @@ const NewIncome = (props) => {
       const updateAccountBalance = async () => {
         const fetchedAccountList = await getDataFromDBasList("accounts");
 
-        const updateBalanceInDB = () => {
-          const account = fetchedAccountList.filter(
-            (account) => account.Name === incomeToDelete.To
-          );
-          const updatedAccount = {
-            Balance: Number(account[0].Balance) - Number(incomeToDelete.Amount),
-          };
-          const accountId = account[0].id;
+        const [updatedAccount, accountId] = decreaseAccountBalance(
+          fetchedAccountList,
+          incomeToDelete
+        );
 
-          patchUpdatedBalance(updatedAccount, "accounts", accountId);
-        };
-        updateBalanceInDB();
+        patchUpdatedBalance(updatedAccount, "accounts", accountId);
       };
       await updateAccountBalance();
 
