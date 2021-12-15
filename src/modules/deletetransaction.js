@@ -21,3 +21,23 @@ export const decreaseBalance = (dataList, transactionToDelete) => {
 
   return [updatedCategory, categoryId];
 };
+
+export const updateTotal = (
+  typeOfTransaction,
+  fetchedTotalList,
+  totalBalance,
+  expenseToDelete
+) => {
+  const updatedType = fetchedTotalList.filter((total) => {
+    return total.id === typeOfTransaction;
+  });
+
+  const updatedTotals = {
+    [typeOfTransaction]:
+      Number(updatedType[0][typeOfTransaction]) -
+      Number(expenseToDelete.Amount),
+    balance: totalBalance,
+  };
+
+  return updatedTotals;
+};
