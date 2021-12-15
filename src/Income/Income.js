@@ -17,28 +17,19 @@ import {
 const NewIncome = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [incomeToDelete, setIncomeToDelete] = useState("");
+
   const updateIncomeHandler = () => {
     setUpdateIncome((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (selectedRowsArray, transactionList) => {
-    let incomesToDelete = [];
-    let updatedTransactionList;
+  const deleteRowsHandler = (incomesToDelete) => {
+    incomesToDelete.forEach((incomeToDelete) => {
+      deleteTransactionFromDB("income", incomeToDelete.id);
+    });
 
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      incomesToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-      deleteTransactionFromDB("income", id);
-    }
+    setShowModal(false);
 
     const updateData = async (incomeToDelete) => {
       const updateAccountBalance = async () => {
@@ -88,6 +79,32 @@ const NewIncome = (props) => {
     };
 
     incomesToDelete.forEach((incomeToDelete) => updateData(incomeToDelete));
+  };
+
+  const openModalHandler = (selectedRowsArray, transactionList) => {
+    let incomesToDelete = [];
+    let updatedTransactionList;
+
+    for (let id of selectedRowsArray) {
+      let filteredTransactions = transactionList.filter((transaction) => {
+        return transaction.id === id;
+      });
+      incomesToDelete.push(...filteredTransactions);
+    }
+
+    for (let id of selectedRowsArray) {
+      updatedTransactionList = transactionList.filter((transaction) => {
+        return transaction.id !== id;
+      });
+      transactionList = updatedTransactionList;
+    }
+
+    setShowModal(true);
+    setIncomeToDelete(incomesToDelete);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
   };
 
   // const editRowsHandler = (row, oldRow) => {
@@ -255,10 +272,15 @@ const NewIncome = (props) => {
             onlyIncome
             updateIncome={updateIncome}
             showDeleteButton
-            deleteRowsHandler={deleteRowsHandler}
+            deleteTransaction={deleteRowsHandler}
             pageSize={5}
             paperHeight={495}
             pageTitle="Recent transactions"
+            openModal={openModalHandler}
+            closeModal={closeModalHandler}
+            showModal={showModal}
+            transactionsToDelete={incomeToDelete}
+            sign=""
           />
         </Grid>
         <Grid item xs={12}>
