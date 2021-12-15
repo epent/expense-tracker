@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
-import TransactionForm from "../components/Forms/TransactionForm";
-import TransactionList from "../components/History/TransactionList";
-import ExpensesChart from "../Charts/Bar/ExpensesChart";
+import TransactionForm from "../TransactionForm";
+import TransactionList from "../TransactionList";
+import ExpensesChart from "../../Charts/Bar/ExpensesChart";
 import {
   patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
@@ -13,13 +13,13 @@ import {
   deleteTransactionFromDB,
   calculateTotalBalance,
   getDataFromDBasList,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 
 import {
   increaseBalance as increaseAccountBalance,
   decreaseBalance as deacreaseCategoryBalance,
   updateTotalDelete,
-} from "../modules/delete";
+} from "../../modules/delete";
 
 import {
   editTransaction,
@@ -28,7 +28,7 @@ import {
   increaseBalance,
   decreaseBalance,
   updateTotalEdit,
-} from "../modules/edit";
+} from "../../modules/edit";
 
 const Expenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);

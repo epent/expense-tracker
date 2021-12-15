@@ -12,13 +12,13 @@ import {
   getDataFromDBasList as getAccountsFromDB,
   getDataFromDBasList as getCategoriesFromDB,
   postNewTransactionToDB,
-} from "../../modules/fetch";
+} from "../modules/fetch";
 import {
   updateAccountBalance,
   updateCategoryBalance,
   updateTotalBalance,
-} from "../../modules/submit";
-import { checkFormValidity } from "../../modules/validate";
+} from "../modules/submit";
+import { checkFormValidity } from "../modules/validate";
 
 const TransactionForm = (props) => {
   const useStyles = makeStyles((theme) => ({

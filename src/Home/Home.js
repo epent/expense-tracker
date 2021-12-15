@@ -4,12 +4,12 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
-import Balance from "../components/Balance/Balance";
+import Balance from "./Balance/Balance";
 import AccountPaper from "../Accounts/AccountPaper";
 import CategoryPaper from "../Categories/CategoryPaper";
-import TransactionList from "../components/History/TransactionList";
+import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
-import TransactionForm from "../components/Forms/TransactionForm";
+import TransactionForm from "../Transactions/TransactionForm";
 import { getDataFromDB } from "../modules/fetch";
 
 const drawerWidth = 220;

@@ -3,19 +3,19 @@ import React, { useState } from "react";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 
-import TransactionForm from "../components/Forms/TransactionForm";
-import TransactionList from "../components/History/TransactionList";
+import TransactionForm from "../TransactionForm";
+import TransactionList from "../TransactionList";
 import {
   patchUpdatedDataToDB as patchUpdatedBalance,
   patchUpdatedDataToDB as patchUpdatedTransferToDB,
   deleteTransactionFromDB,
   getDataFromDBasList,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 
 import {
   increaseBalance as increaseAccountBalance,
   decreaseBalance as decreaseAccountBalance,
-} from "../modules/delete";
+} from "../../modules/delete";
 
 import {
   editTransaction,
@@ -23,7 +23,7 @@ import {
   updateAmountTo,
   increaseBalance,
   decreaseBalance,
-} from "../modules/edit";
+} from "../../modules/edit";
 
 const Transfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);

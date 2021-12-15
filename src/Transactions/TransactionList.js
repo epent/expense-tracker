@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { getDataFromDBasList } from "../../modules/fetch";
+import { getDataFromDBasList } from "../modules/fetch";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
