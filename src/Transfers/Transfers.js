@@ -15,28 +15,19 @@ import {
 const NewTransfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [transfersToDelete, setTransfersToDelete] = useState("");
+
   const updateTransfersHandler = () => {
     setUpdateTransfers((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (selectedRowsArray, transactionList) => {
-    let transfersToDelete = [];
-    let updatedTransactionList;
+  const deleteRowsHandler = (transfersToDelete) => {
+    transfersToDelete.forEach((transferToDelete) => {
+      deleteTransactionFromDB("transfers", transferToDelete.id);
+    });
 
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      transfersToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-      deleteTransactionFromDB("transfers", id);
-    }
+    setShowModal(false);
 
     const updateData = async (transferToDelete) => {
       const updateAccountBalance = async (fromOrTo) => {
@@ -64,7 +55,7 @@ const NewTransfers = (props) => {
               });
           const accountId = account[0].id;
 
-          await patchUpdatedBalance(updatedAccount, "accounts", accountId,);
+          await patchUpdatedBalance(updatedAccount, "accounts", accountId);
         };
         await updateBalanceInDB();
       };
@@ -80,6 +71,32 @@ const NewTransfers = (props) => {
     transfersToDelete.forEach((transferToDelete) =>
       updateData(transferToDelete)
     );
+  };
+
+  const openModalHandler = (selectedRowsArray, transactionList) => {
+    let transfersToDelete = [];
+    let updatedTransactionList;
+
+    for (let id of selectedRowsArray) {
+      let filteredTransactions = transactionList.filter((transaction) => {
+        return transaction.id === id;
+      });
+      transfersToDelete.push(...filteredTransactions);
+    }
+
+    for (let id of selectedRowsArray) {
+      updatedTransactionList = transactionList.filter((transaction) => {
+        return transaction.id !== id;
+      });
+      transactionList = updatedTransactionList;
+    }
+
+    setShowModal(true);
+    setTransfersToDelete(transfersToDelete);
+  };
+
+  const closeModalHandler = () => {
+    setShowModal(false);
   };
 
   // const editRowsHandler = (row, oldRow) => {
@@ -278,10 +295,14 @@ const NewTransfers = (props) => {
             onlyTransfers
             updateTransfers={updateTransfers}
             showDeleteButton
-            deleteRowsHandler={deleteRowsHandler}
+            deleteTransaction={deleteRowsHandler}
             pageSize={5}
             paperHeight={495}
             pageTitle="Recent transactions"
+            openModal={openModalHandler}
+            closeModal={closeModalHandler}
+            showModal={showModal}
+            transactionsToDelete={transfersToDelete}
           />
         </Grid>
       </Grid>
