@@ -12,7 +12,7 @@ import {
   postEditedTransactionToDB as postEditedCategoryToDB,
 } from "../modules/fetch";
 
-import { checkCategoryFormValidity } from "../modules/validation";
+import { checkCategoryFormValidity } from "../modules/validate";
 
 const NewCategorieForm = (props) => {
   const useStyles = makeStyles((theme) => ({

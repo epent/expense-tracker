@@ -19,7 +19,7 @@ import {
   updateCategoryBalance,
   updateTotalBalance,
 } from "../../modules/submit";
-import { checkFormValidity } from "../../modules/validation";
+import { checkFormValidity } from "../../modules/validate";
 
 const TransactionForm = (props) => {
   const useStyles = makeStyles((theme) => ({

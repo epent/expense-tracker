@@ -14,7 +14,7 @@ import {
   postEditedTransactionToDB as postEditedAccountToDB,
 } from "../modules/fetch";
 
-import { checkAccountFormValidity } from "../modules/validation";
+import { checkAccountFormValidity } from "../modules/validate";
 
 const NewAccountForm = (props) => {
   const useStyles = makeStyles((theme) => ({
