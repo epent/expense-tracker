@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import CategoryList from "./CategoryList";
 import CategoriesDonut from "../Charts/Donut/CategoriesDonut";
-import { fetchDataFromDB as fetchCategoriesFromDB } from "../modules/fetch";
+import { getDataFromDBasList as getCategoriesFromDB } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -27,7 +27,7 @@ const CategoriePaper = (props) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const fetchedCategorieList = await fetchCategoriesFromDB("categories");
+      const fetchedCategorieList = await getCategoriesFromDB("categories");
 
       setCategorieList(fetchedCategorieList);
       console.log(fetchedCategorieList);

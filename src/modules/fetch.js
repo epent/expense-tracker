@@ -33,37 +33,6 @@ export const deleteTransactionFromDB = (type, transactionId) => {
   });
 };
 
-export const fetchDataFromDB = async (typeOfData) => {
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    Object.keys(data).map((key) => {
-      list.push({
-        ...data[key],
-        id: key,
-      });
-    });
-    return list;
-  };
-
-  const fetchedData = await getDataFromDB(typeOfData);
-  const fetchedDataList = pushFetchedDataToList(fetchedData);
-
-  return fetchedDataList;
-};
-
-export const calculateTotalBalance = async () => {
-  const fetchAccounts = async () => {
-    const accountList = await fetchDataFromDB("accounts");
-    return accountList;
-  };
-  const fetchedAccounts = await fetchAccounts();
-
-  let sum = 0;
-  fetchedAccounts.forEach((account) => (sum += Number(account.Balance)));
-
-  return sum;
-};
-
 export const getDataFromDBasList = async (urlName, isTotal) => {
   const pushFetchedDataToList = (data) => {
     const list = [];
@@ -88,4 +57,17 @@ export const getDataFromDBasList = async (urlName, isTotal) => {
   const fetchedData = await getDataFromDB(urlName);
   const fetchedDataList = pushFetchedDataToList(fetchedData);
   return fetchedDataList;
+};
+
+export const calculateTotalBalance = async () => {
+  const fetchAccounts = async () => {
+    const accountList = await getDataFromDBasList("accounts");
+    return accountList;
+  };
+  const fetchedAccounts = await fetchAccounts();
+
+  let sum = 0;
+  fetchedAccounts.forEach((account) => (sum += Number(account.Balance)));
+
+  return sum;
 };

@@ -10,8 +10,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Form from "./Form";
 import {
-  fetchDataFromDB as fetchAccountsFromDB,
-  fetchDataFromDB as fetchCategoriesFromDB,
+  getDataFromDBasList as getAccountsFromDB,
+  getDataFromDBasList as getCategoriesFromDB,
   postNewTransactionToDB,
 } from "../../modules/fetch";
 import {
@@ -59,7 +59,7 @@ const TransactionForm = (props) => {
   useEffect(() => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const fetchedAccountList = await fetchAccountsFromDB("accounts");
+      const fetchedAccountList = await getAccountsFromDB("accounts");
       const accountList = fetchedAccountList.map((account) => {
         return account.Name;
       });
@@ -71,7 +71,7 @@ const TransactionForm = (props) => {
 
     // fetch categoryList from server when form is opened
     const fetchCategories = async () => {
-      const fetchedCategoryList = await fetchCategoriesFromDB("categories");
+      const fetchedCategoryList = await getCategoriesFromDB("categories");
       const categoryList = fetchedCategoryList.map((category) => {
         return category.Name;
       });
