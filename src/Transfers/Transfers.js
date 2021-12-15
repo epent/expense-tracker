@@ -25,7 +25,7 @@ import {
   decreaseBalance,
 } from "../modules/edittrasaction";
 
-const NewTransfers = (props) => {
+const Transfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -260,4 +260,4 @@ const NewTransfers = (props) => {
   );
 };
 
-export default NewTransfers;
+export default Transfers;

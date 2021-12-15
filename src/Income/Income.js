@@ -28,7 +28,7 @@ import {
   updateTotalEdit,
 } from "../modules/edittrasaction";
 
-const NewIncome = (props) => {
+const Income = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -235,4 +235,4 @@ const NewIncome = (props) => {
   );
 };
 
-export default NewIncome;
+export default Income;

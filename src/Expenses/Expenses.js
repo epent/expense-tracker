@@ -30,7 +30,7 @@ import {
   updateTotalEdit,
 } from "../modules/edittrasaction";
 
-const NewExpenses = () => {
+const Expenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -293,4 +293,4 @@ const NewExpenses = () => {
   );
 };
 
-export default NewExpenses;
+export default Expenses;
