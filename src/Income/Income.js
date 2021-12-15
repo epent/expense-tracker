@@ -20,6 +20,8 @@ import {
   updateTotal,
 } from "../modules/deletetransaction";
 
+import { editTransaction, updatedBalanceTo } from "../modules/edittrasaction";
+
 const NewIncome = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
@@ -104,18 +106,9 @@ const NewIncome = (props) => {
     let incomeForm;
 
     const updateTransaction = () => {
-      let id;
-      Object.keys(row).map((key) => {
-        id = key;
+      const [id, form] = editTransaction(row);
+      incomeForm = form;
 
-        incomeForm = {
-          Amount: row[key].amount.value,
-          From: row[key].from.value,
-          To: row[key].to.value,
-          Date: row[key].date.value.toDateString(),
-        };
-      });
-      console.log(incomeForm);
       patchUpdatedIncomeToDB(incomeForm, "income", id);
     };
     updateTransaction();
@@ -126,37 +119,13 @@ const NewIncome = (props) => {
           const updateAccountBalance = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const updateBalanceInDB = () => {
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === oldRow.To
-              );
+            const [updatedAccount, accountId] = updatedBalanceTo(
+              fetchedAccountList,
+              oldRow,
+              incomeForm
+            );
 
-              let updatedAccount;
-              let accountId;
-
-              if (oldRow.Amount > incomeForm.Amount) {
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) -
-                    (Number(oldRow.Amount) - Number(incomeForm.Amount)),
-                };
-                accountId = account[0].id;
-              }
-
-              if (oldRow.Amount < incomeForm.Amount) {
-                console.log(oldRow.Amount);
-                console.log(incomeForm.Amount);
-
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) +
-                    (Number(incomeForm.Amount) - Number(oldRow.Amount)),
-                };
-                accountId = account[0].id;
-              }
-              patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            updateBalanceInDB();
+            patchUpdatedBalance(updatedAccount, "accounts", accountId);
           };
           await updateAccountBalance();
 

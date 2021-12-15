@@ -17,6 +17,12 @@ import {
   decreaseBalance as decreaseAccountBalance,
 } from "../modules/deletetransaction";
 
+import {
+  editTransaction,
+  updatedBalanceFrom,
+  updatedBalanceTo,
+} from "../modules/edittrasaction";
+
 const NewTransfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
@@ -99,23 +105,45 @@ const NewTransfers = (props) => {
     let transferForm;
 
     const updateTransaction = () => {
-      let id;
-      Object.keys(row).map((key) => {
-        id = key;
-
-        transferForm = {
-          Amount: row[key].amount.value,
-          From: row[key].from.value,
-          To: row[key].to.value,
-          Date: row[key].date.value.toDateString(),
-        };
-      });
+      const [id, form] = editTransaction(row);
+      transferForm = form;
 
       patchUpdatedTransferToDB(transferForm, "transfers", id);
     };
     updateTransaction();
 
     const updateData = async () => {
+      const updateAmount = async () => {
+        if (oldRow.Amount !== transferForm.Amount) {
+          const updateAccountBalanceFrom = async () => {
+            const fetchedAccountList = await getDataFromDBasList("accounts");
+
+            const [updatedAccount, accountId] = updatedBalanceFrom(
+              fetchedAccountList,
+              oldRow,
+              transferForm
+            );
+
+            await patchUpdatedBalance(updatedAccount, "accounts", accountId);
+          };
+          await updateAccountBalanceFrom();
+
+          const updateAccountBalanceTo = async () => {
+            const fetchedAccountList = await getDataFromDBasList("accounts");
+
+            const [updatedAccount, accountId] = updatedBalanceTo(
+              fetchedAccountList,
+              oldRow,
+              transferForm
+            );
+
+            await patchUpdatedBalance(updatedAccount, "accounts", accountId);
+          };
+          await updateAccountBalanceTo();
+        }
+      };
+      await updateAmount();
+
       const updateAccountFrom = async () => {
         if (oldRow.From !== transferForm.From) {
           const updateAccountBalance = async (PrevOrCurr) => {
@@ -185,79 +213,6 @@ const NewTransfers = (props) => {
         }
       };
       await updateAccountTo();
-
-      const updateAmount = async () => {
-        if (oldRow.Amount !== transferForm.Amount) {
-          const updateAccountBalanceFrom = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const updateBalanceInDB = async () => {
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === transferForm.From
-              );
-
-              let updatedAccount;
-              let accountId;
-
-              if (oldRow.Amount > transferForm.Amount) {
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) +
-                    (Number(oldRow.Amount) - Number(transferForm.Amount)),
-                };
-                accountId = account[0].id;
-              }
-
-              if (oldRow.Amount < transferForm.Amount) {
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) -
-                    (Number(transferForm.Amount) - Number(oldRow.Amount)),
-                };
-                accountId = account[0].id;
-              }
-              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            await updateBalanceInDB();
-          };
-          await updateAccountBalanceFrom();
-
-          const updateAccountBalanceTo = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const updateBalanceInDB = async () => {
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === transferForm.To
-              );
-
-              let updatedAccount;
-              let accountId;
-
-              if (oldRow.Amount > transferForm.Amount) {
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) -
-                    (Number(oldRow.Amount) - Number(transferForm.Amount)),
-                };
-                accountId = account[0].id;
-              }
-
-              if (oldRow.Amount < transferForm.Amount) {
-                updatedAccount = {
-                  Balance:
-                    Number(account[0].Balance) +
-                    (Number(transferForm.Amount) - Number(oldRow.Amount)),
-                };
-                accountId = account[0].id;
-              }
-              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            await updateBalanceInDB();
-          };
-          await updateAccountBalanceTo();
-        }
-      };
-      await updateAmount();
 
       const triggerPageUpdates = async () => {
         setUpdateTransfers((prevState) => !prevState);
