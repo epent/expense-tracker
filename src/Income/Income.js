@@ -18,7 +18,7 @@ import {
 import {
   decreaseBalance as decreaseAccountBalance,
   updateTotalDelete,
-} from "../modules/deletetransaction";
+} from "../modules/delete";
 
 import {
   editTransaction,

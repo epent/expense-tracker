@@ -19,7 +19,7 @@ import {
   increaseBalance as increaseAccountBalance,
   decreaseBalance as deacreaseCategoryBalance,
   updateTotalDelete,
-} from "../modules/deletetransaction";
+} from "../modules/delete";
 
 import {
   editTransaction,
