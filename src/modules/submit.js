@@ -87,39 +87,20 @@ export const updateCategoryBalance = async (form) => {
 export const updateTotalBalance = async (form, typeOfTransaction) => {
   const fetchedTotalList = await getDataFromDBasList("total", true);
 
-  if (typeOfTransaction === "expense") {
-    const updateBalanceInDB = async () => {
-      const totalExpenses = fetchedTotalList.filter((total) => {
-        return total.id === "expenses";
-      });
+  const updateBalanceInDB = async () => {
+    const total = fetchedTotalList.filter((total) => {
+      return total.id === typeOfTransaction;
+    });
 
-      const totalBalance = await calculateTotalBalance();
+    const totalBalance = await calculateTotalBalance();
 
-      const updatedTotals = {
-        expenses: Number(totalExpenses[0].expenses) + Number(form.Amount),
-        balance: totalBalance,
-      };
-
-      await patchUpdatedTotal(updatedTotals);
+    const updatedTotals = {
+      [typeOfTransaction]:
+        Number(total[0][typeOfTransaction]) + Number(form.Amount),
+      balance: totalBalance,
     };
-    await updateBalanceInDB();
-  }
 
-  if (typeOfTransaction === "income") {
-    const updateBalanceInDB = async () => {
-      const totalIncome = fetchedTotalList.filter((total) => {
-        return total.id === "income";
-      });
-
-      const totalBalance = await calculateTotalBalance();
-
-      const updatedTotals = {
-        income: Number(totalIncome[0].income) + Number(form.Amount),
-        balance: totalBalance,
-      };
-
-      await patchUpdatedTotal(updatedTotals);
-    };
-    await updateBalanceInDB();
-  }
+    await patchUpdatedTotal(updatedTotals);
+  };
+  await updateBalanceInDB();
 };

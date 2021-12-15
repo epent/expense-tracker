@@ -18,7 +18,7 @@ import {
   updateAccountBalance,
   updateCategoryBalance,
   updateTotalBalance,
-} from "../../modules/formsubmission";
+} from "../../modules/submit";
 import { checkFormValidity } from "../../modules/validation";
 
 const TransactionForm = (props) => {
@@ -104,9 +104,9 @@ const TransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(form, "expense");
+      await updateAccountBalance(form, "expenses");
       await updateCategoryBalance(form);
-      await updateTotalBalance(form, "expense");
+      await updateTotalBalance(form, "expenses");
       const triggerPageUpdates = async () => {
         setForm({
           From: "",
