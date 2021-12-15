@@ -19,8 +19,10 @@ import {
 
 import {
   editTransaction,
-  updatedBalanceFrom,
-  updatedBalanceTo,
+  updateAmountFrom,
+  updateAmountTo,
+  increaseBalance,
+  decreaseBalance,
 } from "../modules/edittrasaction";
 
 const NewTransfers = (props) => {
@@ -118,7 +120,7 @@ const NewTransfers = (props) => {
           const updateAccountBalanceFrom = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const [updatedAccount, accountId] = updatedBalanceFrom(
+            const [updatedAccount, accountId] = updateAmountFrom(
               fetchedAccountList,
               oldRow,
               transferForm
@@ -131,7 +133,7 @@ const NewTransfers = (props) => {
           const updateAccountBalanceTo = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const [updatedAccount, accountId] = updatedBalanceTo(
+            const [updatedAccount, accountId] = updateAmountTo(
               fetchedAccountList,
               oldRow,
               transferForm
@@ -146,70 +148,72 @@ const NewTransfers = (props) => {
 
       const updateAccountFrom = async () => {
         if (oldRow.From !== transferForm.From) {
-          const updateAccountBalance = async (PrevOrCurr) => {
+          const updateAccountBalance = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const updateBalanceInDB = async () => {
-              let accountName;
-              PrevOrCurr === "Previous"
-                ? (accountName = oldRow.From)
-                : (accountName = transferForm.From);
+            const [updatedAccountPrevious, accountIdPrevious] = increaseBalance(
+              fetchedAccountList,
+              transferForm,
+              oldRow,
+              "From"
+            );
 
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === accountName
-              );
-              let updatedAccount;
+            await patchUpdatedBalance(
+              updatedAccountPrevious,
+              "accounts",
+              accountIdPrevious
+            );
 
-              PrevOrCurr === "Previous"
-                ? (updatedAccount = {
-                    Balance: Number(account[0].Balance) + Number(oldRow.Amount),
-                  })
-                : (updatedAccount = {
-                    Balance: Number(account[0].Balance) - Number(oldRow.Amount),
-                  });
+            const [updatedAccountCurrent, accountIdCurrent] = decreaseBalance(
+              fetchedAccountList,
+              transferForm,
+              transferForm,
+              "From"
+            );
 
-              const accountId = account[0].id;
-              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            await updateBalanceInDB();
+            await patchUpdatedBalance(
+              updatedAccountCurrent,
+              "accounts",
+              accountIdCurrent
+            );
           };
-          await updateAccountBalance("Previous");
-          await updateAccountBalance("Current");
+          await updateAccountBalance();
         }
       };
       await updateAccountFrom();
 
       const updateAccountTo = async () => {
         if (oldRow.To !== transferForm.To) {
-          const updateAccountBalance = async (PrevOrCurr) => {
+          const updateAccountBalance = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const updateBalanceInDB = async () => {
-              let accountName;
-              PrevOrCurr === "Previous"
-                ? (accountName = oldRow.To)
-                : (accountName = transferForm.To);
+            const [updatedAccountPrevious, accountIdPrevious] = decreaseBalance(
+              fetchedAccountList,
+              transferForm,
+              oldRow,
+              "To"
+            );
 
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === accountName
-              );
-              let updatedAccount;
+            await patchUpdatedBalance(
+              updatedAccountPrevious,
+              "accounts",
+              accountIdPrevious
+            );
 
-              PrevOrCurr === "Previous"
-                ? (updatedAccount = {
-                    Balance: Number(account[0].Balance) - Number(oldRow.Amount),
-                  })
-                : (updatedAccount = {
-                    Balance: Number(account[0].Balance) + Number(oldRow.Amount),
-                  });
+            const [updatedAccountCurrent, accountIdCurrent] = increaseBalance(
+              fetchedAccountList,
+              transferForm,
+              transferForm,
+              "To"
+            );
 
-              const accountId = account[0].id;
-              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            await updateBalanceInDB();
+            await patchUpdatedBalance(
+              updatedAccountCurrent,
+              "accounts",
+              accountIdCurrent
+            );
           };
-          await updateAccountBalance("Previous");
-          await updateAccountBalance("Current");
+          await updateAccountBalance();
         }
       };
       await updateAccountTo();

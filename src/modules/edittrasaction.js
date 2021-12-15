@@ -28,7 +28,7 @@ export const editTransaction = (row, type) => {
   return [id, form];
 };
 
-export const updatedBalanceFrom = (fromList, oldData, newData) => {
+export const updateAmountFrom = (fromList, oldData, newData) => {
   const account = fromList.filter((account) => account.Name === oldData.From);
 
   let updatedFrom;
@@ -55,7 +55,7 @@ export const updatedBalanceFrom = (fromList, oldData, newData) => {
   return [updatedFrom, idFrom];
 };
 
-export const updatedBalanceTo = (toList, oldData, newData) => {
+export const updateAmountTo = (toList, oldData, newData) => {
   const category = toList.filter((category) => category.Name === oldData.To);
   let updatedTo;
   let idTo;
@@ -79,4 +79,29 @@ export const updatedBalanceTo = (toList, oldData, newData) => {
   }
 
   return [updatedTo, idTo];
+};
+
+export const increaseBalance = (dataList, newData, oldOrNew, FromOrTo) => {
+  const account = dataList.filter(
+    (account) => account.Name === oldOrNew[FromOrTo]
+  );
+  const updatedAccount = {
+    Balance: Number(account[0].Balance) + Number(newData.Amount),
+  };
+  const accountId = account[0].id;
+
+  return [updatedAccount, accountId];
+};
+
+export const decreaseBalance = (dataList, newData, oldOrNew, FromOrTo) => {
+  const category = dataList.filter(
+    (category) => category.Name === oldOrNew[FromOrTo]
+  );
+
+  const updatedCategory = {
+    Balance: Number(category[0].Balance) - Number(newData.Amount),
+  };
+  const categoryId = category[0].id;
+
+  return [updatedCategory, categoryId];
 };

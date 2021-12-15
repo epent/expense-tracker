@@ -23,8 +23,10 @@ import {
 
 import {
   editTransaction,
-  updatedBalanceFrom,
-  updatedBalanceTo,
+  updateAmountFrom,
+  updateAmountTo,
+  increaseBalance,
+  decreaseBalance,
 } from "../modules/edittrasaction";
 
 const NewExpenses = () => {
@@ -110,7 +112,7 @@ const NewExpenses = () => {
           const updateAccountBalance = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const [updatedAccount, accountId] = updatedBalanceFrom(
+            const [updatedAccount, accountId] = updateAmountFrom(
               fetchedAccountList,
               oldRow,
               expenseForm
@@ -123,7 +125,7 @@ const NewExpenses = () => {
           const updateCategoryBalance = async () => {
             const fetchedCategoryList = await getDataFromDBasList("categories");
 
-            const [updatedCategory, categoryId] = updatedBalanceTo(
+            const [updatedCategory, categoryId] = updateAmountTo(
               fetchedCategoryList,
               oldRow,
               expenseForm
@@ -174,37 +176,36 @@ const NewExpenses = () => {
 
       const updateAccount = async () => {
         if (oldRow.From !== expenseForm.From) {
-          const updateAccountBalance = async (PrevOrCurr) => {
+          const updateAccountBalance = async () => {
             const fetchedAccountList = await getDataFromDBasList("accounts");
 
-            const updateBalanceInDB = async () => {
-              let accountName;
-              PrevOrCurr === "Previous"
-                ? (accountName = oldRow.From)
-                : (accountName = expenseForm.From);
+            const [updatedAccountPrevious, accountIdPrevious] = increaseBalance(
+              fetchedAccountList,
+              expenseForm,
+              oldRow,
+              "From"
+            );
 
-              const account = fetchedAccountList.filter(
-                (account) => account.Name === accountName
-              );
-              let updatedAccount;
+            await patchUpdatedBalance(
+              updatedAccountPrevious,
+              "accounts",
+              accountIdPrevious
+            );
 
-              PrevOrCurr === "Previous"
-                ? (updatedAccount = {
-                    Balance:
-                      Number(account[0].Balance) + Number(expenseForm.Amount),
-                  })
-                : (updatedAccount = {
-                    Balance:
-                      Number(account[0].Balance) - Number(expenseForm.Amount),
-                  });
+            const [updatedAccountCurrent, accountIdCurrent] = decreaseBalance(
+              fetchedAccountList,
+              expenseForm,
+              expenseForm,
+              "From"
+            );
 
-              const accountId = account[0].id;
-              await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-            };
-            await updateBalanceInDB();
+            await patchUpdatedBalance(
+              updatedAccountCurrent,
+              "accounts",
+              accountIdCurrent
+            );
           };
-          await updateAccountBalance("Previous");
-          await updateAccountBalance("Current");
+          await updateAccountBalance();
         }
       };
       await updateAccount();
@@ -214,39 +215,29 @@ const NewExpenses = () => {
           const updateCategoryBalance = async (PrevOrCurr) => {
             const fetchedCategoryList = await getDataFromDBasList("categories");
 
-            const updateBalanceInDB = async () => {
-              let categoryName;
-              PrevOrCurr === "Previous"
-                ? (categoryName = oldRow.To)
-                : (categoryName = expenseForm.To);
+            const [updatedCategoryPrevious, categoryIdPrevious] =
+              decreaseBalance(fetchedCategoryList, expenseForm, oldRow, "To");
 
-              const category = fetchedCategoryList.filter(
-                (category) => category.Name === categoryName
-              );
-              let updatedCategory;
+            await patchUpdatedBalance(
+              updatedCategoryPrevious,
+              "categories",
+              categoryIdPrevious
+            );
 
-              PrevOrCurr === "Previous"
-                ? (updatedCategory = {
-                    Balance:
-                      Number(category[0].Balance) - Number(expenseForm.Amount),
-                  })
-                : (updatedCategory = {
-                    Balance:
-                      Number(category[0].Balance) + Number(expenseForm.Amount),
-                  });
+            const [updatedCategoryCurrent, categoryIdCurrent] = increaseBalance(
+              fetchedCategoryList,
+              expenseForm,
+              expenseForm,
+              "To"
+            );
 
-              const categoryId = category[0].id;
-
-              await patchUpdatedBalance(
-                updatedCategory,
-                "categories",
-                categoryId
-              );
-            };
-            await updateBalanceInDB();
+            await patchUpdatedBalance(
+              updatedCategoryCurrent,
+              "categories",
+              categoryIdCurrent
+            );
           };
-          await updateCategoryBalance("Previous");
-          await updateCategoryBalance("Current");
+          await updateCategoryBalance();
         }
       };
       await updateCategory();
