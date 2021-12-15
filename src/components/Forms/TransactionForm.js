@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
@@ -116,8 +115,6 @@ const TransactionForm = (props) => {
           Comment: "",
         });
 
-        // trigger the page to rerender with updated expenseLog
-        // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
         if (props.updateExpensesHandler) await props.updateExpensesHandler();
