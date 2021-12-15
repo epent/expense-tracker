@@ -5,8 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import Balance from "./Balance/Balance";
-import AccountPaper from "../Accounts/AccountPaper";
-import CategoryPaper from "../Categories/CategoryPaper";
+import AccountPaper from "../AccountsCategories/Accounts/AccountPaper";
+import CategoryPaper from "../AccountsCategories/Categories/CategoryPaper";
 import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../Transactions/TransactionForm";

@@ -10,7 +10,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {
   fetchAccountsFromDB,
   deleteTransactionFromDB as deleteAccountFromDB,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 
 const useStyles = makeStyles({
   paper: {

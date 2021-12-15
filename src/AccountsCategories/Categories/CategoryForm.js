@@ -5,14 +5,14 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
-import AccountCategoryForm from "../../components/Forms/AccountCategoryForm";
+import AccountCategoryForm from "../AccountCategoryForm";
 
 import {
   postNewTransactionToDB as postNewCategoryToDB,
   postEditedTransactionToDB as postEditedCategoryToDB,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 
-import { checkCategoryFormValidity } from "../modules/validate";
+import { checkCategoryFormValidity } from "../../modules/validate";
 
 const NewCategorieForm = (props) => {
   const useStyles = makeStyles((theme) => ({

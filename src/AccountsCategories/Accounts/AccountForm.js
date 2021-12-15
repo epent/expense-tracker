@@ -12,9 +12,9 @@ import {
   patchUpdatedTotal,
   postNewTransactionToDB as postNewAccountToDB,
   postEditedTransactionToDB as postEditedAccountToDB,
-} from "../modules/fetch";
+} from "../../modules/fetch";
 
-import { checkAccountFormValidity } from "../modules/validate";
+import { checkAccountFormValidity } from "../../modules/validate";
 
 const NewAccountForm = (props) => {
   const useStyles = makeStyles((theme) => ({

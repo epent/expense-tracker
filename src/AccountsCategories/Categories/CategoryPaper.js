@@ -7,8 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import CategoryList from "./CategoryList";
-import CategoriesDonut from "../Charts/Donut/CategoriesDonut";
-import { getDataFromDBasList as getCategoriesFromDB } from "../modules/fetch";
+import CategoriesDonut from "../../Charts/Donut/CategoriesDonut";
+import { getDataFromDBasList as getCategoriesFromDB } from "../../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
