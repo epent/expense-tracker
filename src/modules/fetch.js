@@ -33,7 +33,7 @@ export const deleteTransactionFromDB = (type, transactionId) => {
   });
 };
 
-export const getDataFromDBasList = async (urlName, isTotal) => {
+export const getDataFromDBasList = async (type, isTotal) => {
   const pushFetchedDataToList = (data) => {
     const list = [];
     if (data) {
@@ -54,7 +54,7 @@ export const getDataFromDBasList = async (urlName, isTotal) => {
     return list;
   };
 
-  const fetchedData = await getDataFromDB(urlName);
+  const fetchedData = await getDataFromDB(type);
   const fetchedDataList = pushFetchedDataToList(fetchedData);
   return fetchedDataList;
 };

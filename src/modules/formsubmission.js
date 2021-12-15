@@ -1,40 +1,16 @@
 import {
   patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
-  getDataFromDB,
   calculateTotalBalance,
+  getDataFromDBasList,
 } from "./fetch";
-
-const fetchDataToList = async (urlName, isTotal) => {
-  const pushFetchedDataToList = (data) => {
-    const list = [];
-    isTotal
-      ? Object.keys(data).map((key) => {
-          list.push({
-            [key]: data[key],
-            id: key,
-          });
-        })
-      : Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-          });
-        });
-    return list;
-  };
-
-  const fetchedData = await getDataFromDB(urlName);
-  const fetchedDataList = pushFetchedDataToList(fetchedData);
-  return fetchedDataList;
-};
 
 export const updateAccountBalance = async (
   form,
   typeOfTransaction,
   fromOrTo
 ) => {
-  const fetchedAccountList = await fetchDataToList("accounts");
+  const fetchedAccountList = await getDataFromDBasList("accounts");
 
   if (typeOfTransaction === "expense") {
     const updateBalanceInDB = () => {
@@ -62,7 +38,6 @@ export const updateAccountBalance = async (
       const accountId = account[0].id;
 
       patchUpdatedBalance(updatedAccount, "accounts", accountId);
-      console.log("updatedAccount posted");
     };
     updateBalanceInDB();
   }
@@ -93,7 +68,7 @@ export const updateAccountBalance = async (
 };
 
 export const updateCategoryBalance = async (form) => {
-  const fetchedCategoryList = await fetchDataToList("categories");
+  const fetchedCategoryList = await getDataFromDBasList("categories");
 
   const updateBalanceInDB = () => {
     const category = fetchedCategoryList.filter(
@@ -110,7 +85,7 @@ export const updateCategoryBalance = async (form) => {
 };
 
 export const updateTotalBalance = async (form, typeOfTransaction) => {
-  const fetchedTotalList = await fetchDataToList("total", true);
+  const fetchedTotalList = await getDataFromDBasList("total", true);
 
   if (typeOfTransaction === "expense") {
     const updateBalanceInDB = async () => {
