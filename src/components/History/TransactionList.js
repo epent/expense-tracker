@@ -16,9 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@mui/x-data-grid";
 
-import {
-  getDataFromDBasList,
-} from "../../modules/fetch";
+import { getDataFromDBasList } from "../../modules/fetch";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -42,7 +40,6 @@ const TransactionList = (props) => {
   }, []);
 
   const handleRowUpdate = () => {
-    console.log(fullList);
     const key = Object.keys(editRowsModel).map((key) => {
       return key;
     });

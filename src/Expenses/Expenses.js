@@ -105,6 +105,7 @@ const NewExpenses = () => {
 
   const editRowsHandler = (row, oldRow) => {
     let expenseForm;
+    console.log(row);
 
     const updateTransaction = () => {
       let id;
@@ -113,6 +114,7 @@ const NewExpenses = () => {
 
         let amountString = row[key].amount.value;
         console.log(typeof amountString);
+        console.log(amountString);
         let amountArray = amountString.toString().split("");
         amountArray.shift();
         let amount = amountArray.join("");
@@ -376,7 +378,6 @@ const NewExpenses = () => {
             closeModal={closeModalHandler}
             showModal={showModal}
             transactionsToDelete={expensesToDelete}
-            sign="-"
           />
         </Grid>
         <Grid item xs={12}>

@@ -48,6 +48,7 @@ export const getDataFromDBasList = async (type, isTotal) => {
             list.push({
               ...data[key],
               id: key,
+              type: type,
             });
           });
     }
