@@ -17,7 +17,7 @@ import {
 
 import {
   decreaseBalance as decreaseAccountBalance,
-  updateTotal,
+  updateTotalDelete,
 } from "../modules/deletetransaction";
 
 import {
@@ -61,7 +61,7 @@ const NewIncome = (props) => {
         const fetchedTotalList = await getDataFromDBasList("total", true);
         const totalBalance = await calculateTotalBalance();
 
-        const updatedTotals = updateTotal(
+        const updatedTotals = updateTotalDelete(
           "income",
           fetchedTotalList,
           totalBalance,

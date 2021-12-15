@@ -22,7 +22,7 @@ export const decreaseBalance = (dataList, transactionToDelete) => {
   return [updatedCategory, categoryId];
 };
 
-export const updateTotal = (
+export const updateTotalDelete = (
   typeOfTransaction,
   fetchedTotalList,
   totalBalance,
