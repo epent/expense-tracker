@@ -105,3 +105,37 @@ export const decreaseBalance = (dataList, newData, oldOrNew, FromOrTo) => {
 
   return [updatedCategory, categoryId];
 };
+
+export const updateTotalEdit = (
+  typeOfTransaction,
+  listTotal,
+  totalBalance,
+  oldData,
+  newData
+) => {
+  const total = listTotal.filter((total) => {
+    return total.id === typeOfTransaction;
+  });
+
+  let updatedTotals;
+
+  if (oldData.Amount > newData.Amount) {
+    updatedTotals = {
+      expenses:
+        Number(total[0][typeOfTransaction]) -
+        (Number(oldData.Amount) - Number(newData.Amount)),
+      balance: totalBalance,
+    };
+  }
+
+  if (oldData.Amount < newData.Amount) {
+    updatedTotals = {
+      expenses:
+        Number(total[0][typeOfTransaction]) +
+        (Number(newData.Amount) - Number(oldData.Amount)),
+      balance: totalBalance,
+    };
+  }
+
+  return updatedTotals;
+};

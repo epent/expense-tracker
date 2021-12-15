@@ -27,6 +27,7 @@ import {
   updateAmountTo,
   increaseBalance,
   decreaseBalance,
+  updateTotalEdit,
 } from "../modules/edittrasaction";
 
 const NewExpenses = () => {
@@ -137,37 +138,17 @@ const NewExpenses = () => {
 
           const updateTotalBalance = async () => {
             const fetchedTotalList = await getDataFromDBasList("total", true);
+            const totalBalance = await calculateTotalBalance();
 
-            const updateBalanceInDB = async () => {
-              const totalExpenses = fetchedTotalList.filter((total) => {
-                return total.id === "expenses";
-              });
+            const updatedTotals = updateTotalEdit(
+              "expenses",
+              fetchedTotalList,
+              totalBalance,
+              oldRow,
+              expenseForm
+            );
 
-              const totalBalance = await calculateTotalBalance();
-
-              let updatedTotals;
-
-              if (oldRow.Amount < expenseForm.Amount) {
-                updatedTotals = {
-                  expenses:
-                    Number(totalExpenses[0].expenses) -
-                    (Number(expenseForm.Amount) - Number(oldRow.Amount)),
-                  balance: totalBalance,
-                };
-              }
-
-              if (oldRow.Amount > expenseForm.Amount) {
-                updatedTotals = {
-                  expenses:
-                    Number(totalExpenses[0].expenses) +
-                    (Number(oldRow.Amount) - Number(expenseForm.Amount)),
-                  balance: totalBalance,
-                };
-              }
-
-              await patchUpdatedTotal(updatedTotals);
-            };
-            await updateBalanceInDB();
+            await patchUpdatedTotal(updatedTotals);
           };
           await updateTotalBalance();
         }
