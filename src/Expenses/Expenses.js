@@ -28,7 +28,7 @@ import {
   increaseBalance,
   decreaseBalance,
   updateTotalEdit,
-} from "../modules/edittrasaction";
+} from "../modules/edit";
 
 const Expenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);

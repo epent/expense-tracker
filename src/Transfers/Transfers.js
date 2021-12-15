@@ -23,7 +23,7 @@ import {
   updateAmountTo,
   increaseBalance,
   decreaseBalance,
-} from "../modules/edittrasaction";
+} from "../modules/edit";
 
 const Transfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
