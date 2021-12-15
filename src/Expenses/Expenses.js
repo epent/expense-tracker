@@ -105,7 +105,6 @@ const NewExpenses = () => {
 
   const editRowsHandler = (row, oldRow) => {
     let expenseForm;
-    console.log(row);
 
     const updateTransaction = () => {
       let id;
@@ -126,7 +125,7 @@ const NewExpenses = () => {
           Date: row[key].date.value.toDateString(),
         };
       });
-      console.log(expenseForm);
+      
       patchUpdatedExpenseToDB(expenseForm, "expenses", id);
     };
     updateTransaction();
