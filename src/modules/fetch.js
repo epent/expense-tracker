@@ -20,7 +20,7 @@ export const patchUpdatedDataToDB = async (data, typeOfData, id) => {
   });
 };
 
-export const postUpdatedTotal = async (updatedTotals) => {
+export const patchUpdatedTotal = async (updatedTotals) => {
   await fetch(`${baseURL}/total.json`, {
     method: "PATCH",
     body: JSON.stringify(updatedTotals),
@@ -64,7 +64,7 @@ export const calculateTotalBalance = async () => {
   return sum;
 };
 
-export const fetchDataToList = async (urlName, isTotal) => {
+export const getDataFromDBasList = async (urlName, isTotal) => {
   const pushFetchedDataToList = (data) => {
     const list = [];
     if (data) {
@@ -88,34 +88,4 @@ export const fetchDataToList = async (urlName, isTotal) => {
   const fetchedData = await getDataFromDB(urlName);
   const fetchedDataList = pushFetchedDataToList(fetchedData);
   return fetchedDataList;
-};
-
-export const pushFetchedDataToList = (data, transactionType) => {
-  const list = [];
-  if (data) {
-    transactionType === "expenses"
-      ? Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "expenses",
-          });
-        })
-      : transactionType === "income"
-      ? Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "income",
-          });
-        })
-      : Object.keys(data).map((key) => {
-          list.push({
-            ...data[key],
-            id: key,
-            type: "transfers",
-          });
-        });
-  }
-  return list;
 };

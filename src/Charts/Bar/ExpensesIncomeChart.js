@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
+import { getDataFromDBasList } from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -31,11 +31,8 @@ const ExpensesIncomeChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const expenses = await getDataFromDB("expenses");
-        const income = await getDataFromDB("income");
-
-        const expenseList = pushFetchedDataToList(expenses, "expenses");
-        const incomeList = pushFetchedDataToList(income, "income");
+        const expenseList = await getDataFromDBasList("expenses");
+        const incomeList = await getDataFromDBasList("income");
 
         const transactionList = [...expenseList, ...incomeList];
         transactionList.sort(

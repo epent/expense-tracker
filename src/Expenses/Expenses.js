@@ -7,12 +7,12 @@ import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 import ExpensesChart from "../Charts/Bar/ExpensesChart";
 import {
-  postUpdatedTotal,
+  patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
   patchUpdatedDataToDB as patchUpdatedExpenseToDB,
   deleteTransactionFromDB,
   calculateTotalBalance,
-  fetchDataToList,
+  getDataFromDBasList,
 } from "../modules/fetch";
 
 const NewExpenses = () => {
@@ -34,7 +34,7 @@ const NewExpenses = () => {
 
     const updateData = async (expenseToDelete) => {
       const updateAccountBalance = async () => {
-        const fetchedAccountList = await fetchDataToList("accounts");
+        const fetchedAccountList = await getDataFromDBasList("accounts");
 
         const updateBalanceInDB = () => {
           const account = fetchedAccountList.filter(
@@ -53,7 +53,7 @@ const NewExpenses = () => {
       await updateAccountBalance();
 
       const updateCategoryBalance = async () => {
-        const fetchedCategoryList = await fetchDataToList("categories");
+        const fetchedCategoryList = await getDataFromDBasList("categories");
 
         const updateBalanceInDB = () => {
           const category = fetchedCategoryList.filter(
@@ -72,7 +72,7 @@ const NewExpenses = () => {
       await updateCategoryBalance();
 
       const updateTotalBalance = async () => {
-        const fetchedTotalList = await fetchDataToList("total", true);
+        const fetchedTotalList = await getDataFromDBasList("total", true);
 
         const updateBalanceInDB = async () => {
           const totalExpenses = fetchedTotalList.filter((total) => {
@@ -88,7 +88,7 @@ const NewExpenses = () => {
             balance: totalBalance,
           };
 
-          await postUpdatedTotal(updatedTotals);
+          await patchUpdatedTotal(updatedTotals);
         };
         await updateBalanceInDB();
       };
@@ -133,7 +133,7 @@ const NewExpenses = () => {
       const updateAmount = async () => {
         if (oldRow.Amount !== expenseForm.Amount) {
           const updateAccountBalance = async () => {
-            const fetchedAccountList = await fetchDataToList("accounts");
+            const fetchedAccountList = await getDataFromDBasList("accounts");
 
             const updateBalanceInDB = () => {
               const account = fetchedAccountList.filter(
@@ -166,7 +166,7 @@ const NewExpenses = () => {
           await updateAccountBalance();
 
           const updateCategoryBalance = async () => {
-            const fetchedCategoryList = await fetchDataToList("categories");
+            const fetchedCategoryList = await getDataFromDBasList("categories");
 
             const updateBalanceInDB = () => {
               const category = fetchedCategoryList.filter(
@@ -199,7 +199,7 @@ const NewExpenses = () => {
           await updateCategoryBalance();
 
           const updateTotalBalance = async () => {
-            const fetchedTotalList = await fetchDataToList("total", true);
+            const fetchedTotalList = await getDataFromDBasList("total", true);
 
             const updateBalanceInDB = async () => {
               const totalExpenses = fetchedTotalList.filter((total) => {
@@ -228,7 +228,7 @@ const NewExpenses = () => {
                 };
               }
 
-              await postUpdatedTotal(updatedTotals);
+              await patchUpdatedTotal(updatedTotals);
             };
             await updateBalanceInDB();
           };
@@ -240,7 +240,7 @@ const NewExpenses = () => {
       const updateAccount = async () => {
         if (oldRow.From !== expenseForm.From) {
           const updateAccountBalance = async (PrevOrCurr) => {
-            const fetchedAccountList = await fetchDataToList("accounts");
+            const fetchedAccountList = await getDataFromDBasList("accounts");
 
             const updateBalanceInDB = async () => {
               let accountName;
@@ -277,7 +277,7 @@ const NewExpenses = () => {
       const updateCategory = async () => {
         if (oldRow.To !== expenseForm.To) {
           const updateCategoryBalance = async (PrevOrCurr) => {
-            const fetchedCategoryList = await fetchDataToList("categories");
+            const fetchedCategoryList = await getDataFromDBasList("categories");
 
             const updateBalanceInDB = async () => {
               let categoryName;

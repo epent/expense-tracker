@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
+import { getDataFromDBasList } from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -29,18 +29,16 @@ const IncomeChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const income = await getDataFromDB("income");
-        const incomeList = pushFetchedDataToList(income, "income");
+        const incomeList = await getDataFromDBasList("income");
 
-        const transactionList = [...incomeList];
-        transactionList.sort(
+        incomeList.sort(
           (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
         );
 
         const updateMonthsRowList = async () => {
           const monthsRow = [];
 
-          transactionList.forEach((transaction) => {
+          incomeList.forEach((transaction) => {
             const [weekday, month, day, year] = transaction.Date.split(" ");
 
             if (!monthsRow.includes(month)) {

@@ -8,8 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountCategoryForm from "../components/Forms/AccountCategoryForm";
 
 import {
-  fetchDataToList,
-  postUpdatedTotal,
+  getDataFromDBasList,
+  patchUpdatedTotal,
   postNewTransactionToDB as postNewAccountToDB,
   postEditedTransactionToDB as postEditedAccountToDB,
 } from "../modules/fetch";
@@ -56,7 +56,7 @@ const NewAccountForm = (props) => {
 
     const updateData = async () => {
       const updateTotalBalance = async () => {
-        const fetchedTotalList = await fetchDataToList("total", true);
+        const fetchedTotalList = await getDataFromDBasList("total", true);
 
         const updateBalanceInDB = async () => {
           const totalBalance = fetchedTotalList.filter((total) => {
@@ -68,7 +68,7 @@ const NewAccountForm = (props) => {
               Number(totalBalance[0].balance) + Number(accountForm.Balance),
           };
 
-          await postUpdatedTotal(updatedTotals);
+          await patchUpdatedTotal(updatedTotals);
         };
         await updateBalanceInDB();
       };

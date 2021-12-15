@@ -1,5 +1,5 @@
 import {
-  postUpdatedTotal,
+  patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
   getDataFromDB,
   calculateTotalBalance,
@@ -125,7 +125,7 @@ export const updateTotalBalance = async (form, typeOfTransaction) => {
         balance: totalBalance,
       };
 
-      await postUpdatedTotal(updatedTotals);
+      await patchUpdatedTotal(updatedTotals);
     };
     await updateBalanceInDB();
   }
@@ -143,7 +143,7 @@ export const updateTotalBalance = async (form, typeOfTransaction) => {
         balance: totalBalance,
       };
 
-      await postUpdatedTotal(updatedTotals);
+      await patchUpdatedTotal(updatedTotals);
     };
     await updateBalanceInDB();
   }

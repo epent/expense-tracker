@@ -7,11 +7,11 @@ import TransactionForm from "../components/Forms/TransactionForm";
 import TransactionList from "../components/History/TransactionList";
 import IncomeChart from "../Charts/Bar/IncomeChart";
 import {
-  postUpdatedTotal,
+  patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
   deleteTransactionFromDB,
   calculateTotalBalance,
-  fetchDataToList,
+  getDataFromDBasList,
 } from "../modules/fetch";
 
 const NewIncome = (props) => {
@@ -42,7 +42,7 @@ const NewIncome = (props) => {
 
     const updateData = async (incomeToDelete) => {
       const updateAccountBalance = async () => {
-        const fetchedAccountList = await fetchDataToList("accounts");
+        const fetchedAccountList = await getDataFromDBasList("accounts");
 
         const updateBalanceInDB = () => {
           const account = fetchedAccountList.filter(
@@ -60,7 +60,7 @@ const NewIncome = (props) => {
       await updateAccountBalance();
 
       const updateTotalBalance = async () => {
-        const fetchedTotalList = await fetchDataToList("total", true);
+        const fetchedTotalList = await getDataFromDBasList("total", true);
 
         const updateBalanceInDB = async () => {
           const totalIncome = fetchedTotalList.filter((total) => {
@@ -75,7 +75,7 @@ const NewIncome = (props) => {
             balance: totalBalance,
           };
 
-          await postUpdatedTotal(updatedTotals);
+          await patchUpdatedTotal(updatedTotals);
         };
         await updateBalanceInDB();
       };

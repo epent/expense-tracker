@@ -16,7 +16,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { getDataFromDB, pushFetchedDataToList } from "../../modules/fetch";
+import {
+  getDataFromDBasList,
+} from "../../modules/fetch";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -83,14 +85,9 @@ const TransactionList = (props) => {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const expenses = await getDataFromDB("expenses");
-      const income = await getDataFromDB("income");
-      const transfers = await getDataFromDB("transfers");
-
-      const expenseList = pushFetchedDataToList(expenses, "expenses");
-      console.log(expenseList);
-      const incomeList = pushFetchedDataToList(income, "income");
-      const transferList = pushFetchedDataToList(transfers, "transfers");
+      const expenseList = await getDataFromDBasList("expenses");
+      const incomeList = await getDataFromDBasList("income");
+      const transferList = await getDataFromDBasList("transfers");
 
       const updateRowList = async () => {
         let transactionList;
