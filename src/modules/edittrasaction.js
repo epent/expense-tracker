@@ -121,7 +121,7 @@ export const updateTotalEdit = (
 
   if (oldData.Amount > newData.Amount) {
     updatedTotals = {
-      expenses:
+      [typeOfTransaction]:
         Number(total[0][typeOfTransaction]) -
         (Number(oldData.Amount) - Number(newData.Amount)),
       balance: totalBalance,
@@ -130,7 +130,7 @@ export const updateTotalEdit = (
 
   if (oldData.Amount < newData.Amount) {
     updatedTotals = {
-      expenses:
+      [typeOfTransaction]:
         Number(total[0][typeOfTransaction]) +
         (Number(newData.Amount) - Number(oldData.Amount)),
       balance: totalBalance,
