@@ -8,7 +8,7 @@ import TransactionList from "../components/History/TransactionList";
 import {
   patchUpdatedDataToDB as patchUpdatedBalance,
   deleteTransactionFromDB,
-  fetchDataToList,
+  getDataFromDBasList,
   postEditedTransactionToDB,
 } from "../modules/fetch";
 
@@ -40,7 +40,7 @@ const NewTransfers = (props) => {
 
     const updateData = async (transferToDelete) => {
       const updateAccountBalance = async (fromOrTo) => {
-        const fetchedAccountList = await fetchDataToList("accounts");
+        const fetchedAccountList = await getDataFromDBasList("accounts");
 
         const updateBalanceInDB = async () => {
           let accountName;
