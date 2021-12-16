@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  fetchAccountsFromDB,
-  deleteTransactionFromDB as deleteAccountFromDB,
-} from "../../modules/fetch";
-
-const useStyles = makeStyles({
-  paper: {
-    backgroundColor: "#fafafa",
-    borderRadius: 10,
-  },
-});
+// import {
+//   fetchAccountsFromDB,
+//   deleteTransactionFromDB as deleteAccountFromDB,
+// } from "../../modules/fetch";
 
 const AccountList = (props) => {
-  const classes = useStyles();
-
-  const [accountLog, setAccountLog] = useState([]);
+  // const [accountLog, setAccountLog] = useState([]);
 
   // const [accountForm, setAccountForm] = useState({
   //   Name: "",

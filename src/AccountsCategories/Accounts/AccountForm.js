@@ -11,7 +11,6 @@ import {
   getDataFromDBasList,
   patchUpdatedTotal,
   postNewTransactionToDB as postNewAccountToDB,
-  postEditedTransactionToDB as postEditedAccountToDB,
 } from "../../modules/fetch";
 
 import { checkAccountFormValidity } from "../../modules/validate";
@@ -140,7 +139,7 @@ const NewAccountForm = (props) => {
     }
     if (
       accountForm.Balance < 0 ||
-      accountForm.Balance != Number(accountForm.Balance)
+      accountForm.Balance !== Number(accountForm.Balance)
     ) {
       helperTextBalance = "Invalid input";
       invalidInputBalance = true;
