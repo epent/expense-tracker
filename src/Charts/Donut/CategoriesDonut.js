@@ -10,8 +10,6 @@ const CategoriesDonut = (props) => {
 
   const [categoryLabels, setCategoryLabels] = useState([]);
 
-  const [updateDonut, setUpdateDonut] = useState(false);
-
   const colors = [
     "#9575cd",
     "#ede7f6",
@@ -38,8 +36,6 @@ const CategoriesDonut = (props) => {
           setCategoryBalances(fetchedCategoryBalances);
 
           setCategoryLabels(fetchedCategoryLabels);
-
-          setUpdateDonut((prevState) => !prevState);
         };
         await updateState();
       };
@@ -55,7 +51,6 @@ const CategoriesDonut = (props) => {
         data={[]}
         updatedLabels={categoryLabels}
         updatedData={categoryBalances}
-        updateDonut={updateDonut}
         colors={colors}
       />
     </Box>

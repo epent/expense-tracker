@@ -10,8 +10,6 @@ const AccountsDonut = (props) => {
 
   const [accountLabels, setAccountLabels] = useState([]);
 
-  const [updateDonut, setUpdateDonut] = useState(false);
-
   const colors = [
     "#26a69a",
     "#b2dfdb",
@@ -38,8 +36,6 @@ const AccountsDonut = (props) => {
           setAccountBalances(fetchedAccountBalances);
 
           setAccountLabels(fetchedAccountLabels);
-
-          setUpdateDonut((prevState) => !prevState);
         };
         await updateState();
       };
@@ -55,7 +51,6 @@ const AccountsDonut = (props) => {
         data={[]}
         updatedLabels={accountLabels}
         updatedData={accountBalances}
-        updateDonut={updateDonut}
         colors={colors}
       />
     </Box>
