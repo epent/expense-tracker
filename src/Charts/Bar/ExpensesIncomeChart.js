@@ -43,7 +43,7 @@ const ExpensesIncomeChart = (props) => {
           const monthsRow = [];
 
           transactionList.forEach((transaction) => {
-            const [weekday, month, day, year] = transaction.Date.split(" ");
+            const [, month, ,] = transaction.Date.split(" ");
 
             if (!monthsRow.includes(month)) {
               monthsRow.push(month);
@@ -61,7 +61,7 @@ const ExpensesIncomeChart = (props) => {
             let sumOfExpenses = 0;
 
             expenseList.forEach((expense) => {
-              const [weekday, month, day, year] = expense.Date.split(" ");
+              const [, month, ,] = expense.Date.split(" ");
 
               if (expenseMonth === month) {
                 sumOfExpenses += Number(expense.Amount);
@@ -82,7 +82,7 @@ const ExpensesIncomeChart = (props) => {
             let sumOfExpenses = 0;
 
             incomeList.forEach((income) => {
-              const [weekday, month, day, year] = income.Date.split(" ");
+              const [, month, ,] = income.Date.split(" ");
 
               if (incomeMonth === month) {
                 sumOfExpenses += Number(income.Amount);

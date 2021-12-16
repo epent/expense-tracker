@@ -24,8 +24,6 @@ const ExpensesChart = (props) => {
 
   const [expensesData, setExpensesData] = useState([]);
 
-  const [updateBar, setUpdateBar] = useState(false);
-
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
@@ -39,7 +37,7 @@ const ExpensesChart = (props) => {
           const monthsRow = [];
 
           expenseList.forEach((transaction) => {
-            const [weekday, month, day, year] = transaction.Date.split(" ");
+            const [, month, ,] = transaction.Date.split(" ");
 
             if (!monthsRow.includes(month)) {
               monthsRow.push(month);
@@ -58,7 +56,7 @@ const ExpensesChart = (props) => {
             let sumOfExpenses = 0;
 
             expenseList.forEach((expense) => {
-              const [weekday, month, day, year] = expense.Date.split(" ");
+              const [, month, ,] = expense.Date.split(" ");
 
               if (expenseMonth === month) {
                 sumOfExpenses += Number(expense.Amount);
@@ -69,7 +67,6 @@ const ExpensesChart = (props) => {
           });
 
           setExpensesData(expensesRow);
-          setUpdateBar((prevState) => !prevState);
         };
         await updateExpensesData();
       };
@@ -89,7 +86,6 @@ const ExpensesChart = (props) => {
         <BarChart
           months={[]}
           expensesData={[]}
-          updateBar={updateBar}
           updatedMonths={months}
           updatedExpensesData={expensesData}
           colors={["#9575cd", "#26a69a"]}
