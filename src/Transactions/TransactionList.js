@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import Box from "@material-ui/core/Box";
@@ -105,7 +105,7 @@ const TransactionList = (props) => {
         const rowList = [];
 
         transactionList.map((transaction) => {
-          const [weekday, month, day, year] = transaction.Date.split(" ");
+          const [, month, day, year] = transaction.Date.split(" ");
 
           let sign;
           transaction.type === "expenses"
@@ -114,7 +114,7 @@ const TransactionList = (props) => {
             ? (sign = "+")
             : (sign = "");
 
-          rowList.push({
+          return rowList.push({
             id: transaction.id,
             date: new Date(`${day} ${month} ${year}`),
             from: transaction.From,

@@ -73,7 +73,6 @@ const TransactionForm = (props) => {
 
       setAccountNamesList(accountListNames);
       setAccountListFull(fetchedAccountList);
-      console.log(accountListFull);
     };
     fetchAccounts();
 
@@ -289,7 +288,7 @@ const TransactionForm = (props) => {
       helperTextTo = "Please fill in";
       invalidInputTo = true;
     }
-    if (form.Amount <= 0 || form.Amount != Number(form.Amount)) {
+    if (form.Amount <= 0 || form.Amount !== Number(form.Amount)) {
       helperTextAmount = "Invalid input";
       invalidInputAmount = true;
     }
