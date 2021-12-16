@@ -23,18 +23,18 @@ const Donut = (props) => {
 
   useEffect(() => {
     if (props.updatedData) {
-      setDonutState({
-        ...donutState,
-        series: props.updatedData,
-        chartOptions: {
-          ...donutState.chartOptions,
-          labels: props.updatedLabels,
-        },
+      setDonutState((donutState) => {
+        return {
+          ...donutState,
+          series: props.updatedData,
+          chartOptions: {
+            ...donutState.chartOptions,
+            labels: props.updatedLabels,
+          },
+        };
       });
     }
-    console.log("donut updates");
-    console.log(props.updatedData);
-  }, [props.updateDonut]);
+  }, [props.updatedData, props.updatedLabels]);
 
   return (
     <Box>
