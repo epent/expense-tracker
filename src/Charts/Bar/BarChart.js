@@ -32,34 +32,36 @@ const BarChart = (props) => {
       props.updatedIncomeData ||
       props.updatedMonths
     ) {
-      setBarState({
-        ...barState,
-        options: {
-          ...barState.options,
-          xaxis: {
-            categories: props.updatedMonths,
+      setBarState((barState) => {
+        return {
+          ...barState,
+          options: {
+            ...barState.options,
+            xaxis: {
+              categories: props.updatedMonths,
+            },
           },
-        },
-        series: props.updatedExpensesData
-          ? [
-              {
-                name: "Expenses",
-                data: props.updatedExpensesData,
-              },
-              {
-                name: "Income",
-                data: props.updatedIncomeData,
-              },
-            ]
-          : [
-              {
-                name: "Income",
-                data: props.updatedIncomeData,
-              },
-            ],
+          series: props.updatedExpensesData
+            ? [
+                {
+                  name: "Expenses",
+                  data: props.updatedExpensesData,
+                },
+                {
+                  name: "Income",
+                  data: props.updatedIncomeData,
+                },
+              ]
+            : [
+                {
+                  name: "Income",
+                  data: props.updatedIncomeData,
+                },
+              ],
+        };
       });
     }
-  }, [props.updateBar]);
+  }, [props.updatedMonths, props.updatedExpensesData, props.updatedIncomeData]);
 
   return (
     <Box py={3}>
