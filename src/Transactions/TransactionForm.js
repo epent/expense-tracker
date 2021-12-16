@@ -11,8 +11,13 @@ import Form from "./Form";
 import {
   getDataFromDBasList as getAccountsFromDB,
   getDataFromDBasList as getCategoriesFromDB,
+  getDataFromDBasList as getTotalsFromDB,
   postNewTransactionToDB,
-} from "../modules/fetch";
+  patchUpdatedDataToDB as pathUpdatedAccount,
+  patchUpdatedDataToDB as patchUpdatedCategory,
+  patchUpdatedTotal,
+  calculateTotalBalance,
+} from "../modules/fetch.js";
 import {
   updateAccountBalance,
   updateCategoryBalance,
@@ -35,8 +40,11 @@ const TransactionForm = (props) => {
   }));
   const classes = useStyles();
 
-  const [accountList, setAccountList] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
+  const [accountNamesList, setAccountNamesList] = useState([]);
+  const [categoryNamesList, setCategoryNamesList] = useState([]);
+
+  const [accountListFull, setAccountListFull] = useState([]);
+  const [categoryListFull, setCategoryListFull] = useState([]);
 
   const [openForm, setOpenForm] = useState("expense");
 
@@ -59,24 +67,25 @@ const TransactionForm = (props) => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
       const fetchedAccountList = await getAccountsFromDB("accounts");
-      const accountList = fetchedAccountList.map((account) => {
+      const accountListNames = fetchedAccountList.map((account) => {
         return account.Name;
       });
 
-      setAccountList(accountList);
-      console.log(accountList);
+      setAccountNamesList(accountListNames);
+      setAccountListFull(fetchedAccountList);
+      console.log(accountListFull);
     };
     fetchAccounts();
 
     // fetch categoryList from server when form is opened
     const fetchCategories = async () => {
       const fetchedCategoryList = await getCategoriesFromDB("categories");
-      const categoryList = fetchedCategoryList.map((category) => {
+      const categoryListNames = fetchedCategoryList.map((category) => {
         return category.Name;
       });
 
-      setCategoryList(categoryList);
-      console.log(categoryList);
+      setCategoryNamesList(categoryListNames);
+      setCategoryListFull(fetchedCategoryList);
     };
     fetchCategories();
   }, []);
@@ -103,9 +112,33 @@ const TransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(form, "expenses");
-      await updateCategoryBalance(form);
-      await updateTotalBalance(form, "expenses");
+      //updated Account balance
+      const [updatedAccount, accountId] = await updateAccountBalance(
+        accountListFull,
+        form,
+        "expense"
+      );
+
+      //update Category balance
+      const [updatedCategory, categoryId] = await updateCategoryBalance(
+        categoryListFull,
+        form
+      );
+
+      //updated Total balances
+      const fetchedTotalList = await getTotalsFromDB("total", true);
+      const totalBalance = await calculateTotalBalance();
+      const updatedTotals = await updateTotalBalance(
+        fetchedTotalList,
+        totalBalance,
+        form,
+        "expenses"
+      );
+
+      await pathUpdatedAccount(updatedAccount, "accounts", accountId);
+      await patchUpdatedCategory(updatedCategory, "categories", categoryId);
+      await patchUpdatedTotal(updatedTotals);
+
       const triggerPageUpdates = async () => {
         setForm({
           From: "",
@@ -136,8 +169,26 @@ const TransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(form, "income");
-      await updateTotalBalance(form, "income");
+      // update Account balance
+      const [updatedAccount, accountId] = await updateAccountBalance(
+        accountListFull,
+        form,
+        "income"
+      );
+
+      //update Total balances
+      const fetchedTotalList = await getTotalsFromDB("total", true);
+      const totalBalance = await calculateTotalBalance();
+      const updatedTotals = await updateTotalBalance(
+        fetchedTotalList,
+        totalBalance,
+        form,
+        "income"
+      );
+
+      await pathUpdatedAccount(updatedAccount, "accounts", accountId);
+      await patchUpdatedTotal(updatedTotals);
+
       const triggerPageUpdates = async () => {
         setForm({
           From: "",
@@ -147,8 +198,6 @@ const TransactionForm = (props) => {
           Comment: "",
         });
 
-        // trigger the page to rerender with updated expenseLog
-        // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
         if (props.updateIncomeHandler) await props.updateIncomeHandler();
@@ -170,8 +219,22 @@ const TransactionForm = (props) => {
     setFormIsValid(false);
 
     const updateData = async () => {
-      await updateAccountBalance(form, "transfer", "From");
-      await updateAccountBalance(form, "transfer", "To");
+      const [updatedAccountFrom, accountIdFrom] = await updateAccountBalance(
+        accountListFull,
+        form,
+        "transfer",
+        "From"
+      );
+      const [updatedAccountTo, accountIdTo] = await updateAccountBalance(
+        accountListFull,
+        form,
+        "transfer",
+        "To"
+      );
+
+      await pathUpdatedAccount(updatedAccountFrom, "accounts", accountIdFrom);
+      await pathUpdatedAccount(updatedAccountTo, "accounts", accountIdTo);
+
       const triggerPageUpdates = async () => {
         setForm({
           From: "",
@@ -181,8 +244,6 @@ const TransactionForm = (props) => {
           Comment: "",
         });
 
-        // trigger the page to rerender with updated expenseLog
-        // await props.updateExpenseLog();
         // trigger Home to rerender with updated accountLog/categoryLog
         if (props.updateHomeHandler) await props.updateHomeHandler();
         if (props.updateTransfersHandler) await props.updateTransfersHandler();
@@ -286,8 +347,8 @@ const TransactionForm = (props) => {
         {buttonGroup}
         <Box mx={3}>
           <Form
-            accountList={accountList}
-            categoryList={categoryList}
+            accountList={accountNamesList}
+            categoryList={categoryNamesList}
             transactionType={
               props.transactionType ? props.transactionType : openForm
             }
