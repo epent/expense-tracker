@@ -20,7 +20,7 @@ const NewCategorieForm = (props) => {
       backgroundColor: "#fafafa",
       borderRadius: 10,
       [theme.breakpoints.up("md")]: {
-        height: 345,
+        height: 400,
       },
     },
   }));
