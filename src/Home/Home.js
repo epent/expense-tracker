@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Balance from "./Balance/Balance";
 import AccountPaper from "../AccountsCategories/Accounts/AccountPaper";
@@ -11,8 +11,6 @@ import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../Transactions/TransactionForm";
 import { getDataFromDB } from "../modules/fetch";
-
-const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
   root: {
