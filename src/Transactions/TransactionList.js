@@ -133,6 +133,9 @@ const TransactionList = (props) => {
     props.updateExpenses,
     props.updateIncome,
     props.updateTransfers,
+    props.onlyExpenses,
+    props.onlyIncome,
+    props.onlyTransfers,
   ]);
 
   const deleteButton = (
