@@ -7,10 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AccountCategoryForm from "../AccountCategoryForm";
 
-import {
-  postNewTransactionToDB as postNewCategoryToDB,
-  postEditedTransactionToDB as postEditedCategoryToDB,
-} from "../../modules/fetch";
+import { postNewTransactionToDB as postNewCategoryToDB } from "../../modules/fetch";
 
 import { checkCategoryFormValidity } from "../../modules/validate";
 
@@ -79,7 +76,7 @@ const NewCategorieForm = (props) => {
     }
     if (
       categoryForm.Balance <= 0 ||
-      categoryForm.Balance != Number(categoryForm.Balance)
+      categoryForm.Balance !== Number(categoryForm.Balance)
     ) {
       helperTextBalance = "Invalid input";
       invalidInputBalance = true;

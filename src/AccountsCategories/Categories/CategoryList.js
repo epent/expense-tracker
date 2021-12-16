@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles({
-  paper: {
-    backgroundColor: "#fafafa",
-    borderRadius: 10,
-  },
-});
+// import IconButton from "@material-ui/core/IconButton";
+// import DeleteIcon from "@material-ui/icons/Delete";
+// import EditIcon from "@material-ui/icons/Edit";
 
 const CategorieList = (props) => {
-  const classes = useStyles();
-
   // const deleteCategoryHandler = (categoryId) => {
   //   deleteCategoryFromDB("categories", categoryId);
 
@@ -44,17 +34,17 @@ const CategorieList = (props) => {
   //   }
   // };
 
-  const deleteButton = (
-    <IconButton aria-label="delete" size="small">
-      <DeleteIcon />
-    </IconButton>
-  );
+  // const deleteButton = (
+  //   <IconButton aria-label="delete" size="small">
+  //     <DeleteIcon />
+  //   </IconButton>
+  // );
 
-  const editButton = (
-    <IconButton aria-label="delete" size="small">
-      <EditIcon />
-    </IconButton>
-  );
+  // const editButton = (
+  //   <IconButton aria-label="delete" size="small">
+  //     <EditIcon />
+  //   </IconButton>
+  // );
 
   let categorieList = <p>Loading...</p>;
   if (props.categorieList && props.categorieList.length > 0) {
@@ -68,10 +58,7 @@ const CategorieList = (props) => {
             <Grid item>
               <Typography variant="subtitle2">{category.Balance}</Typography>
             </Grid>
-            {/* <Grid item>{deleteButton}</Grid>
-            <Grid item>{editButton}</Grid> */}
           </Grid>
-
           <Box my={1}>
             <Divider />
           </Box>
