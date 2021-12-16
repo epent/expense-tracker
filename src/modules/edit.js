@@ -17,7 +17,7 @@ export const editTransaction = (row, type) => {
       amount = row[key].amount.value;
     }
 
-    form = {
+    return form = {
       Amount: amount,
       From: row[key].from.value,
       To: row[key].to.value,

@@ -39,13 +39,13 @@ export const getDataFromDBasList = async (type, isTotal) => {
     if (data) {
       isTotal
         ? Object.keys(data).map((key) => {
-            list.push({
+            return list.push({
               [key]: data[key],
               id: key,
             });
           })
         : Object.keys(data).map((key) => {
-            list.push({
+            return list.push({
               ...data[key],
               id: key,
               type: type,
