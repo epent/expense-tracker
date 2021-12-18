@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import Donut from "./Donut";
-import { getDataFromDBasList as getAccountsFromDB } from "../../modules/fetch";
 
 const AccountsDonut = (props) => {
   const [accountBalances, setAccountBalances] = useState([]);
@@ -21,28 +20,22 @@ const AccountsDonut = (props) => {
 
   useEffect(() => {
     const updateAccounts = async () => {
-      const fetchAccounts = async () => {
-        const accountList = await getAccountsFromDB("accounts");
+      const accountList = props.accountList;
 
-        const updateState = async () => {
-          const fetchedAccountBalances = accountList.map((account) => {
-            return Number(account.Balance);
-          });
+      const balances = accountList.map((account) => {
+        return Number(account.Balance);
+      });
 
-          const fetchedAccountLabels = accountList.map((account) => {
-            return account.Name;
-          });
+      const labels = accountList.map((account) => {
+        return account.Name;
+      });
 
-          setAccountBalances(fetchedAccountBalances);
+      setAccountBalances(balances);
 
-          setAccountLabels(fetchedAccountLabels);
-        };
-        await updateState();
-      };
-      await fetchAccounts();
+      setAccountLabels(labels);
     };
     updateAccounts();
-  }, [props.updateAccounts, props.updateHome]);
+  }, [props.accountList]);
 
   return (
     <Box mt={2}>

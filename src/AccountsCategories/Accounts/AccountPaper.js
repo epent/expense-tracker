@@ -47,8 +47,7 @@ const AccountPaper = (props) => {
         </Grid>
         <Grid item xs={12} sm={6} lg={5}>
           <AccountsDonut
-            updateAccounts={props.updateAccounts}
-            updateHome={props.updateHome}
+            accountList={accountList}
           />
         </Grid>
         <Grid item xs={12} sm={6} lg={7}>
