@@ -61,12 +61,10 @@ const Income = (props) => {
 
       const updateTotalBalance = async () => {
         const fetchedTotalList = await getDataFromDBasList("total", true);
-        const totalBalance = await calculateTotalBalance();
 
         const updatedTotals = updateTotalDelete(
           "income",
           fetchedTotalList,
-          totalBalance,
           incomeToDelete
         );
 
