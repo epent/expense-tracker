@@ -64,18 +64,21 @@ export const updateCategoryBalance = async (fetchedCategoryList, form) => {
 
 export const updateTotalBalance = async (
   fetchedTotalList,
-  totalBalance,
   form,
   typeOfTransaction
 ) => {
-  const total = fetchedTotalList.filter((total) => {
+  const expensesORincome = fetchedTotalList.filter((total) => {
     return total.id === typeOfTransaction;
+  });
+
+  const balance = fetchedTotalList.filter((total) => {
+    return total.id === "balance";
   });
 
   const updatedTotals = {
     [typeOfTransaction]:
-      Number(total[0][typeOfTransaction]) + Number(form.Amount),
-    balance: totalBalance,
+      Number(expensesORincome[0][typeOfTransaction]) + Number(form.Amount),
+    balance: Number(balance[0]["balance"]) - Number(form.Amount),
   };
 
   return updatedTotals;

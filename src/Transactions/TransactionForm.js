@@ -16,7 +16,6 @@ import {
   patchUpdatedDataToDB as pathUpdatedAccount,
   patchUpdatedDataToDB as patchUpdatedCategory,
   patchUpdatedTotal,
-  calculateTotalBalance,
 } from "../modules/fetch.js";
 import {
   updateAccountBalance,
@@ -126,13 +125,12 @@ const TransactionForm = (props) => {
 
       //updated Total balances
       const fetchedTotalList = await getTotalsFromDB("total", true);
-      const totalBalance = await calculateTotalBalance();
       const updatedTotals = await updateTotalBalance(
         fetchedTotalList,
-        totalBalance,
         form,
         "expenses"
       );
+
 
       await pathUpdatedAccount(updatedAccount, "accounts", accountId);
       await patchUpdatedCategory(updatedCategory, "categories", categoryId);
@@ -177,10 +175,8 @@ const TransactionForm = (props) => {
 
       //update Total balances
       const fetchedTotalList = await getTotalsFromDB("total", true);
-      const totalBalance = await calculateTotalBalance();
       const updatedTotals = await updateTotalBalance(
         fetchedTotalList,
-        totalBalance,
         form,
         "income"
       );
