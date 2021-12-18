@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Box from "@material-ui/core/Box";
 
 import Donut from "./Donut";
-import { getDataFromDBasList as getCategoriesFromDB } from "../../modules/fetch";
 
 const CategoriesDonut = (props) => {
   const [categoryBalances, setCategoryBalances] = useState([]);
@@ -21,28 +20,22 @@ const CategoriesDonut = (props) => {
 
   useEffect(() => {
     const updateCategories = async () => {
-      const fetchCategories = async () => {
-        const categoryList = await getCategoriesFromDB("categories");
+      const categoryList = props.categorieList;
 
-        const updateState = async () => {
-          const fetchedCategoryBalances = categoryList.map((category) => {
-            return Number(category.Balance);
-          });
+      const balances = categoryList.map((category) => {
+        return Number(category.Balance);
+      });
 
-          const fetchedCategoryLabels = categoryList.map((category) => {
-            return category.Name;
-          });
+      const labels = categoryList.map((category) => {
+        return category.Name;
+      });
 
-          setCategoryBalances(fetchedCategoryBalances);
+      setCategoryBalances(balances);
 
-          setCategoryLabels(fetchedCategoryLabels);
-        };
-        await updateState();
-      };
-      await fetchCategories();
+      setCategoryLabels(labels);
     };
     updateCategories();
-  }, [props.updateCategories, props.updateHome]);
+  }, [props.categorieList]);
 
   return (
     <Box mt={2}>

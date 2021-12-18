@@ -46,10 +46,7 @@ const CategoriePaper = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} lg={5}>
-          <CategoriesDonut
-            updateCategories={props.updateCategories}
-            updateHome={props.updateHome}
-          />
+          <CategoriesDonut categorieList={categorieList} />
         </Grid>
         <Grid item xs={12} sm={6} lg={7}>
           <CategoryList
