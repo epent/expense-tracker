@@ -67,6 +67,7 @@ const NewForm = (props) => {
     return formKey === "From" && props.transactionType === "income" ? (
       <TextField
         {...commonProps}
+        key={formKey}
         className={classes.textField}
         error={props.invalidInputFrom}
         helperText={props.helperTextFrom}
@@ -74,6 +75,7 @@ const NewForm = (props) => {
     ) : formKey === "From" ? (
       <TextField
         {...commonProps}
+        key={formKey}
         select
         className={classes.textField}
         error={props.invalidInputFrom}
@@ -84,6 +86,7 @@ const NewForm = (props) => {
     ) : formKey === "To" && props.transactionType === "expense" ? (
       <TextField
         {...commonProps}
+        key={formKey}
         select
         className={classes.textField}
         error={props.invalidInputTo}
@@ -94,6 +97,7 @@ const NewForm = (props) => {
     ) : formKey === "To" ? (
       <TextField
         {...commonProps}
+        key={formKey}
         select
         className={classes.textField}
         error={props.invalidInputTo}
@@ -102,10 +106,17 @@ const NewForm = (props) => {
         {accountsToChoose}
       </TextField>
     ) : formKey === "Comment" ? (
-      <TextField {...commonProps} fullWidth multiline minRows="2" />
+      <TextField
+        {...commonProps}
+        key={formKey}
+        fullWidth
+        multiline
+        minRows="2"
+      />
     ) : formKey === "Date" ? (
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
+          key={formKey}
           autoOk
           disableToolbar
           variant="inline"
@@ -122,12 +133,13 @@ const NewForm = (props) => {
     ) : formKey === "Amount" ? (
       <TextField
         {...commonProps}
+        key={formKey}
         className={classes.textField}
         error={props.invalidInputAmount}
         helperText={props.helperTextAmount}
       />
     ) : (
-      <TextField {...commonProps} className={classes.textField} />
+      <TextField {...commonProps} key={formKey} className={classes.textField} />
     );
   });
 
