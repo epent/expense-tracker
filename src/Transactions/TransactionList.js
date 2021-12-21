@@ -222,6 +222,7 @@ const TransactionList = (props) => {
               columns={columns}
               rows={rows}
               pageSize={props.pageSize}
+              rowsPerPageOptions={[5, 7, 14]}
               checkboxSelection
               onSelectionModelChange={(newSelectionModel) => {
                 setSelectionModel(newSelectionModel);
