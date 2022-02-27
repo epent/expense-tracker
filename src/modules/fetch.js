@@ -72,3 +72,21 @@ export const calculateTotalBalance = async () => {
 
   return sum;
 };
+
+const URL = "http://localhost:8080/";
+
+export const getBalances = async () => {
+  try {
+    const response = await fetch(`${URL}balances`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const balances = await response.json();
+    return balances.balances;
+  } catch (error) {
+    console.log(error);
+  }
+};

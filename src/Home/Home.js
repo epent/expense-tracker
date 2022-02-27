@@ -10,7 +10,7 @@ import CategoryPaper from "../AccountsCategories/Categories/CategoryPaper";
 import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../Transactions/TransactionForm";
-import { getDataFromDB } from "../modules/fetch";
+import { getBalances } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,10 +23,10 @@ const Home = () => {
 
   const [updateHome, setUpdateHome] = useState(false);
 
-  const [total, setTotal] = useState({
+  const [balances, setBalances] = useState({
     expenses: 0,
     income: 0,
-    balance: 0,
+    total: 0,
   });
 
   const updateHomeHandler = () => {
@@ -35,12 +35,12 @@ const Home = () => {
 
   useEffect(() => {
     const fetchTotals = async () => {
-      const fetchedTotals = await getDataFromDB("total");
+      const balances = await getBalances();
 
-      setTotal({
-        expenses: fetchedTotals.expenses,
-        income: fetchedTotals.income,
-        balance: fetchedTotals.balance,
+      setBalances({
+        total: balances.total,
+        income: balances.income,
+        expenses: balances.expenses,
       });
     };
     fetchTotals();
@@ -56,7 +56,7 @@ const Home = () => {
               <Grid item xs={12} sm={12} md={4} lg={4}>
                 <Balance
                   title="Balance"
-                  amount={total.balance}
+                  amount={balances.total}
                   amountColor="textSecondary"
                   route="/accounts"
                 />
@@ -66,7 +66,7 @@ const Home = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6}>
                     <Balance
                       title="Income"
-                      amount={total.income}
+                      amount={balances.income}
                       amountColor="primary"
                       sign={true}
                       route="/income"
@@ -75,7 +75,7 @@ const Home = () => {
                   <Grid item xs={12} sm={6} md={6} lg={6}>
                     <Balance
                       title="Expenses"
-                      amount={total.expenses}
+                      amount={balances.expenses}
                       amountColor="secondary"
                       route="/expenses"
                     />
