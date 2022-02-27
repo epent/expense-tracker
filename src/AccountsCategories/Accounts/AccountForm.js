@@ -51,49 +51,49 @@ const NewAccountForm = (props) => {
   // add new account
   const accountFormSubmitHandler = (event) => {
     event.preventDefault();
-    setFormIsValid(false);
 
-    const updateData = async () => {
-      const updateTotalBalance = async () => {
-        const fetchedTotalList = await getDataFromDBasList("total", true);
+    fetch("http://localhost:8080/account", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(accountForm),
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Creating an account failed!");
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
+      });
 
-        const updateBalanceInDB = async () => {
-          const totalBalance = fetchedTotalList.filter((total) => {
-            return total.id === "balance";
-          });
+    // setFormIsValid(false);
 
-          const updatedTotals = {
-            balance:
-              Number(totalBalance[0].balance) + Number(accountForm.Balance),
-          };
+    // const updateData = async () => {
 
-          await patchUpdatedTotal(updatedTotals);
-        };
-        await updateBalanceInDB();
-      };
-      await updateTotalBalance();
+    //   const triggerUpdates = async () => {
+    //     setAccountForm({
+    //       Name: "",
+    //       Category: "",
+    //       Balance: "",
+    //     });
 
-      const triggerUpdates = async () => {
-        setAccountForm({
-          Name: "",
-          Category: "",
-          Balance: "",
-        });
+    //     // trigger the page to rerender with updated categoryLog
+    //     await props.updateAccountsHandler();
+    //   };
+    //   await triggerUpdates();
+    // };
 
-        // trigger the page to rerender with updated categoryLog
-        await props.updateAccountsHandler();
-      };
-      await triggerUpdates();
-    };
+    // const formIsValid = checkAccountFormValidity(accountForm, validityRules);
+    // console.log(formIsValid);
 
-    const formIsValid = checkAccountFormValidity(accountForm, validityRules);
-    console.log(formIsValid);
-
-    if (formIsValid) {
-      setFormIsValid(true);
-      postNewAccountToDB(accountForm, "accounts");
-      updateData();
-    }
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    //   postNewAccountToDB(accountForm, "accounts");
+    //   updateData();
+    // }
   };
 
   // const accountFormUpdateHandler = (event) => {
