@@ -52,7 +52,7 @@ const TransactionForm = (props) => {
     To: "",
     Amount: "",
     Date: new Date().toDateString(),
-    Comment: "",
+    // Comment: "",
   });
 
   const validityRules = {
@@ -94,165 +94,155 @@ const TransactionForm = (props) => {
 
   // update the form
   const updateFormHandler = (event, formKey) => {
-    formKey === "Date"
-      ? setForm({
-          ...form,
-          Date: event.toDateString(),
-        })
-      : setForm({
-          ...form,
-          [formKey]: event.target.value,
-        });
+    setForm({
+      ...form,
+      [formKey]: event.target.value,
+    });
   };
 
   const expenseFormSubmitHandler = (event) => {
     event.preventDefault();
-    setFormIsValid(false);
 
-    const updateData = async () => {
-      //updated Account balance
-      const [updatedAccount, accountId] = await updateAccountBalance(
-        accountListFull,
-        form,
-        "expense"
-      );
+    fetch("http://localhost:8080/expense", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Creating an expense failed!");
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
+      });
+    // setFormIsValid(false);
 
-      //update Category balance
-      const [updatedCategory, categoryId] = await updateCategoryBalance(
-        categoryListFull,
-        form
-      );
+    // const updateData = async () => {
+    //   const triggerPageUpdates = async () => {
+    //     setForm({
+    //       From: "",
+    //       To: "",
+    //       Amount: "",
+    //       Date: new Date().toDateString(),
+    //       Comment: "",
+    //     });
 
-      //updated Total balances
-      const fetchedTotalList = await getTotalsFromDB("total", true);
-      const updatedTotals = await updateTotalBalance(
-        fetchedTotalList,
-        form,
-        "expenses"
-      );
+    //     // trigger Home to rerender with updated accountLog/categoryLog
+    //     if (props.updateHomeHandler) await props.updateHomeHandler();
+    //     if (props.updateExpensesHandler) await props.updateExpensesHandler();
+    //   };
+    //   await triggerPageUpdates();
+    // };
 
+    // const formIsValid = checkFormValidity(form, validityRules);
 
-      await pathUpdatedAccount(updatedAccount, "accounts", accountId);
-      await patchUpdatedCategory(updatedCategory, "categories", categoryId);
-      await patchUpdatedTotal(updatedTotals);
-
-      const triggerPageUpdates = async () => {
-        setForm({
-          From: "",
-          To: "",
-          Amount: "",
-          Date: new Date().toDateString(),
-          Comment: "",
-        });
-
-        // trigger Home to rerender with updated accountLog/categoryLog
-        if (props.updateHomeHandler) await props.updateHomeHandler();
-        if (props.updateExpensesHandler) await props.updateExpensesHandler();
-      };
-      await triggerPageUpdates();
-    };
-
-    const formIsValid = checkFormValidity(form, validityRules);
-
-    if (formIsValid) {
-      setFormIsValid(true);
-      postNewTransactionToDB(form, "expenses");
-      updateData();
-    }
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    //   postNewTransactionToDB(form, "expenses");
+    //   updateData();
+    // }
   };
 
   const incomeFormSubmitHandler = (event) => {
     event.preventDefault();
-    setFormIsValid(false);
 
-    const updateData = async () => {
-      // update Account balance
-      const [updatedAccount, accountId] = await updateAccountBalance(
-        accountListFull,
-        form,
-        "income"
-      );
+    fetch("http://localhost:8080/income", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Creating an income failed!");
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
+      });
 
-      //update Total balances
-      const fetchedTotalList = await getTotalsFromDB("total", true);
-      const updatedTotals = await updateTotalBalance(
-        fetchedTotalList,
-        form,
-        "income"
-      );
+    // setFormIsValid(false);
 
-      await pathUpdatedAccount(updatedAccount, "accounts", accountId);
-      await patchUpdatedTotal(updatedTotals);
+    // const updateData = async () => {
 
-      const triggerPageUpdates = async () => {
-        setForm({
-          From: "",
-          To: "",
-          Amount: "",
-          Date: new Date().toDateString(),
-          Comment: "",
-        });
+    //   const triggerPageUpdates = async () => {
+    //     setForm({
+    //       From: "",
+    //       To: "",
+    //       Amount: "",
+    //       Date: new Date().toDateString(),
+    //       Comment: "",
+    //     });
 
-        // trigger Home to rerender with updated accountLog/categoryLog
-        if (props.updateHomeHandler) await props.updateHomeHandler();
-        if (props.updateIncomeHandler) await props.updateIncomeHandler();
-      };
-      await triggerPageUpdates();
-    };
+    //     // trigger Home to rerender with updated accountLog/categoryLog
+    //     if (props.updateHomeHandler) await props.updateHomeHandler();
+    //     if (props.updateIncomeHandler) await props.updateIncomeHandler();
+    //   };
+    //   await triggerPageUpdates();
+    // };
 
-    const formIsValid = checkFormValidity(form, validityRules);
+    // const formIsValid = checkFormValidity(form, validityRules);
 
-    if (formIsValid) {
-      setFormIsValid(true);
-      postNewTransactionToDB(form, "income");
-      updateData();
-    }
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    //   postNewTransactionToDB(form, "income");
+    //   updateData();
+    // }
   };
 
   const transferFormSubmitHandler = (event) => {
     event.preventDefault();
-    setFormIsValid(false);
 
-    const updateData = async () => {
-      const [updatedAccountFrom, accountIdFrom] = await updateAccountBalance(
-        accountListFull,
-        form,
-        "transfer",
-        "From"
-      );
-      const [updatedAccountTo, accountIdTo] = await updateAccountBalance(
-        accountListFull,
-        form,
-        "transfer",
-        "To"
-      );
+    fetch("http://localhost:8080/transfer", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Creating a transfer failed!");
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
+      });
 
-      await pathUpdatedAccount(updatedAccountFrom, "accounts", accountIdFrom);
-      await pathUpdatedAccount(updatedAccountTo, "accounts", accountIdTo);
+    // setFormIsValid(false);
 
-      const triggerPageUpdates = async () => {
-        setForm({
-          From: "",
-          To: "",
-          Amount: "",
-          Date: new Date().toDateString(),
-          Comment: "",
-        });
+    // const updateData = async () => {
 
-        // trigger Home to rerender with updated accountLog/categoryLog
-        if (props.updateHomeHandler) await props.updateHomeHandler();
-        if (props.updateTransfersHandler) await props.updateTransfersHandler();
-      };
-      await triggerPageUpdates();
-    };
+    //   const triggerPageUpdates = async () => {
+    //     setForm({
+    //       From: "",
+    //       To: "",
+    //       Amount: "",
+    //       Date: new Date().toDateString(),
+    //       Comment: "",
+    //     });
 
-    const formIsValid = checkFormValidity(form, validityRules);
+    //     // trigger Home to rerender with updated accountLog/categoryLog
+    //     if (props.updateHomeHandler) await props.updateHomeHandler();
+    //     if (props.updateTransfersHandler) await props.updateTransfersHandler();
+    //   };
+    //   await triggerPageUpdates();
+    // };
 
-    if (formIsValid) {
-      setFormIsValid(true);
-      postNewTransactionToDB(form, "transfers");
-      updateData();
-    }
+    // const formIsValid = checkFormValidity(form, validityRules);
+
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    //   postNewTransactionToDB(form, "transfers");
+    //   updateData();
+    // }
   };
 
   const formSubmitHandler = (event) => {
