@@ -44,26 +44,44 @@ const NewCategorieForm = (props) => {
 
   const categoryFormSubmitHandler = (event) => {
     event.preventDefault();
-    setFormIsValid(false);
 
-    const triggerUpdates = async () => {
-      setCategoryForm({
-        Name: "",
-        Balance: "",
+    fetch("http://localhost:8080/category", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(categoryForm),
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Creating a category failed!");
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log(result);
       });
 
-      // trigger the page to rerender with updated categoryLog
-      await props.updateCategoriesHandler();
-    };
+    // setFormIsValid(false);
 
-    const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
-    console.log(formIsValid);
+    // const triggerUpdates = async () => {
+    //   setCategoryForm({
+    //     Name: "",
+    //     Balance: "",
+    //   });
 
-    if (formIsValid) {
-      setFormIsValid(true);
-      postNewCategoryToDB(categoryForm, "categories");
-      triggerUpdates();
-    }
+    //   // trigger the page to rerender with updated categoryLog
+    //   await props.updateCategoriesHandler();
+    // };
+
+    // const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
+    // console.log(formIsValid);
+
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    //   postNewCategoryToDB(categoryForm, "categories");
+    //   triggerUpdates();
+    // }
   };
 
   let helperTextName, helperTextBalance;
