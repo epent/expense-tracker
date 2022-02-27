@@ -16,7 +16,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import { makeStyles } from "@material-ui/core/styles";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { getDataFromDBasList } from "../modules/fetch";
+import { getDataFromDBasList, getData } from "../modules/fetch";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -86,10 +86,23 @@ const TransactionList = (props) => {
       const incomeList = await getDataFromDBasList("income");
       const transferList = await getDataFromDBasList("transfers");
 
+      const addType = (transactions, type) => {
+        const updatedTransactions = transactions.map((transaction) => {
+          return {
+            ...transaction,
+            type: type,
+          };
+        });
+        return updatedTransactions;
+      };
+
+      const expenses = await getData("expenses");
+      const expensesWithType = addType(expenses, "expenses");
+
       const updateRowList = async () => {
         let transactionList;
         props.onlyExpenses
-          ? (transactionList = [...expenseList])
+          ? (transactionList = [...expensesWithType])
           : props.onlyIncome
           ? (transactionList = [...incomeList])
           : props.onlyTransfers
@@ -105,7 +118,8 @@ const TransactionList = (props) => {
         const rowList = [];
 
         transactionList.map((transaction) => {
-          const [, month, day, year] = transaction.Date.split(" ");
+          const fullDate = new Date(transaction.date);
+          const [, month, day, year] = fullDate.toString().split(" ");
 
           let sign;
           transaction.type === "expenses"
@@ -117,9 +131,9 @@ const TransactionList = (props) => {
           return rowList.push({
             id: transaction.id,
             date: new Date(`${day} ${month} ${year}`),
-            from: transaction.From,
-            to: transaction.To,
-            amount: `${sign}${transaction.Amount}`,
+            from: transaction.accountName,
+            to: transaction.categoryName,
+            amount: `${sign}${transaction.amount}`,
           });
         });
 

@@ -75,17 +75,17 @@ export const calculateTotalBalance = async () => {
 
 const URL = "http://localhost:8080/";
 
-export const getBalances = async () => {
+export const getData = async (type) => {
   try {
-    const response = await fetch(`${URL}balances`, {
+    const response = await fetch(`${URL}${type}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    const balances = await response.json();
-    return balances.balances;
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.log(error);
   }
