@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Drawer from "@mui/material/Drawer";
-import Hidden from "@mui/material/Hidden";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
-import { useTheme } from "@mui/material/styles";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import CategoryIcon from "@mui/icons-material/Category";
@@ -28,34 +27,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    [theme.breakpoints.up("lg")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
-  },
-  drawer: {
-    [theme.breakpoints.up("lg")]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerContainer: {
-    overflow: "auto",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up("lg")]: {
-      display: "none",
-    },
-  },
-  toolbar: theme.mixins.toolbar,
   icons: {
     color: theme.palette.secondary.main,
   },
@@ -63,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 const SideBar = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const { window } = props;
 
   const [path, setPath] = useState("");
@@ -115,59 +85,72 @@ const SideBar = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar
+        position="fixed"
+        sx={{
+          width: { lg: `calc(100% - ${drawerWidth}px)` },
+          ml: { lg: `${drawerWidth}px` },
+        }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            className={classes.menuButton}
-            size="large">
+            sx={{ mr: 2, display: { lg: "none" } }}
+          >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap component="div">
             Expense Tracker
           </Typography>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer}>
-        <Hidden lgUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            <div className={classes.drawerContainer}>
-              <List component="nav">{pages}</List>
-            </div>
-          </Drawer>
-        </Hidden>
-        <Hidden lgDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            <div className={classes.drawerContainer}>
-              <List component="nav">{pages}</List>
-            </div>
-          </Drawer>
-        </Hidden>
-      </nav>
-    </div>
+      <Box
+        component="nav"
+        sx={{ width: { lg: drawerWidth }, flexShrink: { lg: 0 } }}
+      >
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: "block", lg: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+        >
+          <div>
+            <List>{pages}</List>
+          </div>
+        </Drawer>
+
+        <Drawer
+          sx={{
+            display: { xs: "none", lg: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+          variant="permanent"
+          open
+        >
+          <div>
+            <List>{pages}</List>
+          </div>
+        </Drawer>
+      </Box>
+    </Box>
   );
 };
 

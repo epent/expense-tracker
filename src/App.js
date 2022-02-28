@@ -13,9 +13,13 @@ import TransactionList from "./Transactions/TransactionList";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Toolbar from "@mui/material/Toolbar";
-import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
+import {
+  createTheme,
+  ThemeProvider,
+  StyledEngineProvider,
+} from "@mui/material/styles";
 
-const theme = createTheme(adaptV4Theme({
+const theme = createTheme({
   palette: {
     primary: {
       light: "#b2dfdb",
@@ -32,7 +36,7 @@ const theme = createTheme(adaptV4Theme({
       hover: "#d1c4e9",
     },
   },
-}));
+});
 
 function App() {
   let routes = (
