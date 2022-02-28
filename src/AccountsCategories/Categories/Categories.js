@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 
 import CategoryForm from "./CategoryForm";
 import CategoryPaper from "./CategoryPaper";

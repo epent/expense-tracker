@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 
-import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import ListItem from "@material-ui/core/ListItem";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import { makeStyles } from "@material-ui/core/styles";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import ListItem from "@mui/material/ListItem";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid } from "@mui/x-data-grid";
 
 import { getDataFromDBasList, getData } from "../modules/fetch";
@@ -176,7 +176,7 @@ const TransactionList = (props) => {
   ]);
 
   const deleteButton = (
-    <IconButton aria-label="delete">
+    <IconButton aria-label="delete" size="large">
       <DeleteIcon onClick={() => props.openModal(selectionModel, fullList)} />
     </IconButton>
   );

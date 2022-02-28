@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import { makeStyles } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import makeStyles from '@mui/styles/makeStyles';
 
 import Form from "./Form";
 import {
@@ -94,10 +94,15 @@ const TransactionForm = (props) => {
 
   // update the form
   const updateFormHandler = (event, formKey) => {
-    setForm({
-      ...form,
-      [formKey]: event.target.value,
-    });
+    formKey === "Date"
+      ? setForm({
+          ...form,
+          Date: event.toDateString(),
+        })
+      : setForm({
+          ...form,
+          [formKey]: event.target.value,
+        });
   };
 
   const expenseFormSubmitHandler = (event) => {
@@ -308,12 +313,10 @@ const TransactionForm = (props) => {
               Income
             </Button>
             <Button
-              color="default"
               variant={buttonTransfer}
               onClick={() => {
                 openFormHandler("transfer");
-              }}
-            >
+              }}>
               Transfer
             </Button>
           </ButtonGroup>

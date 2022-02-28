@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Grid from "@material-ui/core/Grid";
+import Grid from "@mui/material/Grid";
 
 import AccountForm from "./AccountForm";
 import AccountPaper from "./AccountPaper";

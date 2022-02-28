@@ -10,12 +10,12 @@ import Accounts from "./AccountsCategories/Accounts/Accounts";
 import Categories from "./AccountsCategories/Categories/Categories";
 import TransactionList from "./Transactions/TransactionList";
 
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Toolbar from "@material-ui/core/Toolbar";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Toolbar from "@mui/material/Toolbar";
+import { createTheme, ThemeProvider, StyledEngineProvider, adaptV4Theme } from "@mui/material/styles";
 
-const theme = createTheme({
+const theme = createTheme(adaptV4Theme({
   palette: {
     primary: {
       light: "#b2dfdb",
@@ -32,7 +32,7 @@ const theme = createTheme({
       hover: "#d1c4e9",
     },
   },
-});
+}));
 
 function App() {
   let routes = (
@@ -62,19 +62,21 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Grid container>
-          <Grid item lg={2}>
-            <SideBar />
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Grid container>
+            <Grid item lg={2}>
+              <SideBar />
+            </Grid>
+            <Grid item xs={12} lg={10}>
+              <Toolbar />
+              <Box m={3}>{routes}</Box>
+            </Grid>
           </Grid>
-          <Grid item xs={12} lg={10}>
-            <Toolbar />
-            <Box m={3}>{routes}</Box>
-          </Grid>
-        </Grid>
-      </Router>
-    </ThemeProvider>
+        </Router>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }
 

@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Toolbar from "@material-ui/core/Toolbar";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import Drawer from "@mui/material/Drawer";
+import Hidden from "@mui/material/Hidden";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
-import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
-import CategoryIcon from "@material-ui/icons/Category";
-import CreditCardIcon from "@material-ui/icons/CreditCard";
-import HistoryIcon from "@material-ui/icons/History";
-import HomeIcon from "@material-ui/icons/Home";
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import MoneyIcon from "@material-ui/icons/Money";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import makeStyles from '@mui/styles/makeStyles';
+
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import CategoryIcon from "@mui/icons-material/Category";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import HistoryIcon from "@mui/icons-material/History";
+import HomeIcon from "@mui/icons-material/Home";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
+import MoneyIcon from "@mui/icons-material/Money";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const drawerWidth = 220;
 
@@ -123,7 +125,7 @@ const SideBar = (props) => {
             edge="start"
             onClick={handleDrawerToggle}
             className={classes.menuButton}
-          >
+            size="large">
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
@@ -151,7 +153,7 @@ const SideBar = (props) => {
             </div>
           </Drawer>
         </Hidden>
-        <Hidden mdDown implementation="css">
+        <Hidden lgDown implementation="css">
           <Drawer
             classes={{
               paper: classes.drawerPaper,

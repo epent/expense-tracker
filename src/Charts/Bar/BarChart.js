@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Chart from "react-apexcharts";
 
-import Box from "@material-ui/core/Box";
+import Box from "@mui/material/Box";
 
 const BarChart = (props) => {
   const [barState, setBarState] = useState({

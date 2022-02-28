@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import makeStyles from '@mui/styles/makeStyles';
 
 import Balance from "./Balance/Balance";
 import AccountPaper from "../AccountsCategories/Accounts/AccountPaper";
@@ -10,7 +10,7 @@ import CategoryPaper from "../AccountsCategories/Categories/CategoryPaper";
 import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../Transactions/TransactionForm";
-import { getBalances } from "../modules/fetch";
+import { getData as getBalances } from "../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchTotals = async () => {
-      const balances = await getBalances();
+      const balances = await getBalances("balances");
 
       setBalances({
         total: balances.total,

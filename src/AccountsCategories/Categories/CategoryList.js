@@ -1,12 +1,12 @@
 import React from "react";
 
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-// import IconButton from "@material-ui/core/IconButton";
-// import DeleteIcon from "@material-ui/icons/Delete";
-// import EditIcon from "@material-ui/icons/Edit";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+// import IconButton from "@mui/material/IconButton";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import EditIcon from "@mui/icons-material/Edit";
 
 const CategorieList = (props) => {
   // const deleteCategoryHandler = (categoryId) => {

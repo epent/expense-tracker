@@ -1,18 +1,16 @@
 import React from "react";
 
-import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import FormControl from "@material-ui/core/FormControl";
-import Grid from "@material-ui/core/Grid";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+import makeStyles from "@mui/styles/makeStyles";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -114,22 +112,22 @@ const NewForm = (props) => {
         minRows="2"
       />
     ) : formKey === "Date" ? (
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
           key={formKey}
-          autoOk
-          disableToolbar
-          variant="inline"
-          format="dd/MM/yyyy"
-          inputVariant="outlined"
-          label={formKey}
-          margin="normal"
-          size="small"
-          className={classes.textField}
           value={props.selectedDate}
           onChange={(e) => props.updateForm(e, formKey)}
+          renderInput={() => (
+            <TextField
+              inputFormat="dd/MM/yyyy"
+              label={formKey}
+              margin="normal"
+              size="small"
+              className={classes.textField}
+            />
+          )}
         />
-      </MuiPickersUtilsProvider>
+      </LocalizationProvider>
     ) : formKey === "Amount" ? (
       <TextField
         {...commonProps}
