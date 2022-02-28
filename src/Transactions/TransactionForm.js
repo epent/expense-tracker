@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "./Form";
 import {
@@ -313,10 +313,12 @@ const TransactionForm = (props) => {
               Income
             </Button>
             <Button
+              color="transfer"
               variant={buttonTransfer}
               onClick={() => {
                 openFormHandler("transfer");
-              }}>
+              }}
+            >
               Transfer
             </Button>
           </ButtonGroup>

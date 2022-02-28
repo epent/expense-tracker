@@ -31,6 +31,11 @@ const theme = createTheme({
       main: "#9575cd",
       dark: "#673ab7",
     },
+    transfer: {
+      light: "#cfd8dc",
+      main: "#90a4ae",
+      dark: "#607d8b",
+    },
     action: {
       active: "#d1c4e9",
       hover: "#d1c4e9",
