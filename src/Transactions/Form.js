@@ -115,12 +115,13 @@ const NewForm = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <DatePicker
           key={formKey}
+          label={formKey}
           value={props.selectedDate}
+          inputFormat="dd/MM/yyyy"
           onChange={(e) => props.updateForm(e, formKey)}
-          renderInput={() => (
+          renderInput={(params) => (
             <TextField
-              inputFormat="dd/MM/yyyy"
-              label={formKey}
+              {...params}
               margin="normal"
               size="small"
               className={classes.textField}
