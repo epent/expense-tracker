@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import AccountList from "./AccountList";
 import AccountsDonut from "../../Charts/Donut/AccountsDonut";
-import { getDataFromDBasList as getAccountsFromDB } from "../../modules/fetch";
+import { getData as getAccounts } from "../../modules/fetch";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,11 +26,10 @@ const AccountPaper = (props) => {
   const [accountList, setAccountList] = useState([]);
 
   useEffect(() => {
-    // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const fetchedAccountList = await getAccountsFromDB("accounts");
-
-      setAccountList(fetchedAccountList);
+      const accounts = await getAccounts("accounts");
+      console.log(accounts);
+      setAccountList(accounts);
     };
     fetchAccounts();
   }, [props.updateAccounts, props.updateHome]);
@@ -46,9 +45,7 @@ const AccountPaper = (props) => {
           </Box>
         </Grid>
         <Grid item xs={12} sm={6} lg={5}>
-          <AccountsDonut
-            accountList={accountList}
-          />
+          <AccountsDonut accountList={accountList} />
         </Grid>
         <Grid item xs={12} sm={6} lg={7}>
           <AccountList

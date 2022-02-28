@@ -23,11 +23,11 @@ const AccountsDonut = (props) => {
       const accountList = props.accountList;
 
       const balances = accountList.map((account) => {
-        return Number(account.Balance);
+        return Number(account.balance);
       });
 
       const labels = accountList.map((account) => {
-        return account.Name;
+        return account.name;
       });
 
       setAccountBalances(balances);

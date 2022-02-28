@@ -56,13 +56,13 @@ const AccountList = (props) => {
   if (props.accountList && props.accountList.length > 0) {
     accountList = props.accountList.map((account) => {
       return (
-        <Grid item key={account.id}>
+        <Grid item key={account.name}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Typography variant="subtitle2">{account.Name}</Typography>
+              <Typography variant="subtitle2">{account.name}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle2">{account.Balance}</Typography>
+              <Typography variant="subtitle2">{account.balance}</Typography>
             </Grid>
           </Grid>
           <Box my={1}>
