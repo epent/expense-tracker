@@ -82,35 +82,57 @@ const TransactionList = (props) => {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const expenseList = await getDataFromDBasList("expenses");
-      const incomeList = await getDataFromDBasList("income");
-      const transferList = await getDataFromDBasList("transfers");
-
       const addType = (transactions, type) => {
         const updatedTransactions = transactions.map((transaction) => {
-          return {
-            ...transaction,
-            type: type,
-          };
+          if (type === "expenses") {
+            return {
+              ...transaction,
+              type: type,
+              from: transaction.accountName,
+              to: transaction.categoryName,
+            };
+          }
+
+          if (type === "incomes") {
+            return {
+              ...transaction,
+              type: type,
+              from: transaction.from,
+              to: transaction.accountName,
+            };
+          }
+
+          if (type === "transfers") {
+            return {
+              ...transaction,
+              type: type,
+              from: transaction.accountFromName,
+              to: transaction.accountToName,
+            };
+          }
         });
         return updatedTransactions;
       };
 
       const expenses = await getData("expenses");
       const expensesWithType = addType(expenses, "expenses");
+      const incomes = await getData("incomes");
+      const incomesWithType = addType(incomes, "incomes");
+      const transfers = await getData("transfers");
+      const transfersWithType = addType(transfers, "transfers");
 
       const updateRowList = async () => {
         let transactionList;
         props.onlyExpenses
           ? (transactionList = [...expensesWithType])
           : props.onlyIncome
-          ? (transactionList = [...incomeList])
+          ? (transactionList = [...incomesWithType])
           : props.onlyTransfers
-          ? (transactionList = [...transferList])
+          ? (transactionList = [...transfersWithType])
           : (transactionList = [
-              ...expenseList,
-              ...incomeList,
-              ...transferList,
+              ...expensesWithType,
+              ...incomesWithType,
+              ...transfersWithType,
             ]);
 
         setFullList(transactionList);
@@ -124,22 +146,23 @@ const TransactionList = (props) => {
           let sign;
           transaction.type === "expenses"
             ? (sign = "-")
-            : transaction.type === "income"
+            : transaction.type === "incomes"
             ? (sign = "+")
             : (sign = "");
 
           return rowList.push({
             id: transaction.id,
             date: new Date(`${day} ${month} ${year}`),
-            from: transaction.accountName,
-            to: transaction.categoryName,
+            from: transaction.from,
+            to: transaction.to,
             amount: `${sign}${transaction.amount}`,
           });
         });
 
         setRows(rowList);
       };
-      await updateRowList();
+      const list = await updateRowList();
+      console.log(rows);
     };
     fetchTransactions();
   }, [
