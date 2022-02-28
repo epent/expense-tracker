@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDBasList } from "../../modules/fetch";
+import {
+  getDataFromDBasList,
+  getData as getExpenses,
+} from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -27,17 +30,18 @@ const ExpensesChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const expenseList = await getDataFromDBasList("expenses");
+        const expenses = await getExpenses("expenses");
 
-        expenseList.sort(
-          (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
+        expenses.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
 
         const updateMonthsRowList = async () => {
           const monthsRow = [];
 
-          expenseList.forEach((transaction) => {
-            const [, month, ,] = transaction.Date.split(" ");
+          expenses.forEach((transaction) => {
+            const fullDate = new Date(transaction.date);
+            const [, month, ,] = fullDate.toString().split(" ");
 
             if (!monthsRow.includes(month)) {
               monthsRow.push(month);
@@ -55,11 +59,12 @@ const ExpensesChart = (props) => {
           updatedMonthsRow.forEach((expenseMonth) => {
             let sumOfExpenses = 0;
 
-            expenseList.forEach((expense) => {
-              const [, month, ,] = expense.Date.split(" ");
+            expenses.forEach((expense) => {
+              const fullDate = new Date(expense.date);
+              const [, month, ,] = fullDate.toString().split(" ");
 
               if (expenseMonth === month) {
-                sumOfExpenses += Number(expense.Amount);
+                sumOfExpenses += Number(expense.amount);
               }
             });
 
