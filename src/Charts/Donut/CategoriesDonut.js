@@ -23,11 +23,11 @@ const CategoriesDonut = (props) => {
       const categoryList = props.categorieList;
 
       const balances = categoryList.map((category) => {
-        return Number(category.Balance);
+        return Number(category.balance);
       });
 
       const labels = categoryList.map((category) => {
-        return category.Name;
+        return category.name;
       });
 
       setCategoryBalances(balances);

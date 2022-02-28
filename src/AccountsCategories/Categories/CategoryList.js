@@ -50,13 +50,13 @@ const CategorieList = (props) => {
   if (props.categorieList && props.categorieList.length > 0) {
     categorieList = props.categorieList.map((category) => {
       return (
-        <Grid item key={category.id}>
+        <Grid item key={category.name}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Typography variant="subtitle2">{category.Name}</Typography>
+              <Typography variant="subtitle2">{category.name}</Typography>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle2">{category.Balance}</Typography>
+              <Typography variant="subtitle2">{category.balance}</Typography>
             </Grid>
           </Grid>
           <Box my={1}>
