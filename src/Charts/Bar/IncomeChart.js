@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDBasList } from "../../modules/fetch";
+import { getData as getIncomes } from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -24,22 +24,21 @@ const IncomeChart = (props) => {
 
   const [incomeData, setIncomeData] = useState([]);
 
-  const [updateBar, setUpdateBar] = useState(false);
-
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const incomeList = await getDataFromDBasList("income");
+        const incomes = await getIncomes("incomes");
 
-        incomeList.sort(
-          (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
+        incomes.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
 
         const updateMonthsRowList = async () => {
           const monthsRow = [];
 
-          incomeList.forEach((transaction) => {
-            const [, month, ,] = transaction.Date.split(" ");
+          incomes.forEach((transaction) => {
+            const fullDate = new Date(transaction.date);
+            const [, month, ,] = fullDate.toString().split(" ");
 
             if (!monthsRow.includes(month)) {
               monthsRow.push(month);
@@ -54,22 +53,21 @@ const IncomeChart = (props) => {
           const incomeRow = [];
 
           updatedMonthsRow.forEach((incomeMonth) => {
-            let sumOfExpenses = 0;
+            let sumOfIncomes = 0;
 
-            incomeList.forEach((income) => {
-              const [, month, ,] = income.Date.split(" ");
+            incomes.forEach((income) => {
+              const fullDate = new Date(income.date);
+              const [, month, ,] = fullDate.toString().split(" ");
 
               if (incomeMonth === month) {
-                sumOfExpenses += Number(income.Amount);
+                sumOfIncomes += Number(income.amount);
               }
             });
 
-            incomeRow.push(sumOfExpenses);
+            incomeRow.push(sumOfIncomes);
           });
 
           setIncomeData(incomeRow);
-          console.log(incomeRow);
-          setUpdateBar((prevState) => !prevState);
         };
         await updateIncomeData();
       };
@@ -89,7 +87,6 @@ const IncomeChart = (props) => {
         <BarChart
           months={[]}
           incomeData={[]}
-          updateBar={updateBar}
           updatedMonths={months}
           updatedIncomeData={incomeData}
           colors={["#26a69a", "#9575cd"]}
