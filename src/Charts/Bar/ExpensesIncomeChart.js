@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDBasList } from "../../modules/fetch";
+import { getDataFromDBasList, getData } from "../../modules/fetch";
 
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -31,19 +31,21 @@ const ExpensesIncomeChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const expenseList = await getDataFromDBasList("expenses");
-        const incomeList = await getDataFromDBasList("income");
+        const expenses = await getData("expenses");
+        const incomes = await getData("incomes");
 
-        const transactionList = [...expenseList, ...incomeList];
+        const transactionList = [...expenses, ...incomes];
+
         transactionList.sort(
-          (a, b) => new Date(a.Date).getTime() - new Date(b.Date).getTime()
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         );
 
         const updateMonthsRowList = async () => {
           const monthsRow = [];
 
           transactionList.forEach((transaction) => {
-            const [, month, ,] = transaction.Date.split(" ");
+            const fullDate = new Date(transaction.date);
+            const [, month, ,] = fullDate.toString().split(" ");
 
             if (!monthsRow.includes(month)) {
               monthsRow.push(month);
@@ -60,11 +62,12 @@ const ExpensesIncomeChart = (props) => {
           updatedMonthsRow.forEach((expenseMonth) => {
             let sumOfExpenses = 0;
 
-            expenseList.forEach((expense) => {
-              const [, month, ,] = expense.Date.split(" ");
+            expenses.forEach((expense) => {
+              const fullDate = new Date(expense.date);
+              const [, month, ,] = fullDate.toString().split(" ");
 
               if (expenseMonth === month) {
-                sumOfExpenses += Number(expense.Amount);
+                sumOfExpenses += Number(expense.amount);
               }
             });
 
@@ -79,17 +82,18 @@ const ExpensesIncomeChart = (props) => {
           const incomeRow = [];
 
           updatedMonthsRow.forEach((incomeMonth) => {
-            let sumOfExpenses = 0;
+            let sumOfIncomes = 0;
 
-            incomeList.forEach((income) => {
-              const [, month, ,] = income.Date.split(" ");
+            incomes.forEach((income) => {
+              const fullDate = new Date(income.date);
+              const [, month, ,] = fullDate.toString().split(" ");
 
               if (incomeMonth === month) {
-                sumOfExpenses += Number(income.Amount);
+                sumOfIncomes += Number(income.amount);
               }
             });
 
-            incomeRow.push(sumOfExpenses);
+            incomeRow.push(sumOfIncomes);
           });
 
           setIncomeData(incomeRow);
