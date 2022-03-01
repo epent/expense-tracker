@@ -6,13 +6,6 @@ export const getDataFromDB = async (type) => {
   return fetchedData;
 };
 
-export const postNewTransactionToDB = (form, type) => {
-  fetch(`${baseURL}/${type}.json`, {
-    method: "POST",
-    body: JSON.stringify(form),
-  });
-};
-
 export const patchUpdatedDataToDB = async (data, typeOfData, id) => {
   await fetch(`${baseURL}/${typeOfData}/${id}.json`, {
     method: "PATCH",
@@ -24,12 +17,6 @@ export const patchUpdatedTotal = async (updatedTotals) => {
   await fetch(`${baseURL}/total.json`, {
     method: "PATCH",
     body: JSON.stringify(updatedTotals),
-  });
-};
-
-export const deleteTransactionFromDB = (type, transactionId) => {
-  fetch(`${baseURL}/${type}/${transactionId}.json`, {
-    method: "DELETE",
   });
 };
 
@@ -82,6 +69,23 @@ export const getData = async (type) => {
       headers: {
         "Content-Type": "application/json",
       },
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteTransaction = async (type, transaction) => {
+  try {
+    const response = await fetch(`${URL}${type}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transaction),
     });
 
     const data = await response.json();
