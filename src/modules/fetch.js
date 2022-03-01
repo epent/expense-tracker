@@ -6,20 +6,6 @@ export const getDataFromDB = async (type) => {
   return fetchedData;
 };
 
-export const patchUpdatedDataToDB = async (data, typeOfData, id) => {
-  await fetch(`${baseURL}/${typeOfData}/${id}.json`, {
-    method: "PATCH",
-    body: JSON.stringify(data),
-  });
-};
-
-export const patchUpdatedTotal = async (updatedTotals) => {
-  await fetch(`${baseURL}/total.json`, {
-    method: "PATCH",
-    body: JSON.stringify(updatedTotals),
-  });
-};
-
 export const getDataFromDBasList = async (type, isTotal) => {
   const pushFetchedDataToList = (data) => {
     const list = [];
@@ -45,19 +31,6 @@ export const getDataFromDBasList = async (type, isTotal) => {
   const fetchedData = await getDataFromDB(type);
   const fetchedDataList = pushFetchedDataToList(fetchedData);
   return fetchedDataList;
-};
-
-export const calculateTotalBalance = async () => {
-  const fetchAccounts = async () => {
-    const accountList = await getDataFromDBasList("accounts");
-    return accountList;
-  };
-  const fetchedAccounts = await fetchAccounts();
-
-  let sum = 0;
-  fetchedAccounts.forEach((account) => (sum += Number(account.Balance)));
-
-  return sum;
 };
 
 const URL = "http://localhost:8080/";
@@ -86,6 +59,27 @@ export const deleteTransaction = async (type, transaction) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(transaction),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateTransaction = async (
+  type,
+  oldTransaction,
+  newTransaction
+) => {
+  try {
+    const response = await fetch(`${URL}${type}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ old: oldTransaction, new: newTransaction }),
     });
 
     const data = await response.json();
