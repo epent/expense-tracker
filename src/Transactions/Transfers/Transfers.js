@@ -8,14 +8,9 @@ import TransactionList from "../TransactionList";
 import {
   patchUpdatedDataToDB as patchUpdatedBalance,
   patchUpdatedDataToDB as patchUpdatedTransferToDB,
-  deleteTransactionFromDB,
   getDataFromDBasList,
+  deleteTransaction,
 } from "../../modules/fetch";
-
-import {
-  increaseBalance as increaseAccountBalance,
-  decreaseBalance as decreaseAccountBalance,
-} from "../../modules/delete";
 
 import {
   editTransaction,
@@ -37,44 +32,16 @@ const Transfers = (props) => {
 
   const deleteRowsHandler = (transfersToDelete) => {
     transfersToDelete.forEach((transferToDelete) => {
-      deleteTransactionFromDB("transfers", transferToDelete.id);
+      deleteTransaction("transfer", transferToDelete);
     });
 
     setShowModal(false);
 
-    const updateData = async (transferToDelete) => {
-      const updateAccountBalance = async () => {
-        const fetchedAccountList = await getDataFromDBasList("accounts");
-
-        const [updatedAccountFrom, accountIdFrom] = increaseAccountBalance(
-          fetchedAccountList,
-          transferToDelete
-        );
-
-        await patchUpdatedBalance(
-          updatedAccountFrom,
-          "accounts",
-          accountIdFrom
-        );
-
-        const [updatedAccountTo, accountIdTo] = decreaseAccountBalance(
-          fetchedAccountList,
-          transferToDelete
-        );
-
-        await patchUpdatedBalance(updatedAccountTo, "accounts", accountIdTo);
-      };
-      await updateAccountBalance();
-
-      const triggerPageUpdate = async () => {
-        setUpdateTransfers((prevState) => !prevState);
-      };
-      await triggerPageUpdate();
-    };
-
-    transfersToDelete.forEach((transferToDelete) =>
-      updateData(transferToDelete)
-    );
+    //   const triggerPageUpdate = async () => {
+    //     setUpdateTransfers((prevState) => !prevState);
+    //   };
+    //   await triggerPageUpdate();
+    // };
   };
 
   const openModalHandler = (selectedRowsArray, transactionList) => {
