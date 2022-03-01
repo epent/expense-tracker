@@ -11,7 +11,7 @@ const Transfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [transfersToDelete, setTransfersToDelete] = useState("");
+  const [transferToDelete, setTransferToDelete] = useState("");
 
   const updateTransfersHandler = () => {
     setUpdateTransfers((prevState) => !prevState);
@@ -40,26 +40,13 @@ const Transfers = (props) => {
     // await triggerPageUpdates();
   };
 
-  const openModalHandler = (selectedRowsArray, transactionList) => {
-    let transfersToDelete = [];
-    let updatedTransactionList;
-
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      transfersToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-    }
+  const openModalHandler = (transactionId, transactionList) => {
+    const transactionToDelete = transactionList.filter((transaction) => {
+      return transaction.id === transactionId[0];
+    });
 
     setShowModal(true);
-    setTransfersToDelete(transfersToDelete);
+    setTransferToDelete(transactionToDelete[0]);
   };
 
   const closeModalHandler = () => {
@@ -92,7 +79,8 @@ const Transfers = (props) => {
             openModal={openModalHandler}
             closeModal={closeModalHandler}
             showModal={showModal}
-            transactionsToDelete={transfersToDelete}
+            transactionToDelete={transferToDelete}
+            sign=""
           />
         </Grid>
       </Grid>
