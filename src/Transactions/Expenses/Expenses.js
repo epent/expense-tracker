@@ -6,23 +6,7 @@ import Grid from "@mui/material/Grid";
 import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
 import ExpensesChart from "../../Charts/Bar/ExpensesChart";
-import {
-  patchUpdatedTotal,
-  patchUpdatedDataToDB as patchUpdatedBalance,
-  patchUpdatedDataToDB as patchUpdatedExpenseToDB,
-  calculateTotalBalance,
-  getDataFromDBasList,
-  deleteTransaction,
-} from "../../modules/fetch";
-
-import {
-  editTransaction,
-  updateAmountFrom,
-  updateAmountTo,
-  increaseBalance,
-  decreaseBalance,
-  updateTotalEdit,
-} from "../../modules/edit";
+import { deleteTransaction, updateTransaction } from "../../modules/fetch";
 
 const Expenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
@@ -48,139 +32,13 @@ const Expenses = () => {
     // };
   };
 
-  const editRowsHandler = (row, oldRow) => {
-    let expenseForm;
+  const editRowsHandler = (newRow, oldRow) => {
+    updateTransaction("expense", oldRow, newRow);
 
-    const updateTransaction = () => {
-      const [id, form] = editTransaction(row, "expenses");
-      expenseForm = form;
-
-      patchUpdatedExpenseToDB(expenseForm, "expenses", id);
-    };
-    updateTransaction();
-
-    const updateData = async () => {
-      const updateAmount = async () => {
-        if (oldRow.Amount !== expenseForm.Amount) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccount, accountId] = updateAmountFrom(
-              fetchedAccountList,
-              oldRow,
-              expenseForm
-            );
-
-            patchUpdatedBalance(updatedAccount, "accounts", accountId);
-          };
-          await updateAccountBalance();
-
-          const updateCategoryBalance = async () => {
-            const fetchedCategoryList = await getDataFromDBasList("categories");
-
-            const [updatedCategory, categoryId] = updateAmountTo(
-              fetchedCategoryList,
-              oldRow,
-              expenseForm
-            );
-
-            patchUpdatedBalance(updatedCategory, "categories", categoryId);
-          };
-          await updateCategoryBalance();
-
-          const updateTotalBalance = async () => {
-            const fetchedTotalList = await getDataFromDBasList("total", true);
-            const totalBalance = await calculateTotalBalance();
-
-            const updatedTotals = updateTotalEdit(
-              "expenses",
-              fetchedTotalList,
-              totalBalance,
-              oldRow,
-              expenseForm
-            );
-
-            await patchUpdatedTotal(updatedTotals);
-          };
-          await updateTotalBalance();
-        }
-      };
-      await updateAmount();
-
-      const updateAccount = async () => {
-        if (oldRow.From !== expenseForm.From) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccountPrevious, accountIdPrevious] = increaseBalance(
-              fetchedAccountList,
-              expenseForm,
-              oldRow,
-              "From"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountPrevious,
-              "accounts",
-              accountIdPrevious
-            );
-
-            const [updatedAccountCurrent, accountIdCurrent] = decreaseBalance(
-              fetchedAccountList,
-              expenseForm,
-              expenseForm,
-              "From"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountCurrent,
-              "accounts",
-              accountIdCurrent
-            );
-          };
-          await updateAccountBalance();
-        }
-      };
-      await updateAccount();
-
-      const updateCategory = async () => {
-        if (oldRow.To !== expenseForm.To) {
-          const updateCategoryBalance = async (PrevOrCurr) => {
-            const fetchedCategoryList = await getDataFromDBasList("categories");
-
-            const [updatedCategoryPrevious, categoryIdPrevious] =
-              decreaseBalance(fetchedCategoryList, expenseForm, oldRow, "To");
-
-            await patchUpdatedBalance(
-              updatedCategoryPrevious,
-              "categories",
-              categoryIdPrevious
-            );
-
-            const [updatedCategoryCurrent, categoryIdCurrent] = increaseBalance(
-              fetchedCategoryList,
-              expenseForm,
-              expenseForm,
-              "To"
-            );
-
-            await patchUpdatedBalance(
-              updatedCategoryCurrent,
-              "categories",
-              categoryIdCurrent
-            );
-          };
-          await updateCategoryBalance();
-        }
-      };
-      await updateCategory();
-
-      const triggerPageUpdate = async () => {
-        setUpdateExpenses((prevState) => !prevState);
-      };
-      await triggerPageUpdate();
-    };
-    updateData();
+    // const triggerPageUpdate = async () => {
+    //   setUpdateExpenses((prevState) => !prevState);
+    // };
+    // await triggerPageUpdate();
   };
 
   const openModalHandler = (selectedRowsArray, transactionList) => {
