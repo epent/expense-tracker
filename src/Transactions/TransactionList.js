@@ -13,10 +13,10 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { DataGrid } from "@mui/x-data-grid";
 
-import { getDataFromDBasList, getData } from "../modules/fetch";
+import { getData } from "../modules/fetch";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -25,7 +25,6 @@ const TransactionList = (props) => {
       borderRadius: 10,
       height: props.paperHeight,
     },
-    dataGrid: {},
   }));
   const classes = useStyles();
 
@@ -40,26 +39,24 @@ const TransactionList = (props) => {
   }, []);
 
   const handleRowUpdate = () => {
-    const key = Object.keys(editRowsModel).map((key) => {
-      return key;
-    });
-
     const oldRow = fullList.filter((transaction) => {
-      return transaction.id === key[0];
+      return transaction.id === Object.keys(editRowsModel)[0];
     });
 
-    props.editRowsHandler(editRowsModel, oldRow[0]);
+    const newRow = Object.keys(editRowsModel).map((key) => {
+      return {
+        id: key,
+        from: editRowsModel[key].from.value,
+        to: editRowsModel[key].to.value,
+        amount: Math.abs(editRowsModel[key].amount.value),
+        date: editRowsModel[key].date.value,
+      };
+    });
+
+    props.editRowsHandler(newRow[0], oldRow[0]);
   };
 
-  const [rows, setRows] = useState([
-    {
-      id: "",
-      date: "",
-      from: "",
-      to: "",
-      amount: "",
-    },
-  ]);
+  const [rows, setRows] = useState([]);
 
   const columns = [
     {
@@ -161,8 +158,7 @@ const TransactionList = (props) => {
 
         setRows(rowList);
       };
-      const list = await updateRowList();
-      console.log(rows);
+      await updateRowList();
     };
     fetchTransactions();
   }, [
@@ -181,53 +177,51 @@ const TransactionList = (props) => {
     </IconButton>
   );
 
-  let listOfTransactionsToDelete;
-  if (props.transactionsToDelete)
-    listOfTransactionsToDelete = props.transactionsToDelete.map(
-      (transactionToDelete) => {
-        return (
-          <ListItem className={classes.modal}>
-            <Grid item xs={2}>
-              <Typography color="textSecondary" variant="body1">
-                {`${transactionToDelete.Date.split(" ")[2]} ${
-                  transactionToDelete.Date.split(" ")[1]
-                }`}
-              </Typography>
-            </Grid>
-            <Grid item xs={2}>
-              <Typography
-                color={props.transactionColor}
-                variant="body1"
-              >{`${transactionToDelete.From}`}</Typography>
-            </Grid>
-            <Grid item xs={1}>
-              <ArrowRightAltIcon color={props.arrowColor} />
-            </Grid>
-            <Grid item xs={2}>
-              <Typography
-                color={props.transactionColor}
-                variant="body1"
-              >{`${transactionToDelete.To}`}</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography
-                color={props.amountColor}
-                variant="body1"
-                align="right"
-              >{`${props.sign}${transactionToDelete.Amount} ILS`}</Typography>
-            </Grid>
-          </ListItem>
-        );
-      }
+  let transactionToDelete;
+  if (props.transactionToDelete) {
+    const fullDate = new Date(props.transactionToDelete.date);
+    const [, month, day, year] = fullDate.toString().split(" ");
+
+    transactionToDelete = (
+      <ListItem>
+        <Grid item xs={2}>
+          <Typography color="textSecondary" variant="body1">
+            {`${day} ${month} ${year}`}
+          </Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography
+            color={props.transactionColor}
+            variant="body1"
+          >{`${props.transactionToDelete.from}`}</Typography>
+        </Grid>
+        <Grid item xs={1}>
+          <ArrowRightAltIcon color={props.arrowColor} />
+        </Grid>
+        <Grid item xs={2}>
+          <Typography
+            color={props.transactionColor}
+            variant="body1"
+          >{`${props.transactionToDelete.to}`}</Typography>
+        </Grid>
+        <Grid item xs={3}>
+          <Typography
+            color={props.amountColor}
+            variant="body1"
+            align="right"
+          >{`${props.sign}${props.transactionToDelete.amount} ILS`}</Typography>
+        </Grid>
+      </ListItem>
     );
+  }
 
   const deleteModal = (
     <Dialog open={props.showModal} onClose={props.closeModal}>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to delete these transactions?
+          Are you sure you want to delete this transaction?
         </DialogContentText>
-        {listOfTransactionsToDelete}
+        {transactionToDelete}
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={props.closeModal}>
@@ -235,7 +229,7 @@ const TransactionList = (props) => {
         </Button>
         <Button
           color="secondary"
-          onClick={() => props.deleteTransaction(props.transactionsToDelete)}
+          onClick={() => props.deleteTransaction(props.transactionToDelete)}
         >
           Delete
         </Button>
@@ -252,7 +246,7 @@ const TransactionList = (props) => {
               {props.pageTitle}
             </Typography>
           </Box>
-          <Box className={classes.dataGrid}>
+          <Box>
             <DataGrid
               autoHeight={true}
               rowHeight={49}
@@ -260,7 +254,6 @@ const TransactionList = (props) => {
               rows={rows}
               pageSize={props.pageSize}
               rowsPerPageOptions={[5, 7, 14]}
-              checkboxSelection
               onSelectionModelChange={(newSelectionModel) => {
                 setSelectionModel(newSelectionModel);
               }}
@@ -271,7 +264,7 @@ const TransactionList = (props) => {
               onRowEditStop={handleRowUpdate}
             />
             {props.showDeleteButton && deleteButton}
-            {props.transactionsToDelete && deleteModal}
+            {props.transactionToDelete && deleteModal}
           </Box>
         </Paper>
       </Box>
