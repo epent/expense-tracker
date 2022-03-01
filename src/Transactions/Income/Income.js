@@ -11,15 +11,10 @@ import {
   patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
   patchUpdatedDataToDB as patchUpdatedIncomeToDB,
-  deleteTransactionFromDB,
   calculateTotalBalance,
   getDataFromDBasList,
+  deleteTransaction,
 } from "../../modules/fetch";
-
-import {
-  decreaseBalance as decreaseAccountBalance,
-  updateTotalDelete,
-} from "../../modules/delete";
 
 import {
   editTransaction,
@@ -41,44 +36,16 @@ const Income = (props) => {
 
   const deleteRowsHandler = (incomesToDelete) => {
     incomesToDelete.forEach((incomeToDelete) => {
-      deleteTransactionFromDB("income", incomeToDelete.id);
+      deleteTransaction("income", incomeToDelete);
     });
 
     setShowModal(false);
 
-    const updateData = async (incomeToDelete) => {
-      const updateAccountBalance = async () => {
-        const fetchedAccountList = await getDataFromDBasList("accounts");
-
-        const [updatedAccount, accountId] = decreaseAccountBalance(
-          fetchedAccountList,
-          incomeToDelete
-        );
-
-        patchUpdatedBalance(updatedAccount, "accounts", accountId);
-      };
-      await updateAccountBalance();
-
-      const updateTotalBalance = async () => {
-        const fetchedTotalList = await getDataFromDBasList("total", true);
-
-        const updatedTotals = updateTotalDelete(
-          "income",
-          fetchedTotalList,
-          incomeToDelete
-        );
-
-        await patchUpdatedTotal(updatedTotals);
-      };
-      await updateTotalBalance();
-
-      const triggerPageUpdate = async () => {
-        setUpdateIncome((prevState) => !prevState);
-      };
-      await triggerPageUpdate();
-    };
-
-    incomesToDelete.forEach((incomeToDelete) => updateData(incomeToDelete));
+    //   const triggerPageUpdate = async () => {
+    //     setUpdateIncome((prevState) => !prevState);
+    //   };
+    //   await triggerPageUpdate();
+    // };
   };
 
   const openModalHandler = (selectedRowsArray, transactionList) => {
