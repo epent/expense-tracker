@@ -7,22 +7,7 @@ import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
 import IncomeChart from "../../Charts/Bar/IncomeChart";
 
-import {
-  patchUpdatedTotal,
-  patchUpdatedDataToDB as patchUpdatedBalance,
-  patchUpdatedDataToDB as patchUpdatedIncomeToDB,
-  calculateTotalBalance,
-  getDataFromDBasList,
-  deleteTransaction,
-} from "../../modules/fetch";
-
-import {
-  editTransaction,
-  updateAmountTo,
-  increaseBalance,
-  decreaseBalance,
-  updateTotalEdit,
-} from "../../modules/edit";
+import { deleteTransaction, updateTransaction } from "../../modules/fetch";
 
 const Income = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
@@ -46,6 +31,15 @@ const Income = (props) => {
     //   };
     //   await triggerPageUpdate();
     // };
+  };
+
+  const editRowsHandler = (newRow, oldRow) => {
+    updateTransaction("income", oldRow, newRow);
+
+    // const triggerPageUpdates = async () => {
+    //   setUpdateIncome((presvState) => !presvState);
+    // };
+    // await triggerPageUpdates();
   };
 
   const openModalHandler = (selectedRowsArray, transactionList) => {
@@ -72,96 +66,6 @@ const Income = (props) => {
 
   const closeModalHandler = () => {
     setShowModal(false);
-  };
-
-  const editRowsHandler = (row, oldRow) => {
-    let incomeForm;
-
-    const updateTransaction = () => {
-      const [id, form] = editTransaction(row);
-      incomeForm = form;
-
-      patchUpdatedIncomeToDB(incomeForm, "income", id);
-    };
-    updateTransaction();
-
-    const updateData = async () => {
-      const updateAmount = async () => {
-        if (oldRow.Amount !== incomeForm.Amount) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccount, accountId] = updateAmountTo(
-              fetchedAccountList,
-              oldRow,
-              incomeForm
-            );
-
-            patchUpdatedBalance(updatedAccount, "accounts", accountId);
-          };
-          await updateAccountBalance();
-
-          const updateTotalBalance = async () => {
-            const fetchedTotalList = await getDataFromDBasList("total", true);
-            const totalBalance = await calculateTotalBalance();
-
-            const updatedTotals = updateTotalEdit(
-              "income",
-              fetchedTotalList,
-              totalBalance,
-              oldRow,
-              incomeForm
-            );
-
-            await patchUpdatedTotal(updatedTotals);
-          };
-          await updateTotalBalance();
-        }
-      };
-      await updateAmount();
-
-      const updateAccount = async () => {
-        if (oldRow.To !== incomeForm.To) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccountPrevious, accountIdPrevious] = decreaseBalance(
-              fetchedAccountList,
-              incomeForm,
-              oldRow,
-              "To"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountPrevious,
-              "accounts",
-              accountIdPrevious
-            );
-
-            const [updatedAccountCurrent, accountIdCurrent] = increaseBalance(
-              fetchedAccountList,
-              incomeForm,
-              incomeForm,
-              "To"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountCurrent,
-              "accounts",
-              accountIdCurrent
-            );
-          };
-          await updateAccountBalance();
-        }
-      };
-      await updateAccount();
-
-      const triggerPageUpdates = async () => {
-        setUpdateIncome((presvState) => !presvState);
-      };
-      await triggerPageUpdates();
-    };
-    updateData();
   };
 
   return (
