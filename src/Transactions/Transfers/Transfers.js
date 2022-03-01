@@ -5,20 +5,7 @@ import Grid from "@mui/material/Grid";
 
 import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
-import {
-  patchUpdatedDataToDB as patchUpdatedBalance,
-  patchUpdatedDataToDB as patchUpdatedTransferToDB,
-  getDataFromDBasList,
-  deleteTransaction,
-} from "../../modules/fetch";
-
-import {
-  editTransaction,
-  updateAmountFrom,
-  updateAmountTo,
-  increaseBalance,
-  decreaseBalance,
-} from "../../modules/edit";
+import { deleteTransaction, updateTransaction } from "../../modules/fetch";
 
 const Transfers = (props) => {
   const [updateTransfers, setUpdateTransfers] = useState(false);
@@ -42,6 +29,15 @@ const Transfers = (props) => {
     //   };
     //   await triggerPageUpdate();
     // };
+  };
+
+  const editRowsHandler = (newRow, oldRow) => {
+    updateTransaction("transfer", oldRow, newRow);
+
+    // const triggerPageUpdates = async () => {
+    //   setUpdateTransfers((prevState) => !prevState);
+    // };
+    // await triggerPageUpdates();
   };
 
   const openModalHandler = (selectedRowsArray, transactionList) => {
@@ -68,129 +64,6 @@ const Transfers = (props) => {
 
   const closeModalHandler = () => {
     setShowModal(false);
-  };
-
-  const editRowsHandler = (row, oldRow) => {
-    let transferForm;
-
-    const updateTransaction = () => {
-      const [id, form] = editTransaction(row);
-      transferForm = form;
-
-      patchUpdatedTransferToDB(transferForm, "transfers", id);
-    };
-    updateTransaction();
-
-    const updateData = async () => {
-      const updateAmount = async () => {
-        if (oldRow.Amount !== transferForm.Amount) {
-          const updateAccountBalanceFrom = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccount, accountId] = updateAmountFrom(
-              fetchedAccountList,
-              oldRow,
-              transferForm
-            );
-
-            await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-          };
-          await updateAccountBalanceFrom();
-
-          const updateAccountBalanceTo = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccount, accountId] = updateAmountTo(
-              fetchedAccountList,
-              oldRow,
-              transferForm
-            );
-
-            await patchUpdatedBalance(updatedAccount, "accounts", accountId);
-          };
-          await updateAccountBalanceTo();
-        }
-      };
-      await updateAmount();
-
-      const updateAccountFrom = async () => {
-        if (oldRow.From !== transferForm.From) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccountPrevious, accountIdPrevious] = increaseBalance(
-              fetchedAccountList,
-              transferForm,
-              oldRow,
-              "From"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountPrevious,
-              "accounts",
-              accountIdPrevious
-            );
-
-            const [updatedAccountCurrent, accountIdCurrent] = decreaseBalance(
-              fetchedAccountList,
-              transferForm,
-              transferForm,
-              "From"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountCurrent,
-              "accounts",
-              accountIdCurrent
-            );
-          };
-          await updateAccountBalance();
-        }
-      };
-      await updateAccountFrom();
-
-      const updateAccountTo = async () => {
-        if (oldRow.To !== transferForm.To) {
-          const updateAccountBalance = async () => {
-            const fetchedAccountList = await getDataFromDBasList("accounts");
-
-            const [updatedAccountPrevious, accountIdPrevious] = decreaseBalance(
-              fetchedAccountList,
-              transferForm,
-              oldRow,
-              "To"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountPrevious,
-              "accounts",
-              accountIdPrevious
-            );
-
-            const [updatedAccountCurrent, accountIdCurrent] = increaseBalance(
-              fetchedAccountList,
-              transferForm,
-              transferForm,
-              "To"
-            );
-
-            await patchUpdatedBalance(
-              updatedAccountCurrent,
-              "accounts",
-              accountIdCurrent
-            );
-          };
-          await updateAccountBalance();
-        }
-      };
-      await updateAccountTo();
-
-      const triggerPageUpdates = async () => {
-        setUpdateTransfers((prevState) => !prevState);
-      };
-      await triggerPageUpdates();
-    };
-    updateData();
   };
 
   return (
