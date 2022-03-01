@@ -42,26 +42,13 @@ const Income = (props) => {
     // await triggerPageUpdates();
   };
 
-  const openModalHandler = (selectedRowsArray, transactionList) => {
-    let incomesToDelete = [];
-    let updatedTransactionList;
-
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      incomesToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-    }
+  const openModalHandler = (transactionId, transactionList) => {
+    const transactionToDelete = transactionList.filter((transaction) => {
+      return transaction.id === transactionId[0];
+    });
 
     setShowModal(true);
-    setIncomeToDelete(incomesToDelete);
+    setIncomeToDelete(transactionToDelete[0]);
   };
 
   const closeModalHandler = () => {
@@ -94,7 +81,8 @@ const Income = (props) => {
             openModal={openModalHandler}
             closeModal={closeModalHandler}
             showModal={showModal}
-            transactionsToDelete={incomeToDelete}
+            transactionToDelete={incomeToDelete}
+            sign="+"
           />
         </Grid>
         <Grid item xs={12}>
