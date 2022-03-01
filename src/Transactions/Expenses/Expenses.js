@@ -12,7 +12,7 @@ const Expenses = () => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
-  const [expensesToDelete, setExpensesToDelete] = useState("");
+  const [expenseToDelete, setExpenseToDelete] = useState("");
 
   const updateExpensesHandler = () => {
     setUpdateExpenses((prevState) => !prevState);
@@ -41,26 +41,13 @@ const Expenses = () => {
     // await triggerPageUpdate();
   };
 
-  const openModalHandler = (selectedRowsArray, transactionList) => {
-    let expensesToDelete = [];
-    let updatedTransactionList;
-
-    for (let id of selectedRowsArray) {
-      let filteredTransactions = transactionList.filter((transaction) => {
-        return transaction.id === id;
-      });
-      expensesToDelete.push(...filteredTransactions);
-    }
-
-    for (let id of selectedRowsArray) {
-      updatedTransactionList = transactionList.filter((transaction) => {
-        return transaction.id !== id;
-      });
-      transactionList = updatedTransactionList;
-    }
+  const openModalHandler = (transactionId, transactionList) => {
+    const transactionToDelete = transactionList.filter((transaction) => {
+      return transaction.id === transactionId[0];
+    });
 
     setShowModal(true);
-    setExpensesToDelete(expensesToDelete);
+    setExpenseToDelete(transactionToDelete[0]);
   };
 
   const closeModalHandler = () => {
@@ -92,7 +79,8 @@ const Expenses = () => {
             openModal={openModalHandler}
             closeModal={closeModalHandler}
             showModal={showModal}
-            transactionsToDelete={expensesToDelete}
+            transactionToDelete={expenseToDelete}
+            sign="-"
           />
         </Grid>
         <Grid item xs={12}>
