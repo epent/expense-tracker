@@ -10,16 +10,10 @@ import {
   patchUpdatedTotal,
   patchUpdatedDataToDB as patchUpdatedBalance,
   patchUpdatedDataToDB as patchUpdatedExpenseToDB,
-  deleteTransactionFromDB,
   calculateTotalBalance,
   getDataFromDBasList,
+  deleteTransaction,
 } from "../../modules/fetch";
-
-import {
-  increaseBalance as increaseAccountBalance,
-  decreaseBalance as deacreaseCategoryBalance,
-  updateTotalDelete,
-} from "../../modules/delete";
 
 import {
   editTransaction,
@@ -42,56 +36,16 @@ const Expenses = () => {
 
   const deleteRowsHandler = (expensesToDelete) => {
     expensesToDelete.forEach((expenseToDelete) => {
-      deleteTransactionFromDB("expenses", expenseToDelete.id);
+      deleteTransaction("expense", expenseToDelete);
     });
 
     setShowModal(false);
 
-    const updateData = async (expenseToDelete) => {
-      const updateAccountBalance = async () => {
-        const fetchedAccountList = await getDataFromDBasList("accounts");
-
-        const [updatedAccount, accountId] = increaseAccountBalance(
-          fetchedAccountList,
-          expenseToDelete
-        );
-
-        patchUpdatedBalance(updatedAccount, "accounts", accountId);
-      };
-      await updateAccountBalance();
-
-      const updateCategoryBalance = async () => {
-        const fetchedCategoryList = await getDataFromDBasList("categories");
-
-        const [updatedCategory, categoryId] = deacreaseCategoryBalance(
-          fetchedCategoryList,
-          expenseToDelete
-        );
-
-        patchUpdatedBalance(updatedCategory, "categories", categoryId);
-      };
-      await updateCategoryBalance();
-
-      const updateTotalBalance = async () => {
-        const fetchedTotalList = await getDataFromDBasList("total", true);
-
-        const updatedTotals = updateTotalDelete(
-          "expenses",
-          fetchedTotalList,
-          expenseToDelete
-        );
-
-        await patchUpdatedTotal(updatedTotals);
-      };
-      await updateTotalBalance();
-
-      const triggerPageUpdate = async () => {
-        setUpdateExpenses((prevState) => !prevState);
-      };
-      await triggerPageUpdate();
-    };
-
-    expensesToDelete.forEach((expenseToDelete) => updateData(expenseToDelete));
+    //   const triggerPageUpdate = async () => {
+    //     setUpdateExpenses((prevState) => !prevState);
+    //   };
+    //   await triggerPageUpdate();
+    // };
   };
 
   const editRowsHandler = (row, oldRow) => {
