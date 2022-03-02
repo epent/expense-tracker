@@ -51,6 +51,23 @@ export const getData = async (type) => {
   }
 };
 
+export const postData = async (type, form) => {
+  try {
+    const response = await fetch(`${URL}${type}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteTransaction = async (type, transaction) => {
   try {
     const response = await fetch(`${URL}${type}`, {
