@@ -3,15 +3,11 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import AccountCategoryForm from "../AccountCategoryForm";
 
-import {
-  getDataFromDBasList,
-  patchUpdatedTotal,
-  postNewTransactionToDB as postNewAccountToDB,
-} from "../../modules/fetch";
+import { postData as postAccount } from "../../modules/fetch";
 
 import { checkAccountFormValidity } from "../../modules/validate";
 
@@ -49,51 +45,31 @@ const NewAccountForm = (props) => {
   };
 
   // add new account
-  const accountFormSubmitHandler = (event) => {
-    event.preventDefault();
+  const accountFormSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
 
-    fetch("http://localhost:8080/account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(accountForm),
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Creating an account failed!");
-        }
-        return res.json();
-      })
-      .then((result) => {
-        console.log(result);
+      await postAccount("account", accountForm);
+
+      // setFormIsValid(false);
+
+      setAccountForm({
+        Name: "",
+        Category: "",
+        Balance: "",
       });
 
-    // setFormIsValid(false);
+      // trigger the page to rerender with updated categoryLog
+      await props.updateAccountsHandler();
 
-    // const updateData = async () => {
+      // const formIsValid = checkAccountFormValidity(accountForm, validityRules);
 
-    //   const triggerUpdates = async () => {
-    //     setAccountForm({
-    //       Name: "",
-    //       Category: "",
-    //       Balance: "",
-    //     });
-
-    //     // trigger the page to rerender with updated categoryLog
-    //     await props.updateAccountsHandler();
-    //   };
-    //   await triggerUpdates();
-    // };
-
-    // const formIsValid = checkAccountFormValidity(accountForm, validityRules);
-    // console.log(formIsValid);
-
-    // if (formIsValid) {
-    //   setFormIsValid(true);
-    //   postNewAccountToDB(accountForm, "accounts");
-    //   updateData();
-    // }
+      // if (formIsValid) {
+      //   setFormIsValid(true);
+      // }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // const accountFormUpdateHandler = (event) => {
