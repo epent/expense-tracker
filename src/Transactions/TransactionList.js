@@ -137,8 +137,8 @@ const TransactionList = (props) => {
         const rowList = [];
 
         transactionList.map((transaction) => {
-          const fullDate = new Date(transaction.date);
-          const [, month, day, year] = fullDate.toString().split(" ");
+          const withoutTime = transaction.date.toString().slice(0, 10);
+          const [year, month, day] = withoutTime.split("-");
 
           let sign;
           transaction.type === "expenses"
@@ -149,7 +149,7 @@ const TransactionList = (props) => {
 
           return rowList.push({
             id: transaction.id,
-            date: new Date(`${day} ${month} ${year}`),
+            date: `${day}/${month}/${year}`,
             from: transaction.from,
             to: transaction.to,
             amount: `${sign}${transaction.amount}`,
