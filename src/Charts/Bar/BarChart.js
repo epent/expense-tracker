@@ -41,23 +41,31 @@ const BarChart = (props) => {
               categories: props.updatedMonths,
             },
           },
-          series: props.updatedExpensesData
-            ? [
-                {
-                  name: "Expenses",
-                  data: props.updatedExpensesData,
-                },
-                {
-                  name: "Income",
-                  data: props.updatedIncomeData,
-                },
-              ]
-            : [
-                {
-                  name: "Income",
-                  data: props.updatedIncomeData,
-                },
-              ],
+          series:
+            props.updatedExpensesData && props.updatedIncomeData
+              ? [
+                  {
+                    name: "Expenses",
+                    data: props.updatedExpensesData,
+                  },
+                  {
+                    name: "Income",
+                    data: props.updatedIncomeData,
+                  },
+                ]
+              : props.updatedExpensesData
+              ? [
+                  {
+                    name: "Income",
+                    data: props.updatedExpensesData,
+                  },
+                ]
+              : [
+                  {
+                    name: "Income",
+                    data: props.updatedIncomeData,
+                  },
+                ],
         };
       });
     }
