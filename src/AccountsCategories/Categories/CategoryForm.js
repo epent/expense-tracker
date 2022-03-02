@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import AccountCategoryForm from "../AccountCategoryForm";
 
-import { postNewTransactionToDB as postNewCategoryToDB } from "../../modules/fetch";
+import { postData as postCategory } from "../../modules/fetch";
 
 import { checkCategoryFormValidity } from "../../modules/validate";
 
@@ -42,46 +42,30 @@ const NewCategorieForm = (props) => {
     });
   };
 
-  const categoryFormSubmitHandler = (event) => {
-    event.preventDefault();
+  const categoryFormSubmitHandler = async (event) => {
+    try {
+      event.preventDefault();
 
-    fetch("http://localhost:8080/category", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(categoryForm),
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Creating a category failed!");
-        }
-        return res.json();
-      })
-      .then((result) => {
-        console.log(result);
+      await postCategory("category", categoryForm);
+
+      // setFormIsValid(false);
+
+      setCategoryForm({
+        Name: "",
+        Balance: "",
       });
 
-    // setFormIsValid(false);
+      // trigger the page to rerender with updated categoryLog
+      await props.updateCategoriesHandler();
 
-    // const triggerUpdates = async () => {
-    //   setCategoryForm({
-    //     Name: "",
-    //     Balance: "",
-    //   });
+      // const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
 
-    //   // trigger the page to rerender with updated categoryLog
-    //   await props.updateCategoriesHandler();
-    // };
-
-    // const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
-    // console.log(formIsValid);
-
-    // if (formIsValid) {
-    //   setFormIsValid(true);
-    //   postNewCategoryToDB(categoryForm, "categories");
-    //   triggerUpdates();
-    // }
+      // if (formIsValid) {
+      //   setFormIsValid(true);
+      // }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   let helperTextName, helperTextBalance;
