@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
 
 // import {
 //   fetchAccountsFromDB,
@@ -52,7 +53,11 @@ const AccountList = (props) => {
   //   }
   // };
 
-  let accountList = <p>Loading...</p>;
+  let accountList = (
+    <Typography variant="subtitle2">
+      Please add first <Link href="/accounts" color="primary">account</Link>
+    </Typography>
+  );
   if (props.accountList && props.accountList.length > 0) {
     accountList = props.accountList.map((account) => {
       return (

@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
 // import IconButton from "@mui/material/IconButton";
 // import DeleteIcon from "@mui/icons-material/Delete";
 // import EditIcon from "@mui/icons-material/Edit";
@@ -46,7 +47,14 @@ const CategorieList = (props) => {
   //   </IconButton>
   // );
 
-  let categorieList = <p>Loading...</p>;
+  let categorieList = (
+    <Typography variant="subtitle2">
+      Please add first{" "}
+      <Link href="/categories" color="secondary">
+        category
+      </Link>
+    </Typography>
+  );
   if (props.categorieList && props.categorieList.length > 0) {
     categorieList = props.categorieList.map((category) => {
       return (
