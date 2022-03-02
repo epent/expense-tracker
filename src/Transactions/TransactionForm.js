@@ -8,17 +8,7 @@ import Paper from "@mui/material/Paper";
 import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "./Form";
-import {
-  getDataFromDBasList as getAccountsFromDB,
-  getDataFromDBasList as getCategoriesFromDB,
-  postData as postTransaction,
-} from "../modules/fetch.js";
-
-import {
-  updateAccountBalance,
-  updateCategoryBalance,
-  updateTotalBalance,
-} from "../modules/submit";
+import { getData, postData as postTransaction } from "../modules/fetch.js";
 
 import { checkFormValidity } from "../modules/validate";
 
@@ -37,11 +27,8 @@ const TransactionForm = (props) => {
   }));
   const classes = useStyles();
 
-  const [accountNamesList, setAccountNamesList] = useState([]);
-  const [categoryNamesList, setCategoryNamesList] = useState([]);
-
-  const [accountListFull, setAccountListFull] = useState([]);
-  const [categoryListFull, setCategoryListFull] = useState([]);
+  const [accountList, setAccountList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
 
   const [openForm, setOpenForm] = useState("expense");
 
@@ -63,25 +50,17 @@ const TransactionForm = (props) => {
   useEffect(() => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const fetchedAccountList = await getAccountsFromDB("accounts");
-      const accountListNames = fetchedAccountList.map((account) => {
-        return account.Name;
-      });
+      const accounts = await getData("accounts");
 
-      setAccountNamesList(accountListNames);
-      setAccountListFull(fetchedAccountList);
+      setAccountList(accounts);
     };
     fetchAccounts();
 
     // fetch categoryList from server when form is opened
     const fetchCategories = async () => {
-      const fetchedCategoryList = await getCategoriesFromDB("categories");
-      const categoryListNames = fetchedCategoryList.map((category) => {
-        return category.Name;
-      });
+      const categories = await getData("categories");
 
-      setCategoryNamesList(categoryListNames);
-      setCategoryListFull(fetchedCategoryList);
+      setCategoryList(categories);
     };
     fetchCategories();
   }, []);
@@ -280,8 +259,8 @@ const TransactionForm = (props) => {
         {buttonGroup}
         <Box mx={3}>
           <Form
-            accountList={accountNamesList}
-            categoryList={categoryNamesList}
+            accountList={accountList}
+            categoryList={categoryList}
             transactionType={
               props.transactionType ? props.transactionType : openForm
             }

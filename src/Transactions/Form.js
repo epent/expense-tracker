@@ -33,8 +33,8 @@ const NewForm = (props) => {
   if (props.accountList && props.accountList.length > 0)
     accountsToChoose = props.accountList.map((account) => {
       return (
-        <MenuItem key={account} value={account}>
-          {account}
+        <MenuItem key={account.name} value={account.name}>
+          {account.name}
         </MenuItem>
       );
     });
@@ -43,8 +43,8 @@ const NewForm = (props) => {
   if (props.categoryList && props.categoryList.length > 0)
     categoriesToChoose = props.categoryList.map((category) => {
       return (
-        <MenuItem key={category} value={category}>
-          {category}
+        <MenuItem key={category.name} value={category.name}>
+          {category.name}
         </MenuItem>
       );
     });
