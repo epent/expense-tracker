@@ -83,93 +83,93 @@ const TransactionForm = (props) => {
   };
 
   const expenseFormSubmitHandler = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      await postTransaction("expense", form);
+    const response = await postTransaction("expense", form);
 
-      // setFormIsValid(false);
+    setForm({
+      From: "",
+      To: "",
+      Amount: "",
+      Date: new Date().toDateString(),
+      // Comment: "",
+    });
 
-      setForm({
-        From: "",
-        To: "",
-        Amount: "",
-        Date: new Date().toDateString(),
-        // Comment: "",
-      });
-
-      // trigger Home to rerender with updated accountLog/categoryLog
-      if (props.updateHomeHandler) await props.updateHomeHandler();
-      if (props.updateExpensesHandler) await props.updateExpensesHandler();
-
-      // const formIsValid = checkFormValidity(form, validityRules);
-
-      // if (formIsValid) {
-      //   setFormIsValid(true);
-      // }
-    } catch (err) {
-      console.log(err);
+    if (!response) {
+      props.handleOpen("Failed to add new expense.");
     }
+
+    // setFormIsValid(false);
+
+    // trigger Home to rerender with updated accountLog/categoryLog
+    if (props.updateHomeHandler) await props.updateHomeHandler();
+    if (props.updateExpensesHandler) await props.updateExpensesHandler();
+
+    // const formIsValid = checkFormValidity(form, validityRules);
+
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    // }
   };
 
   const incomeFormSubmitHandler = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      await postTransaction("income", form);
+    const response = await postTransaction("income", form);
 
-      // setFormIsValid(false);
+    // setFormIsValid(false);
 
-      setForm({
-        From: "",
-        To: "",
-        Amount: "",
-        Date: new Date().toDateString(),
-        // Comment: "",
-      });
+    setForm({
+      From: "",
+      To: "",
+      Amount: "",
+      Date: new Date().toDateString(),
+      // Comment: "",
+    });
 
-      // trigger Home to rerender with updated accountLog/categoryLog
-      if (props.updateHomeHandler) await props.updateHomeHandler();
-      if (props.updateIncomeHandler) await props.updateIncomeHandler();
-
-      // const formIsValid = checkFormValidity(form, validityRules);
-
-      // if (formIsValid) {
-      //   setFormIsValid(true);
-      // }
-    } catch (err) {
-      console.log(err);
+    if (!response) {
+      props.handleOpen("Failed to add new income.");
     }
+
+    // trigger Home to rerender with updated accountLog/categoryLog
+    if (props.updateHomeHandler) await props.updateHomeHandler();
+    if (props.updateIncomeHandler) await props.updateIncomeHandler();
+
+    // const formIsValid = checkFormValidity(form, validityRules);
+
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    // }
   };
 
   const transferFormSubmitHandler = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      await postTransaction("transfer", form);
+    const response = await postTransaction("transfer", form);
 
-      // setFormIsValid(false);
+    // setFormIsValid(false);
 
-      setForm({
-        From: "",
-        To: "",
-        Amount: "",
-        Date: new Date().toDateString(),
-        // Comment: "",
-      });
+    setForm({
+      From: "",
+      To: "",
+      Amount: "",
+      Date: new Date().toDateString(),
+      // Comment: "",
+    });
 
-      // trigger Home to rerender with updated accountLog/categoryLog
-      if (props.updateHomeHandler) await props.updateHomeHandler();
-      if (props.updateTransfersHandler) await props.updateTransfersHandler();
-
-      // const formIsValid = checkFormValidity(form, validityRules);
-
-      // if (formIsValid) {
-      //   setFormIsValid(true);
-      // }
-    } catch (err) {
-      console.log(err);
+    if (!response) {
+      props.handleOpen("Failed to add new transfer.");
     }
+
+    // trigger Home to rerender with updated accountLog/categoryLog
+    if (props.updateHomeHandler) await props.updateHomeHandler();
+    if (props.updateTransfersHandler) await props.updateTransfersHandler();
+
+    // const formIsValid = checkFormValidity(form, validityRules);
+
+    // if (formIsValid) {
+    //   setFormIsValid(true);
+    // }
   };
 
   const formSubmitHandler = (event) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import Balance from "./Balance/Balance";
 import AccountPaper from "../AccountsCategories/Accounts/AccountPaper";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyles();
 
   const [updateHome, setUpdateHome] = useState(false);
@@ -94,6 +94,7 @@ const Home = () => {
                   paperHeight={533}
                   pageTitle="Add new transaction"
                   addButtonColor="secondary"
+                  handleOpen={props.handleOpen}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
