@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import SideBar from "./SideBar/SideBar";
@@ -9,6 +9,7 @@ import Transfers from "./Transactions/Transfers/Transfers";
 import Accounts from "./AccountsCategories/Accounts/Accounts";
 import Categories from "./AccountsCategories/Categories/Categories";
 import TransactionList from "./Transactions/TransactionList";
+import ErrorHandler from "./ErrorHandler/ErrorHandler";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -44,6 +45,15 @@ const theme = createTheme({
 });
 
 function App() {
+  const [openErrorHandler, setOpenErrorHandler] = useState(false);
+  const [errorMesasage, setErrorMesage] = useState("");
+
+  const handleOpen = (message) => {
+    setOpenErrorHandler(true);
+    setErrorMesage(message);
+  };
+  const handleClose = () => setOpenErrorHandler(false);
+
   let routes = (
     <Switch>
       <Route path="/accounts">
@@ -65,7 +75,7 @@ function App() {
         <Categories />
       </Route>
       <Route path="/">
-        <Home />
+        <Home handleOpen={handleOpen} />
       </Route>
     </Switch>
   );
@@ -81,6 +91,7 @@ function App() {
             <Grid item xs={12} lg={10}>
               <Toolbar />
               <Box m={3}>{routes}</Box>
+              <ErrorHandler handleClose={handleClose} open={openErrorHandler} errorMesasage={errorMesasage}/>
             </Grid>
           </Grid>
         </Router>
