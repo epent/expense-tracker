@@ -94,7 +94,7 @@ const Home = (props) => {
                   paperHeight={533}
                   pageTitle="Add new transaction"
                   addButtonColor="secondary"
-                  handleOpen={props.handleOpen}
+                  openErrorDialog={props.openErrorDialog}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>

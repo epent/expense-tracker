@@ -96,7 +96,7 @@ const TransactionForm = (props) => {
     });
 
     if (!response) {
-      props.handleOpen("Failed to add new expense.");
+      props.openErrorDialog("Failed to add new expense.");
     }
 
     // setFormIsValid(false);
@@ -128,7 +128,7 @@ const TransactionForm = (props) => {
     });
 
     if (!response) {
-      props.handleOpen("Failed to add new income.");
+      props.openErrorDialog("Failed to add new income.");
     }
 
     // trigger Home to rerender with updated accountLog/categoryLog
@@ -158,7 +158,7 @@ const TransactionForm = (props) => {
     });
 
     if (!response) {
-      props.handleOpen("Failed to add new transfer.");
+      props.openErrorDialog("Failed to add new transfer.");
     }
 
     // trigger Home to rerender with updated accountLog/categoryLog
