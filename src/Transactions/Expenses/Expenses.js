@@ -8,7 +8,7 @@ import TransactionList from "../TransactionList";
 import ExpensesChart from "../../Charts/Bar/ExpensesChart";
 import { deleteTransaction, updateTransaction } from "../../modules/fetch";
 
-const Expenses = () => {
+const Expenses = (props) => {
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -64,6 +64,7 @@ const Expenses = () => {
             paperHeight={495}
             pageTitle="Add new expense"
             addButtonColor="secondary"
+            openErrorDialog={props.openErrorDialog}
           />
         </Grid>
         <Grid item xs={12} md={6}>

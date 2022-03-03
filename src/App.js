@@ -60,13 +60,13 @@ function App() {
         <Accounts />
       </Route>
       <Route path="/expenses">
-        <Expenses />
+        <Expenses openErrorDialog={handleOpen} />
       </Route>
       <Route path="/income">
-        <Income />
+        <Income openErrorDialog={handleOpen} />
       </Route>
       <Route path="/transfers">
-        <Transfers />
+        <Transfers openErrorDialog={handleOpen} />
       </Route>
       <Route path="/history">
         <TransactionList pageSize={14} pageTitle="Transaction History" />
@@ -75,7 +75,7 @@ function App() {
         <Categories />
       </Route>
       <Route path="/">
-        <Home handleOpen={handleOpen} />
+        <Home openErrorDialog={handleOpen} />
       </Route>
     </Switch>
   );
@@ -91,7 +91,11 @@ function App() {
             <Grid item xs={12} lg={10}>
               <Toolbar />
               <Box m={3}>{routes}</Box>
-              <ErrorHandler handleClose={handleClose} open={openErrorHandler} errorMesasage={errorMesasage}/>
+              <ErrorHandler
+                handleClose={handleClose}
+                open={openErrorHandler}
+                errorMesasage={errorMesasage}
+              />
             </Grid>
           </Grid>
         </Router>

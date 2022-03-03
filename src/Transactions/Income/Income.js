@@ -66,6 +66,7 @@ const Income = (props) => {
             paperHeight={495}
             pageTitle="Add new income"
             addButtonColor="primary"
+            openErrorDialog={props.openErrorDialog}
           />
         </Grid>
         <Grid item xs={12} md={6}>
