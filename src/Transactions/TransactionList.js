@@ -49,7 +49,7 @@ const TransactionList = (props) => {
         from: editRowsModel[key].from.value,
         to: editRowsModel[key].to.value,
         amount: Math.abs(editRowsModel[key].amount.value),
-        date: editRowsModel[key].date.value,
+        date: Date(editRowsModel[key].date.value),
       };
     });
 
