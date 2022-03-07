@@ -32,13 +32,14 @@ const Expenses = (props) => {
     // };
   };
 
-  const editRowsHandler = (newRow, oldRow) => {
-    updateTransaction("expense", oldRow, newRow);
+  const editRowsHandler = async (newRow, oldRow) => {
+    const response = await updateTransaction("expense", oldRow, newRow);
 
-    // const triggerPageUpdate = async () => {
-    //   setUpdateExpenses((prevState) => !prevState);
-    // };
-    // await triggerPageUpdate();
+    if (!response) {
+      props.openErrorDialog("Failed to update expense.");
+    }
+
+    setUpdateExpenses((prevState) => !prevState);
   };
 
   const openModalHandler = (transactionId, transactionList) => {

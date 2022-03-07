@@ -31,13 +31,14 @@ const Transfers = (props) => {
     // };
   };
 
-  const editRowsHandler = (newRow, oldRow) => {
-    updateTransaction("transfer", oldRow, newRow);
+  const editRowsHandler = async (newRow, oldRow) => {
+    const response = await updateTransaction("transfer", oldRow, newRow);
 
-    // const triggerPageUpdates = async () => {
-    //   setUpdateTransfers((prevState) => !prevState);
-    // };
-    // await triggerPageUpdates();
+    if (!response) {
+      props.openErrorDialog("Failed to update transfer.");
+    }
+
+    setUpdateTransfers((prevState) => !prevState);
   };
 
   const openModalHandler = (transactionId, transactionList) => {

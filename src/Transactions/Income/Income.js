@@ -33,13 +33,14 @@ const Income = (props) => {
     // };
   };
 
-  const editRowsHandler = (newRow, oldRow) => {
-    updateTransaction("income", oldRow, newRow);
+  const editRowsHandler = async (newRow, oldRow) => {
+    const response = await updateTransaction("income", oldRow, newRow);
 
-    // const triggerPageUpdates = async () => {
-    //   setUpdateIncome((presvState) => !presvState);
-    // };
-    // await triggerPageUpdates();
+    if (!response) {
+      props.openErrorDialog("Failed to update income.");
+    }
+
+    setUpdateIncome((presvState) => !presvState);
   };
 
   const openModalHandler = (transactionId, transactionList) => {
