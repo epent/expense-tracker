@@ -17,18 +17,16 @@ const Transfers = (props) => {
     setUpdateTransfers((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (transfersToDelete) => {
-    transfersToDelete.forEach((transferToDelete) => {
-      deleteTransaction("transfer", transferToDelete);
-    });
-
+  const deleteRowsHandler = async (transferToDelete) => {
     setShowModal(false);
 
-    //   const triggerPageUpdate = async () => {
-    //     setUpdateTransfers((prevState) => !prevState);
-    //   };
-    //   await triggerPageUpdate();
-    // };
+    const response = await deleteTransaction("transfer", transferToDelete);
+
+    if (!response) {
+      props.openErrorDialog("Failed to delete transfer.");
+    }
+
+    setUpdateTransfers((prevState) => !prevState);
   };
 
   const editRowsHandler = async (newRow, oldRow) => {

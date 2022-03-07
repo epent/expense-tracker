@@ -19,18 +19,16 @@ const Income = (props) => {
     setUpdateIncome((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (incomesToDelete) => {
-    incomesToDelete.forEach((incomeToDelete) => {
-      deleteTransaction("income", incomeToDelete);
-    });
-
+  const deleteRowsHandler = async (incomeToDelete) => {
     setShowModal(false);
 
-    //   const triggerPageUpdate = async () => {
-    //     setUpdateIncome((prevState) => !prevState);
-    //   };
-    //   await triggerPageUpdate();
-    // };
+    const response = await deleteTransaction("income", incomeToDelete);
+
+    if (!response) {
+      props.openErrorDialog("Failed to delete income.");
+    }
+
+    setUpdateIncome((prevState) => !prevState);
   };
 
   const editRowsHandler = async (newRow, oldRow) => {

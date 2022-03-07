@@ -18,18 +18,16 @@ const Expenses = (props) => {
     setUpdateExpenses((prevState) => !prevState);
   };
 
-  const deleteRowsHandler = (expensesToDelete) => {
-    expensesToDelete.forEach((expenseToDelete) => {
-      deleteTransaction("expense", expenseToDelete);
-    });
-
+  const deleteRowsHandler = async (expenseToDelete) => {
     setShowModal(false);
 
-    //   const triggerPageUpdate = async () => {
-    //     setUpdateExpenses((prevState) => !prevState);
-    //   };
-    //   await triggerPageUpdate();
-    // };
+    const response = await deleteTransaction("expense", expenseToDelete);
+
+    if (!response) {
+      props.openErrorDialog("Failed to delete expense.");
+    }
+
+    setUpdateExpenses((prevState) => !prevState);
   };
 
   const editRowsHandler = async (newRow, oldRow) => {
