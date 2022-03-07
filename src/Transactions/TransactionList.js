@@ -54,6 +54,7 @@ const TransactionList = (props) => {
     });
 
     props.editRowsHandler(newRow[0], oldRow[0]);
+    setSelectionModel("");
   };
 
   const [rows, setRows] = useState([]);
