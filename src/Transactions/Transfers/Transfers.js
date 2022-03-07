@@ -81,6 +81,7 @@ const Transfers = (props) => {
             showModal={showModal}
             transactionToDelete={transferToDelete}
             sign=""
+            allowEditing
           />
         </Grid>
       </Grid>

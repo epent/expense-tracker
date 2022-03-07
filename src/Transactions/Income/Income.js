@@ -83,6 +83,7 @@ const Income = (props) => {
             showModal={showModal}
             transactionToDelete={incomeToDelete}
             sign="+"
+            allowEditing
           />
         </Grid>
         <Grid item xs={12}>

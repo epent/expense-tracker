@@ -81,6 +81,7 @@ const Expenses = (props) => {
             showModal={showModal}
             transactionToDelete={expenseToDelete}
             sign="-"
+            allowEditing
           />
         </Grid>
         <Grid item xs={12}>

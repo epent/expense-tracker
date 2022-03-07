@@ -64,16 +64,26 @@ const TransactionList = (props) => {
       headerName: "Date",
       type: "date",
       flex: 1,
-      editable: true,
+      editable: props.allowEditing ? true : false,
     },
-    { field: "from", headerName: "From", flex: 1, editable: true },
-    { field: "to", headerName: "To", flex: 1, editable: true },
+    {
+      field: "from",
+      headerName: "From",
+      flex: 1,
+      editable: props.allowEditing ? true : false,
+    },
+    {
+      field: "to",
+      headerName: "To",
+      flex: 1,
+      editable: props.allowEditing ? true : false,
+    },
     {
       field: "amount",
       headerName: "Amount",
       type: "number",
       flex: 1,
-      editable: true,
+      editable: props.allowEditing ? true : false,
     },
   ];
 
@@ -254,6 +264,7 @@ const TransactionList = (props) => {
               rows={rows}
               pageSize={props.pageSize}
               rowsPerPageOptions={[5, 7, 14]}
+              disableSelectionOnClick={props.allowEditing ? false : true}
               onSelectionModelChange={(newSelectionModel) => {
                 setSelectionModel(newSelectionModel);
               }}
