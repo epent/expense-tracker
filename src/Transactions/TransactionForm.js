@@ -85,91 +85,91 @@ const TransactionForm = (props) => {
   const expenseFormSubmitHandler = async (event) => {
     event.preventDefault();
 
-    const response = await postTransaction("expense", form);
+    setFormIsValid(false);
 
-    setForm({
-      From: "",
-      To: "",
-      Amount: "",
-      Date: new Date().toDateString(),
-      // Comment: "",
-    });
+    const isValid = checkFormValidity(form, validityRules);
 
-    if (!response) {
-      props.openErrorDialog("Failed to add new expense.");
+    if (isValid) {
+      setFormIsValid(true);
+
+      const response = await postTransaction("expense", form);
+
+      setForm({
+        From: "",
+        To: "",
+        Amount: "",
+        Date: new Date().toDateString(),
+        // Comment: "",
+      });
+
+      if (!response) {
+        props.openErrorDialog("Failed to add new expense.");
+      }
     }
-
-    // setFormIsValid(false);
 
     // trigger Home to rerender with updated accountLog/categoryLog
     if (props.updateHomeHandler) await props.updateHomeHandler();
     if (props.updateExpensesHandler) await props.updateExpensesHandler();
-
-    // const formIsValid = checkFormValidity(form, validityRules);
-
-    // if (formIsValid) {
-    //   setFormIsValid(true);
-    // }
   };
 
   const incomeFormSubmitHandler = async (event) => {
     event.preventDefault();
 
-    const response = await postTransaction("income", form);
+    setFormIsValid(false);
 
-    // setFormIsValid(false);
+    const isValid = checkFormValidity(form, validityRules);
 
-    setForm({
-      From: "",
-      To: "",
-      Amount: "",
-      Date: new Date().toDateString(),
-      // Comment: "",
-    });
+    if (isValid) {
+      setFormIsValid(true);
 
-    if (!response) {
-      props.openErrorDialog("Failed to add new income.");
+      const response = await postTransaction("income", form);
+
+      setForm({
+        From: "",
+        To: "",
+        Amount: "",
+        Date: new Date().toDateString(),
+        // Comment: "",
+      });
+
+      if (!response) {
+        props.openErrorDialog("Failed to add new income.");
+      }
     }
 
     // trigger Home to rerender with updated accountLog/categoryLog
     if (props.updateHomeHandler) await props.updateHomeHandler();
     if (props.updateIncomeHandler) await props.updateIncomeHandler();
-
-    // const formIsValid = checkFormValidity(form, validityRules);
-
-    // if (formIsValid) {
-    //   setFormIsValid(true);
-    // }
   };
 
   const transferFormSubmitHandler = async (event) => {
     event.preventDefault();
 
-    const response = await postTransaction("transfer", form);
+    setFormIsValid(false);
 
-    // setFormIsValid(false);
+    const isValid = checkFormValidity(form, validityRules);
 
-    setForm({
-      From: "",
-      To: "",
-      Amount: "",
-      Date: new Date().toDateString(),
-      // Comment: "",
-    });
+    if (isValid) {
+      setFormIsValid(true);
 
-    if (!response) {
-      props.openErrorDialog("Failed to add new transfer.");
+      const response = await postTransaction("transfer", form);
+
+      setForm({
+        From: "",
+        To: "",
+        Amount: "",
+        Date: new Date().toDateString(),
+        // Comment: "",
+      });
+
+      if (!response) {
+        props.openErrorDialog("Failed to add new transfer.");
+      }
     }
 
     // trigger Home to rerender with updated accountLog/categoryLog
     if (props.updateHomeHandler) await props.updateHomeHandler();
     if (props.updateTransfersHandler) await props.updateTransfersHandler();
-
-    // const formIsValid = checkFormValidity(form, validityRules);
-
-    // if (formIsValid) {
-    //   setFormIsValid(true);
-    // }
   };
 
   const formSubmitHandler = (event) => {
