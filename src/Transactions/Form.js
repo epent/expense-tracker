@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewForm = (props) => {
+const Form = (props) => {
   const classes = useStyles();
 
   let accountsToChoose = <p>You have no accounts yet</p>;
@@ -112,9 +112,8 @@ const NewForm = (props) => {
         minRows="2"
       />
     ) : formKey === "Date" ? (
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} key={formKey}>
         <DatePicker
-          key={formKey}
           label={formKey}
           value={props.selectedDate}
           inputFormat="dd/MM/yyyy"
@@ -156,4 +155,4 @@ const NewForm = (props) => {
   );
 };
 
-export default NewForm;
+export default Form;

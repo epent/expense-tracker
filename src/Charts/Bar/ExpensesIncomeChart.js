@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
-import { getDataFromDBasList, getData } from "../../modules/fetch";
+import { getData } from "../../modules/fetch";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles({
   root: {
