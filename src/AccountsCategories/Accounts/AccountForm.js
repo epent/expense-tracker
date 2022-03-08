@@ -9,7 +9,7 @@ import AccountCategoryForm from "../AccountCategoryForm";
 
 import { postData as postAccount } from "../../modules/fetch";
 
-import { checkAccountFormValidity } from "../../modules/validate";
+import { checkAccounCategorytFormValidity as checkAccountFormValidity } from "../../modules/validate";
 
 const NewAccountForm = (props) => {
   const useStyles = makeStyles((theme) => ({

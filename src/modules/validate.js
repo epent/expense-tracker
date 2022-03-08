@@ -18,40 +18,23 @@ export const checkFormValidity = (transactionForm, rules) => {
   return formIsValid;
 };
 
-export const checkAccountFormValidity = (accountForm, rules) => {
+export const checkAccounCategorytFormValidity = (form, rules) => {
   let formIsValid = true;
 
   if (rules.required) {
-    formIsValid = accountForm.Name.trim() !== "" && formIsValid;
-    formIsValid = accountForm.Category.trim() !== "" && formIsValid;
-    formIsValid = accountForm.Balance !== "" && formIsValid;
+    formIsValid = form.Name.trim() !== "" && formIsValid;
+    formIsValid = form.Balance !== "" && formIsValid;
+    if (form.Category) {
+      formIsValid = form.Category.trim() !== "" && formIsValid;
+    }
   }
 
   if (rules.numeric) {
-    formIsValid = !isNaN(Number(accountForm.Balance)) && formIsValid;
+    formIsValid = !isNaN(Number(form.Balance)) && formIsValid;
   }
 
   if (rules.greaterOrEqualToZero) {
-    formIsValid = accountForm.Balance >= 0 && formIsValid;
-  }
-
-  return formIsValid;
-};
-
-export const checkCategoryFormValidity = (categoryForm, rules) => {
-  let formIsValid = true;
-
-  if (rules.required) {
-    formIsValid = categoryForm.Name.trim() !== "" && formIsValid;
-    formIsValid = categoryForm.Balance !== "" && formIsValid;
-  }
-
-  if (rules.numeric) {
-    formIsValid = !isNaN(Number(categoryForm.Balance)) && formIsValid;
-  }
-
-  if (rules.greaterOrEqualToZero) {
-    formIsValid = categoryForm.Balance >= 0 && formIsValid;
+    formIsValid = form.Balance >= 0 && formIsValid;
   }
 
   return formIsValid;
