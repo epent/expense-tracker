@@ -31,6 +31,8 @@ const NewCategorieForm = (props) => {
 
   const validityRules = {
     required: true,
+    greaterOrEqualToZero: true,
+    numeric: true,
   };
 
   const [formIsValid, setFormIsValid] = useState(true);
@@ -46,23 +48,23 @@ const NewCategorieForm = (props) => {
     try {
       event.preventDefault();
 
-      await postCategory("category", categoryForm);
+      setFormIsValid(false);
 
-      // setFormIsValid(false);
+      const isValid = checkCategoryFormValidity(categoryForm, validityRules);
 
-      setCategoryForm({
-        Name: "",
-        Balance: "",
-      });
+      if (isValid) {
+        setFormIsValid(true);
+
+        await postCategory("category", categoryForm);
+
+        setCategoryForm({
+          Name: "",
+          Balance: "",
+        });
+      }
 
       // trigger the page to rerender with updated categoryLog
       await props.updateCategoriesHandler();
-
-      // const formIsValid = checkCategoryFormValidity(categoryForm, validityRules);
-
-      // if (formIsValid) {
-      //   setFormIsValid(true);
-      // }
     } catch (err) {
       console.log(err);
     }
@@ -76,15 +78,12 @@ const NewCategorieForm = (props) => {
       helperTextName = "Please fill in";
       invalidInputName = true;
     }
-    if (
-      categoryForm.Balance <= 0 ||
-      categoryForm.Balance !== Number(categoryForm.Balance)
-    ) {
-      helperTextBalance = "Invalid input";
-      invalidInputBalance = true;
-    }
     if (categoryForm.Balance === "") {
       helperTextBalance = "Please fill in";
+      invalidInputBalance = true;
+    }
+    if (categoryForm.Balance < 0 || isNaN(Number(categoryForm.Balance))) {
+      helperTextBalance = "Invalid input";
       invalidInputBalance = true;
     }
   }

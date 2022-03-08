@@ -43,6 +43,7 @@ const TransactionForm = (props) => {
   const validityRules = {
     required: true,
     greaterThanZero: true,
+    numeric: true,
   };
 
   const [formIsValid, setFormIsValid] = useState(true);
@@ -201,12 +202,12 @@ const TransactionForm = (props) => {
       helperTextTo = "Please fill in";
       invalidInputTo = true;
     }
-    if (form.Amount <= 0 || form.Amount !== Number(form.Amount)) {
-      helperTextAmount = "Invalid input";
-      invalidInputAmount = true;
-    }
     if (form.Amount === "") {
       helperTextAmount = "Please fill in";
+      invalidInputAmount = true;
+    }
+    if (form.Amount <= 0 || isNaN(Number(form.Amount))) {
+      helperTextAmount = "Invalid input";
       invalidInputAmount = true;
     }
   }

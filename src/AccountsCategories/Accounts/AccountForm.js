@@ -31,6 +31,8 @@ const NewAccountForm = (props) => {
 
   const validityRules = {
     required: true,
+    greaterOrEqualToZero: true,
+    numeric: true,
   };
 
   const [formIsValid, setFormIsValid] = useState(true);
@@ -49,24 +51,24 @@ const NewAccountForm = (props) => {
     try {
       event.preventDefault();
 
-      await postAccount("account", accountForm);
+      setFormIsValid(false);
 
-      // setFormIsValid(false);
+      const isValid = checkAccountFormValidity(accountForm, validityRules);
 
-      setAccountForm({
-        Name: "",
-        Category: "",
-        Balance: "",
-      });
+      if (isValid) {
+        setFormIsValid(true);
+
+        await postAccount("account", accountForm);
+
+        setAccountForm({
+          Name: "",
+          Category: "",
+          Balance: "",
+        });
+      }
 
       // trigger the page to rerender with updated categoryLog
       await props.updateAccountsHandler();
-
-      // const formIsValid = checkAccountFormValidity(accountForm, validityRules);
-
-      // if (formIsValid) {
-      //   setFormIsValid(true);
-      // }
     } catch (err) {
       console.log(err);
     }
@@ -113,15 +115,12 @@ const NewAccountForm = (props) => {
       helperTextCategory = "Please fill in";
       invalidInputCategory = true;
     }
-    if (
-      accountForm.Balance < 0 ||
-      accountForm.Balance !== Number(accountForm.Balance)
-    ) {
-      helperTextBalance = "Invalid input";
-      invalidInputBalance = true;
-    }
     if (accountForm.Balance === "") {
       helperTextBalance = "Please fill in";
+      invalidInputBalance = true;
+    }
+    if (accountForm.Balance < 0 || isNaN(Number(accountForm.Balance))) {
+      helperTextBalance = "Invalid input";
       invalidInputBalance = true;
     }
   }

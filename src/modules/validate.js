@@ -4,10 +4,11 @@ export const checkFormValidity = (transactionForm, rules) => {
   if (rules.required) {
     formIsValid = transactionForm.From.trim() !== "" && formIsValid;
     formIsValid = transactionForm.To.trim() !== "" && formIsValid;
-    formIsValid =
-      transactionForm.Amount !== "" &&
-      transactionForm.Amount !== 0 &&
-      formIsValid;
+    formIsValid = transactionForm.Amount !== "" && formIsValid;
+  }
+
+  if (rules.numeric) {
+    formIsValid = !isNaN(Number(transactionForm.Amount)) && formIsValid;
   }
 
   if (rules.greaterThanZero) {
@@ -17,38 +18,40 @@ export const checkFormValidity = (transactionForm, rules) => {
   return formIsValid;
 };
 
-export const checkAccountFormValidity = (transactionForm, rules) => {
+export const checkAccountFormValidity = (accountForm, rules) => {
   let formIsValid = true;
 
   if (rules.required) {
-    formIsValid = transactionForm.Name.trim() !== "" && formIsValid;
-    formIsValid = transactionForm.Category.trim() !== "" && formIsValid;
-    formIsValid =
-      transactionForm.Balance !== "" &&
-      transactionForm.Balance !== 0 &&
-      formIsValid;
+    formIsValid = accountForm.Name.trim() !== "" && formIsValid;
+    formIsValid = accountForm.Category.trim() !== "" && formIsValid;
+    formIsValid = accountForm.Balance !== "" && formIsValid;
   }
 
-  if (rules.greaterThanZero) {
-    formIsValid = transactionForm.Balance > 0 && formIsValid;
+  if (rules.numeric) {
+    formIsValid = !isNaN(Number(accountForm.Amount)) && formIsValid;
+  }
+
+  if (rules.greaterOrEqualToZero) {
+    formIsValid = accountForm.Balance >= 0 && formIsValid;
   }
 
   return formIsValid;
 };
 
-export const checkCategoryFormValidity = (transactionForm, rules) => {
+export const checkCategoryFormValidity = (categoryForm, rules) => {
   let formIsValid = true;
 
   if (rules.required) {
-    formIsValid = transactionForm.Name.trim() !== "" && formIsValid;
-    formIsValid =
-      transactionForm.Balance !== "" &&
-      transactionForm.Balance !== 0 &&
-      formIsValid;
+    formIsValid = categoryForm.Name.trim() !== "" && formIsValid;
+    formIsValid = categoryForm.Balance !== "" && formIsValid;
   }
 
-  if (rules.greaterThanZero) {
-    formIsValid = transactionForm.Balance > 0 && formIsValid;
+  if (rules.numeric) {
+    formIsValid = !isNaN(Number(categoryForm.Amount)) && formIsValid;
+  }
+
+  if (rules.greaterOrEqualToZero) {
+    formIsValid = categoryForm.Balance >= 0 && formIsValid;
   }
 
   return formIsValid;
