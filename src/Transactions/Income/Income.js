@@ -12,16 +12,11 @@ import { deleteTransaction, updateTransaction } from "../../modules/fetch";
 const Income = (props) => {
   const [updateIncome, setUpdateIncome] = useState(false);
 
-  const [showModal, setShowModal] = useState(false);
-  const [incomeToDelete, setIncomeToDelete] = useState("");
-
   const updateIncomeHandler = () => {
     setUpdateIncome((prevState) => !prevState);
   };
 
   const deleteRowsHandler = async (incomeToDelete) => {
-    setShowModal(false);
-
     const response = await deleteTransaction("income", incomeToDelete);
 
     if (!response) {
@@ -39,19 +34,6 @@ const Income = (props) => {
     }
 
     setUpdateIncome((presvState) => !presvState);
-  };
-
-  const openModalHandler = (transactionId, transactionList) => {
-    const transactionToDelete = transactionList.filter((transaction) => {
-      return transaction.id === transactionId[0];
-    });
-
-    setShowModal(true);
-    setIncomeToDelete(transactionToDelete[0]);
-  };
-
-  const closeModalHandler = () => {
-    setShowModal(false);
   };
 
   return (
@@ -78,10 +60,6 @@ const Income = (props) => {
             pageSize={5}
             paperHeight={495}
             pageTitle="Recent transactions"
-            openModal={openModalHandler}
-            closeModal={closeModalHandler}
-            showModal={showModal}
-            transactionToDelete={incomeToDelete}
             sign="+"
             allowEditing
           />

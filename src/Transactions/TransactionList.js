@@ -26,7 +26,12 @@ const TransactionList = (props) => {
       height: props.paperHeight,
     },
   }));
+
   const classes = useStyles();
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [toDelete, setToDelete] = useState("");
 
   const [fullList, setFullList] = useState([]);
 
@@ -92,32 +97,26 @@ const TransactionList = (props) => {
     const fetchTransactions = async () => {
       const addType = (transactions, type) => {
         const updatedTransactions = transactions.map((transaction) => {
-          if (type === "expenses") {
-            return {
-              ...transaction,
-              type: type,
-              from: transaction.accountName,
-              to: transaction.categoryName,
-            };
-          }
-
-          if (type === "incomes") {
-            return {
-              ...transaction,
-              type: type,
-              from: transaction.from,
-              to: transaction.accountName,
-            };
-          }
-
-          if (type === "transfers") {
-            return {
-              ...transaction,
-              type: type,
-              from: transaction.accountFromName,
-              to: transaction.accountToName,
-            };
-          }
+          return type === "expenses"
+            ? {
+                ...transaction,
+                type: type,
+                from: transaction.accountName,
+                to: transaction.categoryName,
+              }
+            : type === "incomes"
+            ? {
+                ...transaction,
+                type: type,
+                from: transaction.from,
+                to: transaction.accountName,
+              }
+            : {
+                ...transaction,
+                type: type,
+                from: transaction.accountFromName,
+                to: transaction.accountToName,
+              };
         });
         return updatedTransactions;
       };
@@ -182,15 +181,29 @@ const TransactionList = (props) => {
     props.onlyTransfers,
   ]);
 
+  const openModalHandler = (transactionId, transactionList) => {
+    const transactionToDelete = transactionList.filter((transaction) => {
+      return transaction.id === transactionId[0];
+    });
+
+    setShowModal(true);
+
+    setToDelete(transactionToDelete[0]);
+  };
+
   const deleteButton = (
-    <IconButton aria-label="delete" size="large">
-      <DeleteIcon onClick={() => props.openModal(selectionModel, fullList)} />
+    <IconButton
+      aria-label="delete"
+      size="large"
+      onClick={() => openModalHandler(selectionModel, fullList)}
+    >
+      <DeleteIcon />
     </IconButton>
   );
 
   let transactionToDelete;
-  if (props.transactionToDelete) {
-    const fullDate = new Date(props.transactionToDelete.date);
+  if (toDelete) {
+    const fullDate = new Date(toDelete.date);
     const [, month, day, year] = fullDate.toString().split(" ");
 
     transactionToDelete = (
@@ -201,10 +214,7 @@ const TransactionList = (props) => {
           </Typography>
         </Grid>
         <Grid item xs={2}>
-          <Typography
-            color={props.transactionColor}
-            variant="body1"
-          >{`${props.transactionToDelete.from}`}</Typography>
+          <Typography variant="body1">{`${toDelete.from}`}</Typography>
         </Grid>
         <Grid item xs={1}>
           <ArrowRightAltIcon color={props.arrowColor} />
@@ -213,21 +223,21 @@ const TransactionList = (props) => {
           <Typography
             color={props.transactionColor}
             variant="body1"
-          >{`${props.transactionToDelete.to}`}</Typography>
+          >{`${toDelete.to}`}</Typography>
         </Grid>
         <Grid item xs={3}>
           <Typography
             color={props.amountColor}
             variant="body1"
             align="right"
-          >{`${props.sign}${props.transactionToDelete.amount} ILS`}</Typography>
+          >{`${props.sign}${toDelete.amount} ILS`}</Typography>
         </Grid>
       </ListItem>
     );
   }
 
   const deleteModal = (
-    <Dialog open={props.showModal} onClose={props.closeModal}>
+    <Dialog open={showModal} onClose={() => setShowModal(false)}>
       <DialogContent>
         <DialogContentText>
           Are you sure you want to delete this transaction?
@@ -235,12 +245,15 @@ const TransactionList = (props) => {
         {transactionToDelete}
       </DialogContent>
       <DialogActions>
-        <Button color="primary" onClick={props.closeModal}>
+        <Button color="primary" onClick={() => setShowModal(false)}>
           Close
         </Button>
         <Button
           color="secondary"
-          onClick={() => props.deleteTransaction(props.transactionToDelete)}
+          onClick={() => {
+            setShowModal(false);
+            props.deleteTransaction(toDelete);
+          }}
         >
           Delete
         </Button>
@@ -276,7 +289,7 @@ const TransactionList = (props) => {
               onRowEditStop={handleRowUpdate}
             />
             {props.showDeleteButton && deleteButton}
-            {props.transactionToDelete && deleteModal}
+            {toDelete && deleteModal}
           </Box>
         </Paper>
       </Box>
