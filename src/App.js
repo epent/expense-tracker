@@ -57,7 +57,7 @@ function App() {
   let routes = (
     <Switch>
       <Route path="/accounts">
-        <Accounts />
+        <Accounts openErrorDialog={handleOpen} />
       </Route>
       <Route path="/expenses">
         <Expenses openErrorDialog={handleOpen} />
@@ -72,7 +72,7 @@ function App() {
         <TransactionList pageSize={14} pageTitle="Transaction History" />
       </Route>
       <Route path="/categories">
-        <Categories />
+        <Categories openErrorDialog={handleOpen} />
       </Route>
       <Route path="/">
         <Home openErrorDialog={handleOpen} />

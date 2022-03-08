@@ -19,6 +19,7 @@ const NewCategories = (props) => {
         <CategoryForm
           pageTitle="Add new categorie"
           updateCategoriesHandler={updateCategoriesHandler}
+          openErrorDialog={props.openErrorDialog}
         />
       </Grid>
       <Grid item xs={12} md={6}>

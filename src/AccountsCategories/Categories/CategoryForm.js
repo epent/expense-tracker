@@ -45,29 +45,29 @@ const NewCategorieForm = (props) => {
   };
 
   const categoryFormSubmitHandler = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      setFormIsValid(false);
+    setFormIsValid(false);
 
-      const isValid = checkCategoryFormValidity(categoryForm, validityRules);
+    const isValid = checkCategoryFormValidity(categoryForm, validityRules);
 
-      if (isValid) {
-        setFormIsValid(true);
+    if (isValid) {
+      setFormIsValid(true);
 
-        await postCategory("category", categoryForm);
+      const response = await postCategory("category", categoryForm);
 
-        setCategoryForm({
-          Name: "",
-          Balance: "",
-        });
+      setCategoryForm({
+        Name: "",
+        Balance: "",
+      });
+
+      if (!response) {
+        props.openErrorDialog("Failed to add new category.");
       }
-
-      // trigger the page to rerender with updated categoryLog
-      await props.updateCategoriesHandler();
-    } catch (err) {
-      console.log(err);
     }
+
+    // trigger the page to rerender with updated categoryLog
+    await props.updateCategoriesHandler();
   };
 
   let helperTextName, helperTextBalance;

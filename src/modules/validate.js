@@ -28,7 +28,7 @@ export const checkAccountFormValidity = (accountForm, rules) => {
   }
 
   if (rules.numeric) {
-    formIsValid = !isNaN(Number(accountForm.Amount)) && formIsValid;
+    formIsValid = !isNaN(Number(accountForm.Balance)) && formIsValid;
   }
 
   if (rules.greaterOrEqualToZero) {
@@ -47,7 +47,7 @@ export const checkCategoryFormValidity = (categoryForm, rules) => {
   }
 
   if (rules.numeric) {
-    formIsValid = !isNaN(Number(categoryForm.Amount)) && formIsValid;
+    formIsValid = !isNaN(Number(categoryForm.Balance)) && formIsValid;
   }
 
   if (rules.greaterOrEqualToZero) {

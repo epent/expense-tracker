@@ -19,6 +19,7 @@ const NewAccounts = (props) => {
         <AccountForm
           pageTitle="Add new account"
           updateAccountsHandler={updateAccountsHandler}
+          openErrorDialog={props.openErrorDialog}
         />
       </Grid>
       <Grid item xs={12} md={6}>

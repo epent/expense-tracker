@@ -48,30 +48,30 @@ const NewAccountForm = (props) => {
 
   // add new account
   const accountFormSubmitHandler = async (event) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      setFormIsValid(false);
+    setFormIsValid(false);
 
-      const isValid = checkAccountFormValidity(accountForm, validityRules);
+    const isValid = checkAccountFormValidity(accountForm, validityRules);
 
-      if (isValid) {
-        setFormIsValid(true);
+    if (isValid) {
+      setFormIsValid(true);
 
-        await postAccount("account", accountForm);
+      const response = await postAccount("account", accountForm);
 
-        setAccountForm({
-          Name: "",
-          Category: "",
-          Balance: "",
-        });
+      setAccountForm({
+        Name: "",
+        Category: "",
+        Balance: "",
+      });
+
+      if (!response) {
+        props.openErrorDialog("Failed to add new account.");
       }
-
-      // trigger the page to rerender with updated categoryLog
-      await props.updateAccountsHandler();
-    } catch (err) {
-      console.log(err);
     }
+
+    // trigger the page to rerender with updated categoryLog
+    await props.updateAccountsHandler();
   };
 
   // const accountFormUpdateHandler = (event) => {
