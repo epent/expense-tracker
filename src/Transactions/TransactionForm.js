@@ -40,13 +40,13 @@ const TransactionForm = (props) => {
     // Comment: "",
   });
 
+  const [formIsValid, setFormIsValid] = useState(true);
+
   const validityRules = {
     required: true,
     greaterThanZero: true,
     numeric: true,
   };
-
-  const [formIsValid, setFormIsValid] = useState(true);
 
   useEffect(() => {
     // fetch accountList from server when form is opened
@@ -66,12 +66,8 @@ const TransactionForm = (props) => {
     fetchCategories();
   }, []);
 
-  const openFormHandler = (type) => {
-    setOpenForm(type);
-  };
-
   // update the form
-  const updateFormHandler = (event, formKey) => {
+  const formUpdateHandler = (event, formKey) => {
     formKey === "Date"
       ? setForm({
           ...form,
@@ -83,7 +79,7 @@ const TransactionForm = (props) => {
         });
   };
 
-  const expenseFormSubmitHandler = async (event) => {
+  const formSubmitHandler = async (event) => {
     event.preventDefault();
 
     setFormIsValid(false);
@@ -93,7 +89,8 @@ const TransactionForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const response = await postTransaction("expense", form);
+      const transcationType = openForm;
+      const response = await postTransaction(transcationType, form);
 
       setForm({
         From: "",
@@ -104,91 +101,17 @@ const TransactionForm = (props) => {
       });
 
       if (!response) {
-        props.openErrorDialog("Failed to add new expense.");
+        props.openErrorDialog(`Failed to add new ${transcationType}.`);
       }
     }
 
     // trigger Home to rerender with updated accountLog/categoryLog
     if (props.updateHomeHandler) await props.updateHomeHandler();
+
     if (props.updateExpensesHandler) await props.updateExpensesHandler();
-  };
-
-  const incomeFormSubmitHandler = async (event) => {
-    event.preventDefault();
-
-    setFormIsValid(false);
-
-    const isValid = checkFormValidity(form, validityRules);
-
-    if (isValid) {
-      setFormIsValid(true);
-
-      const response = await postTransaction("income", form);
-
-      setForm({
-        From: "",
-        To: "",
-        Amount: "",
-        Date: new Date().toDateString(),
-        // Comment: "",
-      });
-
-      if (!response) {
-        props.openErrorDialog("Failed to add new income.");
-      }
-    }
-
-    // trigger Home to rerender with updated accountLog/categoryLog
-    if (props.updateHomeHandler) await props.updateHomeHandler();
     if (props.updateIncomeHandler) await props.updateIncomeHandler();
-  };
-
-  const transferFormSubmitHandler = async (event) => {
-    event.preventDefault();
-
-    setFormIsValid(false);
-
-    const isValid = checkFormValidity(form, validityRules);
-
-    if (isValid) {
-      setFormIsValid(true);
-
-      const response = await postTransaction("transfer", form);
-
-      setForm({
-        From: "",
-        To: "",
-        Amount: "",
-        Date: new Date().toDateString(),
-        // Comment: "",
-      });
-
-      if (!response) {
-        props.openErrorDialog("Failed to add new transfer.");
-      }
-    }
-
-    // trigger Home to rerender with updated accountLog/categoryLog
-    if (props.updateHomeHandler) await props.updateHomeHandler();
     if (props.updateTransfersHandler) await props.updateTransfersHandler();
   };
-
-  const formSubmitHandler = (event) => {
-    openForm === "transfer" || props.transactionType === "transfer"
-      ? transferFormSubmitHandler(event)
-      : openForm === "income" || props.transactionType === "income"
-      ? incomeFormSubmitHandler(event)
-      : expenseFormSubmitHandler(event);
-  };
-
-  let buttonExpense = "outlined";
-  let buttonIncome = "outlined";
-  let buttonTransfer = "outlined";
-  openForm === "income"
-    ? (buttonIncome = "contained")
-    : openForm === "transfer"
-    ? (buttonTransfer = "contained")
-    : (buttonExpense = "contained");
 
   let helperTextFrom, helperTextTo, helperTextAmount;
   let invalidInputFrom, invalidInputTo, invalidInputAmount;
@@ -219,28 +142,22 @@ const TransactionForm = (props) => {
           <ButtonGroup size="large" fullWidth>
             <Button
               color="secondary"
-              variant={buttonExpense}
-              onClick={() => {
-                openFormHandler("expense");
-              }}
+              variant={openForm === "expense" ? "contained" : "outlined"}
+              onClick={() => setOpenForm("expense")}
             >
               Expense
             </Button>
             <Button
               color="primary"
-              variant={buttonIncome}
-              onClick={() => {
-                openFormHandler("income");
-              }}
+              variant={openForm === "income" ? "contained" : "outlined"}
+              onClick={() => setOpenForm("income")}
             >
               Income
             </Button>
             <Button
               color="transfer"
-              variant={buttonTransfer}
-              onClick={() => {
-                openFormHandler("transfer");
-              }}
+              variant={openForm === "transfer" ? "contained" : "outlined"}
+              onClick={() => setOpenForm("transfer")}
             >
               Transfer
             </Button>
@@ -266,7 +183,7 @@ const TransactionForm = (props) => {
               props.transactionType ? props.transactionType : openForm
             }
             formSubmitHandler={formSubmitHandler}
-            updateForm={updateFormHandler}
+            updateForm={formUpdateHandler}
             form={form}
             selectedDate={form.Date}
             helperTextFrom={helperTextFrom}
