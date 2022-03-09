@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -49,30 +49,19 @@ const AccountCategoryForm = (props) => {
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
       className: classes.textField,
+      error: props.validationErrors[formKey],
+      helperText: props.helperText[formKey],
     };
 
-    return formKey === "Category" ? (
-      <TextField
-        {...commonProps}
-        select
-        error={props.invalidInputCategory}
-        helperText={props.helperTextCategory}
-      >
+    const selectCategoryOfAccountField = (
+      <TextField {...commonProps} select>
         {accountCategoriesToChoose}
       </TextField>
-    ) : formKey === "Name" ? (
-      <TextField
-        {...commonProps}
-        error={props.invalidInputName}
-        helperText={props.helperTextName}
-      />
-    ) : (
-      <TextField
-        {...commonProps}
-        error={props.invalidInputAmount}
-        helperText={props.helperTextAmount}
-      />
     );
+
+    const textField = <TextField {...commonProps} />;
+
+    return formKey === "Category" ? selectCategoryOfAccountField : textField;
   });
 
   return (
