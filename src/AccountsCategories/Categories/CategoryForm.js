@@ -70,21 +70,24 @@ const NewCategorieForm = (props) => {
     await props.updateCategoriesHandler();
   };
 
-  let helperTextName, helperTextBalance;
-  let invalidInputName, invalidInputBalance;
+  const validationErrors = {
+    Name: false,
+    Balance: false,
+  };
+  const helperText = {};
 
   if (formIsValid === false) {
     if (categoryForm.Name === "") {
-      helperTextName = "Please fill in";
-      invalidInputName = true;
+      validationErrors.Name = true;
+      helperText.Name = "Please fill in";
     }
     if (categoryForm.Balance === "") {
-      helperTextBalance = "Please fill in";
-      invalidInputBalance = true;
+      validationErrors.Balance = true;
+      helperText.Balance = "Please fill in";
     }
     if (categoryForm.Balance < 0 || isNaN(Number(categoryForm.Balance))) {
-      helperTextBalance = "Invalid input";
-      invalidInputBalance = true;
+      validationErrors.Balance = true;
+      helperText.Balance = "Invalid input";
     }
   }
 
@@ -102,10 +105,8 @@ const NewCategorieForm = (props) => {
             form={categoryForm}
             updateForm={updateFormHandler}
             formSubmitHandler={categoryFormSubmitHandler}
-            helperTextName={helperTextName}
-            helperTextAmount={helperTextBalance}
-            invalidInputName={invalidInputName}
-            invalidInputAmount={invalidInputBalance}
+            validationErrors={validationErrors}
+            helperText={helperText}
           />
         </Box>
       </Paper>
