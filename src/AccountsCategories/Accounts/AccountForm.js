@@ -31,7 +31,6 @@ const NewAccountForm = (props) => {
 
   const validityRules = {
     required: true,
-    greaterOrEqualToZero: true,
     numeric: true,
   };
 
@@ -123,7 +122,7 @@ const NewAccountForm = (props) => {
       validationErrors.Balance = true;
       helperText.Balance = "Please fill in";
     }
-    if (accountForm.Balance < 0 || isNaN(Number(accountForm.Balance))) {
+    if (isNaN(Number(accountForm.Balance))) {
       validationErrors.Balance = true;
       helperText.Balance = "Invalid input";
     }

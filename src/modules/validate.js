@@ -33,9 +33,5 @@ export const checkAccounCategorytFormValidity = (form, rules) => {
     formIsValid = !isNaN(Number(form.Balance)) && formIsValid;
   }
 
-  if (rules.greaterOrEqualToZero) {
-    formIsValid = form.Balance >= 0 && formIsValid;
-  }
-
   return formIsValid;
 };

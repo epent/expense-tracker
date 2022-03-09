@@ -31,7 +31,6 @@ const NewCategorieForm = (props) => {
 
   const validityRules = {
     required: true,
-    greaterOrEqualToZero: true,
     numeric: true,
   };
 
@@ -85,7 +84,7 @@ const NewCategorieForm = (props) => {
       validationErrors.Balance = true;
       helperText.Balance = "Please fill in";
     }
-    if (categoryForm.Balance < 0 || isNaN(Number(categoryForm.Balance))) {
+    if (isNaN(Number(categoryForm.Balance))) {
       validationErrors.Balance = true;
       helperText.Balance = "Invalid input";
     }
