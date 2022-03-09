@@ -49,6 +49,16 @@ const Form = (props) => {
       );
     });
 
+  let accountCategoriesToChoose;
+  if (props.accountCategoriesList)
+    accountCategoriesToChoose = props.accountCategoriesList.map((category) => {
+      return (
+        <MenuItem key={category} value={category}>
+          {category}
+        </MenuItem>
+      );
+    });
+
   const formValues = props.form;
 
   const form = Object.keys(formValues).map((formKey) => {
@@ -57,7 +67,7 @@ const Form = (props) => {
       variant: "outlined",
       margin: "normal",
       size: "small",
-      color: props.transactionType === "expense" ? "secondary" : "primary",
+      color: props.formColor,
       label: formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
@@ -75,6 +85,12 @@ const Form = (props) => {
     const selectCategoryField = (
       <TextField {...commonProps} select>
         {categoriesToChoose}
+      </TextField>
+    );
+
+    const selectCategoryOfAccountField = (
+      <TextField {...commonProps} select>
+        {accountCategoriesToChoose}
       </TextField>
     );
 
@@ -128,6 +144,9 @@ const Form = (props) => {
           : formKey === "Date"
           ? dateField
           : selectAccountField;
+    }
+    if (!props.transactionType) {
+      field = formKey === "Category" ? selectCategoryOfAccountField : textField;
     }
     return field;
   });

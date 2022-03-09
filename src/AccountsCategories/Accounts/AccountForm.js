@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import makeStyles from "@mui/styles/makeStyles";
 
-import AccountCategoryForm from "../AccountCategoryForm";
+import Form from "../../Transactions/Form";
 
 import { postData as postAccount } from "../../modules/fetch";
 
@@ -137,7 +137,7 @@ const NewAccountForm = (props) => {
           </Typography>
         </Box>
         <Box mx={3}>
-          <AccountCategoryForm
+          <Form
             formColor="primary"
             form={accountForm}
             updateForm={updateFormHandler}
