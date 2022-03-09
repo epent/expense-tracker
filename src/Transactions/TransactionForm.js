@@ -113,25 +113,29 @@ const TransactionForm = (props) => {
     if (props.updateTransfersHandler) await props.updateTransfersHandler();
   };
 
-  let helperTextFrom, helperTextTo, helperTextAmount;
-  let invalidInputFrom, invalidInputTo, invalidInputAmount;
+  const validationErrors = {
+    From: false,
+    To: false,
+    Amount: false,
+  };
+  const helperText = {};
 
   if (formIsValid === false) {
     if (form.From === "") {
-      helperTextFrom = "Please fill in";
-      invalidInputFrom = true;
+      validationErrors.From = true;
+      helperText.From = "Please fill in";
     }
     if (form.To === "") {
-      helperTextTo = "Please fill in";
-      invalidInputTo = true;
-    }
-    if (form.Amount === "") {
-      helperTextAmount = "Please fill in";
-      invalidInputAmount = true;
+      validationErrors.To = true;
+      helperText.To = "Please fill in";
     }
     if (form.Amount <= 0 || isNaN(Number(form.Amount))) {
-      helperTextAmount = "Invalid input";
-      invalidInputAmount = true;
+      validationErrors.Amount = true;
+      helperText.Amount = "Invalid input";
+    }
+    if (form.Amount === "") {
+      validationErrors.Amount = true;
+      helperText.Amount = "Please fill in";
     }
   }
 
@@ -186,12 +190,8 @@ const TransactionForm = (props) => {
             updateForm={formUpdateHandler}
             form={form}
             selectedDate={form.Date}
-            helperTextFrom={helperTextFrom}
-            helperTextTo={helperTextTo}
-            helperTextAmount={helperTextAmount}
-            invalidInputFrom={invalidInputFrom}
-            invalidInputTo={invalidInputTo}
-            invalidInputAmount={invalidInputAmount}
+            validationErrors={validationErrors}
+            helperText={helperText}
             addButtonColor={props.addButtonColor}
           />
         </Box>
