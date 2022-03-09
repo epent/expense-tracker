@@ -42,6 +42,7 @@ const Expenses = (props) => {
           <TransactionForm
             showButtonGroup={false}
             transactionType="expense"
+            formColor="secondary"
             updateExpensesHandler={updateExpensesHandler}
             paperHeight={495}
             pageTitle="Add new expense"

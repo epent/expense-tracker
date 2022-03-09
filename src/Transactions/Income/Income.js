@@ -43,6 +43,7 @@ const Income = (props) => {
           <TransactionForm
             showButtonGroup={false}
             transactionType="income"
+            formColor="primary"
             updateIncomeHandler={updateIncomeHandler}
             paperHeight={495}
             pageTitle="Add new income"

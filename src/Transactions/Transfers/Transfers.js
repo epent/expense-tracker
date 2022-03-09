@@ -41,6 +41,7 @@ const Transfers = (props) => {
           <TransactionForm
             showButtonGroup={false}
             transactionType="transfer"
+            formColor="transfer"
             updateTransfersHandler={updateTransfersHandler}
             paperHeight={495}
             pageTitle="Add new transfer"

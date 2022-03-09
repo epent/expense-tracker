@@ -193,6 +193,15 @@ const TransactionForm = (props) => {
             validationErrors={validationErrors}
             helperText={helperText}
             addButtonColor={props.addButtonColor}
+            formColor={
+              props.formColor
+                ? props.formColor
+                : openForm === "expense"
+                ? "secondary"
+                : openForm === "income"
+                ? "primary"
+                : "transfer"
+            }
           />
         </Box>
       </Paper>
