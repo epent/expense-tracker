@@ -103,25 +103,29 @@ const NewAccountForm = (props) => {
   //   props.setShowAccountForm();
   // };
 
-  let helperTextName, helperTextCategory, helperTextBalance;
-  let invalidInputName, invalidInputCategory, invalidInputBalance;
+  const validationErrors = {
+    Name: false,
+    Category: false,
+    Balance: false,
+  };
+  const helperText = {};
 
   if (formIsValid === false) {
     if (accountForm.Name === "") {
-      helperTextName = "Please fill in";
-      invalidInputName = true;
+      validationErrors.Name = true;
+      helperText.Name = "Please fill in";
     }
     if (accountForm.Category === "") {
-      helperTextCategory = "Please fill in";
-      invalidInputCategory = true;
+      validationErrors.Category = true;
+      helperText.Category = "Please fill in";
     }
     if (accountForm.Balance === "") {
-      helperTextBalance = "Please fill in";
-      invalidInputBalance = true;
+      validationErrors.Balance = true;
+      helperText.Balance = "Please fill in";
     }
     if (accountForm.Balance < 0 || isNaN(Number(accountForm.Balance))) {
-      helperTextBalance = "Invalid input";
-      invalidInputBalance = true;
+      validationErrors.Balance = true;
+      helperText.Balance = "Invalid input";
     }
   }
 
@@ -140,12 +144,8 @@ const NewAccountForm = (props) => {
             updateForm={updateFormHandler}
             accountCategoriesList={accountCategoriesList}
             formSubmitHandler={accountFormSubmitHandler}
-            helperTextName={helperTextName}
-            helperTextCategory={helperTextCategory}
-            helperTextAmount={helperTextBalance}
-            invalidInputName={invalidInputName}
-            invalidInputCategory={invalidInputCategory}
-            invalidInputAmount={invalidInputBalance}
+            validationErrors={validationErrors}
+            helperText={helperText}
           />
         </Box>
       </Paper>
