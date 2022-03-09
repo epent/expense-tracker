@@ -51,8 +51,9 @@ const Form = (props) => {
 
   const formValues = props.form;
 
-  let form = Object.keys(formValues).map((formKey) => {
+  const form = Object.keys(formValues).map((formKey) => {
     const commonProps = {
+      key: formKey,
       variant: "outlined",
       margin: "normal",
       size: "small",
@@ -60,58 +61,26 @@ const Form = (props) => {
       label: formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
+      className: classes.textField,
+      error: props.validationErrors[formKey],
+      helperText: props.helperText[formKey],
     };
 
-    return formKey === "From" && props.transactionType === "income" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        className={classes.textField}
-        error={props.invalidInputFrom}
-        helperText={props.helperTextFrom}
-      />
-    ) : formKey === "From" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        select
-        className={classes.textField}
-        error={props.invalidInputFrom}
-        helperText={props.helperTextFrom}
-      >
+    const selectAccountField = (
+      <TextField {...commonProps} select>
         {accountsToChoose}
       </TextField>
-    ) : formKey === "To" && props.transactionType === "expense" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        select
-        className={classes.textField}
-        error={props.invalidInputTo}
-        helperText={props.helperTextTo}
-      >
+    );
+
+    const selectCategoryField = (
+      <TextField {...commonProps} select>
         {categoriesToChoose}
       </TextField>
-    ) : formKey === "To" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        select
-        className={classes.textField}
-        error={props.invalidInputTo}
-        helperText={props.helperTextTo}
-      >
-        {accountsToChoose}
-      </TextField>
-    ) : formKey === "Comment" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        fullWidth
-        multiline
-        minRows="2"
-      />
-    ) : formKey === "Date" ? (
+    );
+
+    const textField = <TextField {...commonProps} />;
+
+    const dateField = (
       <LocalizationProvider dateAdapter={AdapterDateFns} key={formKey}>
         <DatePicker
           label={formKey}
@@ -128,17 +97,39 @@ const Form = (props) => {
           )}
         />
       </LocalizationProvider>
-    ) : formKey === "Amount" ? (
-      <TextField
-        {...commonProps}
-        key={formKey}
-        className={classes.textField}
-        error={props.invalidInputAmount}
-        helperText={props.helperTextAmount}
-      />
-    ) : (
-      <TextField {...commonProps} key={formKey} className={classes.textField} />
     );
+
+    let field;
+
+    if (props.transactionType === "expense") {
+      field =
+        formKey === "From"
+          ? selectAccountField
+          : formKey === "To"
+          ? selectCategoryField
+          : formKey === "Date"
+          ? dateField
+          : textField;
+    }
+
+    if (props.transactionType === "income") {
+      field =
+        formKey === "To"
+          ? selectAccountField
+          : formKey === "Date"
+          ? dateField
+          : textField;
+    }
+
+    if (props.transactionType === "transfer") {
+      field =
+        formKey === "Amount"
+          ? textField
+          : formKey === "Date"
+          ? dateField
+          : selectAccountField;
+    }
+    return field;
   });
 
   return (
