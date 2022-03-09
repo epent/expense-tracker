@@ -41,6 +41,7 @@ const Expenses = (props) => {
         <Grid item xs={12} md={6}>
           <TransactionForm
             showButtonGroup={false}
+            transactionType="expense"
             updateExpensesHandler={updateExpensesHandler}
             paperHeight={495}
             pageTitle="Add new expense"
