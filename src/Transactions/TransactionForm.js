@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import makeStyles from "@mui/styles/makeStyles";
 
-import Form from "./Form";
+import Form from "../Form/Form.js";
 import { getData, postData as postTransaction } from "../modules/fetch.js";
 
 import { checkFormValidity } from "../modules/validate";

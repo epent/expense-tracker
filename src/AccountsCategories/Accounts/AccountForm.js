@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import makeStyles from "@mui/styles/makeStyles";
 
-import Form from "../../Transactions/Form";
+import Form from "../../Form/Form";
 
 import { postData as postAccount } from "../../modules/fetch";
 
