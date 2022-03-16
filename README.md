@@ -1,6 +1,8 @@
 # Expense Tracker
 
-An app to track your personal finance. Create categories of expenses, create multiple bank accounts/credit cards, add transactions and compare your budget on a monthly basis.
+This is the frontend part of Expense Tracker app. Backend code is [here](https://github.com/epent/expense-tracker-backend).
+
+Expense Tracker is an app to track your personal finance. Create categories of expenses, create multiple bank accounts/credit cards, add transactions and compare your budget on a monthly basis.
 
 <img src="./public/Home1.png">
 <img src="./public/Home2.png">
