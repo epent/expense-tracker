@@ -9,6 +9,7 @@ import Transfers from "./Transactions/Transfers/Transfers";
 import Accounts from "./AccountsCategories/Accounts/Accounts";
 import Categories from "./AccountsCategories/Categories/Categories";
 import TransactionList from "./Transactions/TransactionList";
+import SignUp from "./SignUp/SignUp";
 import ErrorHandler from "./ErrorHandler/ErrorHandler";
 
 import Box from "@mui/material/Box";
@@ -56,6 +57,9 @@ function App() {
 
   let routes = (
     <Switch>
+      <Route path="/signup">
+        <SignUp openErrorDialog={handleOpen} />
+      </Route>
       <Route path="/accounts">
         <Accounts openErrorDialog={handleOpen} />
       </Route>

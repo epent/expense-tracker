@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
   },
+  signUp50: {
+    [theme.breakpoints.up("xs")]: {
+      width: "50%",
+    },
+  },
 }));
 
 const Form = (props) => {
@@ -68,10 +73,18 @@ const Form = (props) => {
       margin: "normal",
       size: "small",
       color: props.formColor,
-      label: formKey,
+      label:
+        formKey === "FirstName"
+          ? "First name"
+          : formKey === "LastName"
+          ? "Last name"
+          : formKey,
       value: formValues[formKey],
       onChange: (e) => props.updateForm(e, formKey),
-      className: classes.textField,
+      className:
+        formKey === "FirstName" || formKey === "LastName"
+          ? classes.signUp50
+          : classes.textField,
       error: props.validationErrors[formKey],
       helperText: props.helperText[formKey],
     };
