@@ -107,11 +107,11 @@ const SignUp = (props) => {
   const addButton = (
     <Box my={2}>
       <Button
+        type="submit"
         variant="contained"
         color="primary"
         size="large"
         fullWidth
-        onClick={() => {}}
       >
         Sign Up
       </Button>

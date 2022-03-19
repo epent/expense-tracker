@@ -105,7 +105,7 @@ const LogIn = (props) => {
         color="primary"
         size="large"
         fullWidth
-        onClick={() => {}}
+        type="submit"
       >
         Log In
       </Button>
