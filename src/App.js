@@ -10,6 +10,7 @@ import Accounts from "./AccountsCategories/Accounts/Accounts";
 import Categories from "./AccountsCategories/Categories/Categories";
 import TransactionList from "./Transactions/TransactionList";
 import SignUp from "./SignUp/SignUp";
+import LogIn from "./LogIn/LogIn";
 import ErrorHandler from "./ErrorHandler/ErrorHandler";
 
 import Box from "@mui/material/Box";
@@ -59,6 +60,9 @@ function App() {
     <Switch>
       <Route path="/signup">
         <SignUp openErrorDialog={handleOpen} />
+      </Route>
+      <Route path="/login">
+        <LogIn openErrorDialog={handleOpen} />
       </Route>
       <Route path="/accounts">
         <Accounts openErrorDialog={handleOpen} />

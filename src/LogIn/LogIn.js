@@ -8,11 +8,11 @@ import Paper from "@mui/material/Paper";
 import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "../Form/Form";
-import { postData as postNewUser } from "../modules/fetch.js";
+import { postData as getUser } from "../modules/fetch.js";
 
 import { checkFormValidity } from "../modules/validate";
 
-const SignUp = (props) => {
+const LogIn = (props) => {
   const useStyles = makeStyles((theme) => ({
     paper: {
       backgroundColor: "#fafafa",
@@ -23,8 +23,6 @@ const SignUp = (props) => {
   const classes = useStyles();
 
   const [form, setForm] = useState({
-    FirstName: "",
-    LastName: "",
     Email: "",
     Password: "",
   });
@@ -47,11 +45,9 @@ const SignUp = (props) => {
   const formSubmitHandler = async (event) => {
     event.preventDefault();
 
-    const response = await postNewUser("signup", form);
+    const response = await getUser("login", form);
 
     setForm({
-      FirstName: "",
-      LastName: "",
       Email: "",
       Password: "",
     });
@@ -66,8 +62,6 @@ const SignUp = (props) => {
     //   const response = await postNewUser("signup", form);
 
     // setForm({
-    // FirstName: "",
-    // LastName: "",
     // Email: "",
     // Password: "",
     // });
@@ -111,7 +105,7 @@ const SignUp = (props) => {
           <Paper elevation={3} className={classes.paper}>
             <Box p={3}>
               <Typography variant="h5" color="textSecondary">
-                Sign up
+                Log in
               </Typography>
             </Box>
             <Box mx={3}>
@@ -133,4 +127,4 @@ const SignUp = (props) => {
   );
 };
 
-export default SignUp;
+export default LogIn;
