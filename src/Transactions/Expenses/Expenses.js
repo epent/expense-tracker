@@ -46,7 +46,6 @@ const Expenses = (props) => {
             updateExpensesHandler={updateExpensesHandler}
             paperHeight={495}
             pageTitle="Add new expense"
-            addButtonColor="secondary"
             openErrorDialog={props.openErrorDialog}
           />
         </Grid>

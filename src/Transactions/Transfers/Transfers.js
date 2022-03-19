@@ -45,7 +45,6 @@ const Transfers = (props) => {
             updateTransfersHandler={updateTransfersHandler}
             paperHeight={495}
             pageTitle="Add new transfer"
-            addButtonColor="transfer"
             openErrorDialog={props.openErrorDialog}
           />
         </Grid>

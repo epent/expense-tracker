@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "../../Form/Form";
@@ -90,6 +92,12 @@ const NewCategorieForm = (props) => {
     }
   }
 
+  const addButton = (
+    <IconButton size="medium" type="submit" color="secondary">
+      <AddCircleIcon style={{ fontSize: 50 }} />
+    </IconButton>
+  );
+
   return (
     <Box>
       <Paper elevation={3} className={classes.paper}>
@@ -106,6 +114,7 @@ const NewCategorieForm = (props) => {
             formSubmitHandler={categoryFormSubmitHandler}
             validationErrors={validationErrors}
             helperText={helperText}
+            addButton={addButton}
           />
         </Box>
       </Paper>

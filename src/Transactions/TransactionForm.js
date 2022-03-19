@@ -5,6 +5,8 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "../Form/Form.js";
@@ -170,6 +172,22 @@ const TransactionForm = (props) => {
       ))
     : (buttonGroup = null);
 
+  const addButton = (
+    <IconButton
+      size="medium"
+      type="submit"
+      color={
+        openForm === "expense"
+          ? "secondary"
+          : openForm === "income"
+          ? "primary"
+          : "transfer"
+      }
+    >
+      <AddCircleIcon style={{ fontSize: 50 }} />
+    </IconButton>
+  );
+
   return (
     <Box>
       <Paper elevation={3} className={classes.paper}>
@@ -192,7 +210,6 @@ const TransactionForm = (props) => {
             selectedDate={form.Date}
             validationErrors={validationErrors}
             helperText={helperText}
-            addButtonColor={props.addButtonColor}
             formColor={
               props.formColor
                 ? props.formColor
@@ -202,6 +219,7 @@ const TransactionForm = (props) => {
                 ? "primary"
                 : "transfer"
             }
+            addButton={addButton}
           />
         </Box>
       </Paper>

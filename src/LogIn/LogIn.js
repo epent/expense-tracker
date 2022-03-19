@@ -98,6 +98,20 @@ const LogIn = (props) => {
     }
   }
 
+  const addButton = (
+    <Box my={2}>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
+        onClick={() => {}}
+      >
+        Log In
+      </Button>
+    </Box>
+  );
+
   return (
     <Box>
       <Grid container spacing={3}>
@@ -115,8 +129,8 @@ const LogIn = (props) => {
                 form={form}
                 validationErrors={validationErrors}
                 helperText={helperText}
-                addButtonColor={props.addButtonColor}
                 formColor=""
+                addButton={addButton}
               />
             </Box>
           </Paper>

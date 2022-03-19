@@ -1,8 +1,6 @@
 import React from "react";
 
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import FormControl from "@mui/material/FormControl";
 import Grid from "@mui/material/Grid";
 import MenuItem from "@mui/material/MenuItem";
@@ -169,9 +167,7 @@ const Form = (props) => {
       <form onSubmit={props.formSubmitHandler} className={classes.form}>
         <FormControl className={classes.formControl}>
           <Box>{form}</Box>
-          <IconButton size="medium" type="submit" color={props.addButtonColor}>
-            <AddCircleIcon style={{ fontSize: 50 }} />
-          </IconButton>
+          {props.addButton}
         </FormControl>
       </form>
     </Grid>

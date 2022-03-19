@@ -17,7 +17,7 @@ const SignUp = (props) => {
     paper: {
       backgroundColor: "#fafafa",
       borderRadius: 10,
-      height: props.paperHeight,
+      height: 350,
     },
   }));
   const classes = useStyles();
@@ -104,6 +104,20 @@ const SignUp = (props) => {
     }
   }
 
+  const addButton = (
+    <Box my={2}>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
+        onClick={() => {}}
+      >
+        Sign Up
+      </Button>
+    </Box>
+  );
+
   return (
     <Box>
       <Grid container spacing={3}>
@@ -121,8 +135,8 @@ const SignUp = (props) => {
                 form={form}
                 validationErrors={validationErrors}
                 helperText={helperText}
-                addButtonColor={props.addButtonColor}
                 formColor=""
+                addButton={addButton}
               />
             </Box>
           </Paper>

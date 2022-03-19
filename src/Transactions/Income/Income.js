@@ -47,7 +47,6 @@ const Income = (props) => {
             updateIncomeHandler={updateIncomeHandler}
             paperHeight={495}
             pageTitle="Add new income"
-            addButtonColor="primary"
             openErrorDialog={props.openErrorDialog}
           />
         </Grid>
