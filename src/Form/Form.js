@@ -105,7 +105,12 @@ const Form = (props) => {
       </TextField>
     );
 
-    const textField = <TextField {...commonProps} />;
+    const textField = (
+      <TextField
+        {...commonProps}
+        type={formKey === "Password" ? "password" : null}
+      />
+    );
 
     const dateField = (
       <LocalizationProvider dateAdapter={AdapterDateFns} key={formKey}>
