@@ -40,10 +40,13 @@ export const checkSignFormValidity = (form, rules) => {
   let formIsValid = true;
 
   if (rules.required) {
-    formIsValid = form.FirstName.trim() !== "" && formIsValid;
-    formIsValid = form.LastName.trim() !== "" && formIsValid;
     formIsValid = form.Email.trim() !== "" && formIsValid;
     formIsValid = form.Password.trim() !== "" && formIsValid;
+
+    if (form.FirstName) {
+      formIsValid = form.FirstName.trim() !== "" && formIsValid;
+      formIsValid = form.LastName.trim() !== "" && formIsValid;
+    }
   }
 
   if (rules.email) {
