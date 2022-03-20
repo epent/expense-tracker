@@ -60,6 +60,7 @@ const SignUp = (props) => {
       const response = await postNewUser("signup", form);
 
       if (response.user) {
+        localStorage.setItem("token", response.token);
         history.push("/");
       } else {
         if (response.status === 422) {
