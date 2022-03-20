@@ -35,3 +35,27 @@ export const checkAccounCategorytFormValidity = (form, rules) => {
 
   return formIsValid;
 };
+
+export const checkSignFormValidity = (form, rules) => {
+  let formIsValid = true;
+
+  if (rules.required) {
+    formIsValid = form.FirstName.trim() !== "" && formIsValid;
+    formIsValid = form.LastName.trim() !== "" && formIsValid;
+    formIsValid = form.Email.trim() !== "" && formIsValid;
+    formIsValid = form.Password.trim() !== "" && formIsValid;
+  }
+
+  if (rules.email) {
+    formIsValid =
+      /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+        form.Email
+      ) && formIsValid;
+  }
+
+  if (rules.minLength) {
+    formIsValid = form.Password.trim().length >= 7 && formIsValid;
+  }
+
+  return formIsValid;
+};
