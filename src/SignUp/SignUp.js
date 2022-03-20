@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -21,6 +22,8 @@ const SignUp = (props) => {
     },
   }));
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [form, setForm] = useState({
     FirstName: "",
@@ -56,15 +59,20 @@ const SignUp = (props) => {
 
       const response = await postNewUser("signup", form);
 
-      setForm({
-        FirstName: "",
-        LastName: "",
-        Email: "",
-        Password: "",
-      });
-
-      if (!response) {
-        props.openErrorDialog("Failed to signup.");
+      if (response.user) {
+        history.push("/");
+      } else {
+        if (response.status === 422) {
+          props.openErrorDialog("User with such email already exists.");
+        } else {
+          setForm({
+            FirstName: "",
+            LastName: "",
+            Email: "",
+            Password: "",
+          });
+          props.openErrorDialog("Failed to signup.");
+        }
       }
     }
   };
