@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -10,7 +10,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import Form from "../Form/Form";
 import { postData as postNewUser } from "../modules/fetch.js";
 
-import { checkFormValidity } from "../modules/validate";
+import { checkSignFormValidity } from "../modules/validate";
 
 const SignUp = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -33,8 +33,8 @@ const SignUp = (props) => {
 
   const validityRules = {
     required: true,
-    greaterThanZero: true,
-    numeric: true,
+    email: true,
+    minLength: true,
   };
 
   const formUpdateHandler = (event, formKey) => {
@@ -47,60 +47,64 @@ const SignUp = (props) => {
   const formSubmitHandler = async (event) => {
     event.preventDefault();
 
-    const response = await postNewUser("signup", form);
+    setFormIsValid(false);
 
-    setForm({
-      FirstName: "",
-      LastName: "",
-      Email: "",
-      Password: "",
-    });
+    const isValid = checkSignFormValidity(form, validityRules);
 
-    // setFormIsValid(false);
+    if (isValid) {
+      setFormIsValid(true);
 
-    // const isValid = checkFormValidity(form, validityRules);
+      const response = await postNewUser("signup", form);
 
-    // if (isValid) {
-    //   setFormIsValid(true);
+      setForm({
+        FirstName: "",
+        LastName: "",
+        Email: "",
+        Password: "",
+      });
 
-    //   const response = await postNewUser("signup", form);
-
-    // setForm({
-    // FirstName: "",
-    // LastName: "",
-    // Email: "",
-    // Password: "",
-    // });
-
-    //   if (!response) {
-    //     props.openErrorDialog(`Failed to add new ${transcationType}.`);
-    //   }
-    // }
+      if (!response) {
+        props.openErrorDialog("Failed to signup.");
+      }
+    }
   };
 
   const validationErrors = {
-    From: false,
-    To: false,
-    Amount: false,
+    FirstName: false,
+    LastName: false,
+    Email: false,
+    Password: false,
   };
   const helperText = {};
 
   if (formIsValid === false) {
-    if (form.From === "") {
-      validationErrors.From = true;
-      helperText.From = "Please fill in";
+    if (
+      !/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/.test(
+        form.Email
+      )
+    ) {
+      validationErrors.Email = true;
+      helperText.Email = "Invalid email";
     }
-    if (form.To === "") {
-      validationErrors.To = true;
-      helperText.To = "Please fill in";
+    if (form.Password.length < 7) {
+      validationErrors.Password = true;
+      helperText.Password = "Password is too short";
     }
-    if (form.Amount <= 0 || isNaN(Number(form.Amount))) {
-      validationErrors.Amount = true;
-      helperText.Amount = "Invalid input";
+    if (form.Email === "") {
+      validationErrors.Email = true;
+      helperText.Email = "Please fill in";
     }
-    if (form.Amount === "") {
-      validationErrors.Amount = true;
-      helperText.Amount = "Please fill in";
+    if (form.Password === "") {
+      validationErrors.Password = true;
+      helperText.Password = "Please fill in";
+    }
+    if (form.FirstName === "") {
+      validationErrors.FirstName = true;
+      helperText.FirstName = "Please fill in";
+    }
+    if (form.LastName === "") {
+      validationErrors.LastName = true;
+      helperText.LastName = "Please fill in";
     }
   }
 
