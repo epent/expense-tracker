@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -21,6 +22,8 @@ const LogIn = (props) => {
     },
   }));
   const classes = useStyles();
+
+  const history = useHistory();
 
   const [form, setForm] = useState({
     Email: "",
@@ -54,17 +57,18 @@ const LogIn = (props) => {
 
       const response = await getUser("login", form);
 
-      setForm({
-        Email: "",
-        Password: "",
-      });
-
-      if (response.status === 401) {
-        props.openErrorDialog("Seems that email/password is incorrect.");
-      }
-
-      if (!response) {
-        props.openErrorDialog("Failed to login.");
+      if (response.user) {
+        history.push("/");
+      } else {
+        if (response.status === 401) {
+          props.openErrorDialog("Seems that email/password is incorrect.");
+        } else {
+          setForm({
+            Email: "",
+            Password: "",
+          });
+          props.openErrorDialog("Failed to login.");
+        }
       }
     }
   };
