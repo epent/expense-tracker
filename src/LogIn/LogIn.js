@@ -58,6 +58,7 @@ const LogIn = (props) => {
       const response = await getUser("login", form);
 
       if (response.user) {
+        localStorage.setItem("token", response.token);
         history.push("/");
       } else {
         if (response.status === 401) {
