@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -11,6 +11,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 import makeStyles from "@mui/styles/makeStyles";
 
@@ -23,6 +24,7 @@ import ImportExportIcon from "@mui/icons-material/ImportExport";
 import MoneyIcon from "@mui/icons-material/Money";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 220;
 
@@ -38,7 +40,8 @@ const SideBar = (props) => {
 
   const [path, setPath] = useState("");
 
-  let location = useLocation();
+  const location = useLocation();
+  const history = useHistory();
 
   useEffect(() => {
     setPath(location.pathname);
@@ -132,6 +135,7 @@ const SideBar = (props) => {
           <div>
             <List>{pages}</List>
           </div>
+          <Divider />
         </Drawer>
 
         <Drawer
@@ -147,6 +151,19 @@ const SideBar = (props) => {
         >
           <div>
             <List>{pages}</List>
+            <Divider />
+            <ListItem
+              button
+              onClick={() => {
+                localStorage.removeItem("token");
+                history.push("/login");
+              }}
+            >
+              <ListItemIcon className={classes.icons}>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </ListItem>
           </div>
         </Drawer>
       </Box>
