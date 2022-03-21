@@ -20,19 +20,22 @@ const CategoriesDonut = (props) => {
 
   useEffect(() => {
     const updateCategories = async () => {
-      const categoryList = props.categorieList;
+      let categoryList;
+      if (props.categorieList && props.categorieList.length > 0) {
+        categoryList = props.categorieList;
 
-      const balances = categoryList.map((category) => {
-        return Number(category.balance);
-      });
+        const balances = categoryList.map((category) => {
+          return Number(category.balance);
+        });
 
-      const labels = categoryList.map((category) => {
-        return category.name;
-      });
+        const labels = categoryList.map((category) => {
+          return category.name;
+        });
 
-      setCategoryBalances(balances);
+        setCategoryBalances(balances);
 
-      setCategoryLabels(labels);
+        setCategoryLabels(labels);
+      }
     };
     updateCategories();
   }, [props.categorieList]);
