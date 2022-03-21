@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +27,7 @@ const IncomeChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const incomes = await getIncomes("incomes");
+        const incomes = await getIncomes("incomes", props.token);
 
         incomes.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -71,10 +71,12 @@ const IncomeChart = (props) => {
         };
         await updateIncomeData();
       };
-      await fetchTransactions();
+      if (props.token) {
+        await fetchTransactions();
+      }
     };
     updateBarChart();
-  }, [props.updateIncome]);
+  }, [props.updateIncome, props.token]);
 
   return (
     <Grid container>

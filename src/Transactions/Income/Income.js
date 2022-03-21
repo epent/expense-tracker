@@ -17,7 +17,11 @@ const Income = (props) => {
   };
 
   const deleteRowsHandler = async (incomeToDelete) => {
-    const response = await deleteTransaction("income", incomeToDelete);
+    const response = await deleteTransaction(
+      "income",
+      incomeToDelete,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to delete income.");
@@ -27,7 +31,12 @@ const Income = (props) => {
   };
 
   const editRowsHandler = async (newRow, oldRow) => {
-    const response = await updateTransaction("income", oldRow, newRow);
+    const response = await updateTransaction(
+      "income",
+      oldRow,
+      newRow,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to update income.");
@@ -48,6 +57,7 @@ const Income = (props) => {
             paperHeight={495}
             pageTitle="Add new income"
             openErrorDialog={props.openErrorDialog}
+            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -62,10 +72,11 @@ const Income = (props) => {
             pageTitle="Recent transactions"
             sign="+"
             allowEditing
+            token={props.token}
           />
         </Grid>
         <Grid item xs={12}>
-          <IncomeChart updateIncome={updateIncome} />
+          <IncomeChart updateIncome={updateIncome} token={props.token}/>
         </Grid>
       </Grid>
     </Box>

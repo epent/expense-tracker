@@ -77,19 +77,23 @@ function App() {
         <Accounts openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/expenses">
-        <Expenses openErrorDialog={handleOpen} />
+        <Expenses openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/income">
-        <Income openErrorDialog={handleOpen} />
+        <Income openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/transfers">
-        <Transfers openErrorDialog={handleOpen} />
+        <Transfers openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/history">
-        <TransactionList pageSize={14} pageTitle="Transaction History" />
+        <TransactionList
+          pageSize={14}
+          pageTitle="Transaction History"
+          token={token}
+        />
       </Route>
       <Route path="/categories">
-        <Categories openErrorDialog={handleOpen} token={token}/>
+        <Categories openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/">
         <Home openErrorDialog={handleOpen} token={token} />

@@ -121,11 +121,11 @@ const TransactionList = (props) => {
         return updatedTransactions;
       };
 
-      const expenses = await getData("expenses");
+      const expenses = await getData("expenses", props.token);
       const expensesWithType = addType(expenses, "expenses");
-      const incomes = await getData("incomes");
+      const incomes = await getData("incomes", props.token);
       const incomesWithType = addType(incomes, "incomes");
-      const transfers = await getData("transfers");
+      const transfers = await getData("transfers", props.token);
       const transfersWithType = addType(transfers, "transfers");
 
       const updateRowList = async () => {
@@ -170,7 +170,9 @@ const TransactionList = (props) => {
       };
       await updateRowList();
     };
-    fetchTransactions();
+    if (props.token) {
+      fetchTransactions();
+    }
   }, [
     props.updateHome,
     props.updateExpenses,
@@ -179,6 +181,7 @@ const TransactionList = (props) => {
     props.onlyExpenses,
     props.onlyIncome,
     props.onlyTransfers,
+    props.token,
   ]);
 
   const openModalHandler = (transactionId, transactionList) => {

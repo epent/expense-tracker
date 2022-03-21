@@ -15,7 +15,11 @@ const Transfers = (props) => {
   };
 
   const deleteRowsHandler = async (transferToDelete) => {
-    const response = await deleteTransaction("transfer", transferToDelete);
+    const response = await deleteTransaction(
+      "transfer",
+      transferToDelete,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to delete transfer.");
@@ -25,7 +29,12 @@ const Transfers = (props) => {
   };
 
   const editRowsHandler = async (newRow, oldRow) => {
-    const response = await updateTransaction("transfer", oldRow, newRow);
+    const response = await updateTransaction(
+      "transfer",
+      oldRow,
+      newRow,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to update transfer.");
@@ -46,6 +55,7 @@ const Transfers = (props) => {
             paperHeight={495}
             pageTitle="Add new transfer"
             openErrorDialog={props.openErrorDialog}
+            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -60,6 +70,7 @@ const Transfers = (props) => {
             pageTitle="Recent transactions"
             sign=""
             allowEditing
+            token={props.token}
           />
         </Grid>
       </Grid>

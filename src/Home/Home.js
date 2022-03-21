@@ -95,6 +95,7 @@ const Home = (props) => {
                   pageTitle="Add new transaction"
                   addButtonColor="secondary"
                   openErrorDialog={props.openErrorDialog}
+                  token={props.token}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
@@ -103,6 +104,7 @@ const Home = (props) => {
                   paperHeight={533}
                   pageSize={7}
                   pageTitle="Recent transactions"
+                  token={props.token}
                 />
               </Grid>
             </Grid>
@@ -136,7 +138,7 @@ const Home = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <ExpensesIncomeChart updateHome={updateHome} />
+                <ExpensesIncomeChart updateHome={updateHome} token={props.token}/>
               </Grid>
             </Grid>
           </Grid>

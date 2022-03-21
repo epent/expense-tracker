@@ -31,8 +31,8 @@ const ExpensesIncomeChart = (props) => {
   useEffect(() => {
     const updateBarChart = async () => {
       const fetchTransactions = async () => {
-        const expenses = await getData("expenses");
-        const incomes = await getData("incomes");
+        const expenses = await getData("expenses", props.token);
+        const incomes = await getData("incomes", props.token);
 
         const transactionList = [...expenses, ...incomes];
 
@@ -101,10 +101,12 @@ const ExpensesIncomeChart = (props) => {
         };
         await updateIncomeData();
       };
-      await fetchTransactions();
+      if (props.token) {
+        await fetchTransactions();
+      }
     };
     updateBarChart();
-  }, [props.updateHome]);
+  }, [props.updateHome, props.token]);
 
   return (
     <Grid container>

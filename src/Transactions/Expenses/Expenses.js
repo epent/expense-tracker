@@ -16,7 +16,11 @@ const Expenses = (props) => {
   };
 
   const deleteRowsHandler = async (expenseToDelete) => {
-    const response = await deleteTransaction("expense", expenseToDelete);
+    const response = await deleteTransaction(
+      "expense",
+      expenseToDelete,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to delete expense.");
@@ -26,7 +30,12 @@ const Expenses = (props) => {
   };
 
   const editRowsHandler = async (newRow, oldRow) => {
-    const response = await updateTransaction("expense", oldRow, newRow);
+    const response = await updateTransaction(
+      "expense",
+      oldRow,
+      newRow,
+      props.token
+    );
 
     if (!response) {
       props.openErrorDialog("Failed to update expense.");
@@ -47,6 +56,7 @@ const Expenses = (props) => {
             paperHeight={495}
             pageTitle="Add new expense"
             openErrorDialog={props.openErrorDialog}
+            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -61,10 +71,11 @@ const Expenses = (props) => {
             pageTitle="Recent transactions"
             sign="-"
             allowEditing
+            token={props.token}
           />
         </Grid>
         <Grid item xs={12}>
-          <ExpensesChart updateExpenses={updateExpenses} />
+          <ExpensesChart updateExpenses={updateExpenses} token={props.token} />
         </Grid>
       </Grid>
     </Box>

@@ -53,7 +53,7 @@ const TransactionForm = (props) => {
   useEffect(() => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const accounts = await getData("accounts");
+      const accounts = await getData("accounts", props.token);
 
       setAccountList(accounts);
     };
@@ -61,12 +61,12 @@ const TransactionForm = (props) => {
 
     // fetch categoryList from server when form is opened
     const fetchCategories = async () => {
-      const categories = await getData("categories");
+      const categories = await getData("categories", props.token);
 
       setCategoryList(categories);
     };
     fetchCategories();
-  }, []);
+  }, [props.token]);
 
   // update the form
   const formUpdateHandler = (event, formKey) => {
@@ -92,7 +92,11 @@ const TransactionForm = (props) => {
       setFormIsValid(true);
 
       const transcationType = openForm;
-      const response = await postTransaction(transcationType, form);
+      const response = await postTransaction(
+        transcationType,
+        form,
+        props.token
+      );
 
       setForm({
         From: "",
