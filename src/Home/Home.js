@@ -35,7 +35,7 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchTotals = async () => {
-      const balances = await getBalances("balances");
+      const balances = await getBalances("balances", props.token);
 
       setBalances({
         total: balances.total,
@@ -44,7 +44,7 @@ const Home = (props) => {
       });
     };
     fetchTotals();
-  }, [updateHome]);
+  }, [updateHome, props.token]);
 
   return (
     <div className={classes.root}>
@@ -117,6 +117,7 @@ const Home = (props) => {
                   showDeleteBtn={false}
                   updateHome={updateHome}
                   title="Accounts"
+                  token={props.token}
                 />
               </Grid>
               <Grid item xs={12} md={6}>

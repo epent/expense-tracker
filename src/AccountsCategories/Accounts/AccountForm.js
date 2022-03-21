@@ -58,7 +58,7 @@ const NewAccountForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const response = await postAccount("account", accountForm);
+      const response = await postAccount("account", accountForm, props.token);
 
       setAccountForm({
         Name: "",

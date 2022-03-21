@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import SideBar from "./SideBar/SideBar";
@@ -47,8 +47,17 @@ const theme = createTheme({
 });
 
 function App() {
+  const [token, setToken] = useState();
   const [openErrorHandler, setOpenErrorHandler] = useState(false);
   const [errorMesasage, setErrorMesage] = useState("");
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("token");
+
+    if (authToken) {
+      setToken(authToken);
+    }
+  }, []);
 
   const handleOpen = (message) => {
     setOpenErrorHandler(true);
@@ -65,7 +74,7 @@ function App() {
         <LogIn openErrorDialog={handleOpen} />
       </Route>
       <Route path="/accounts">
-        <Accounts openErrorDialog={handleOpen} />
+        <Accounts openErrorDialog={handleOpen} token={token} />
       </Route>
       <Route path="/expenses">
         <Expenses openErrorDialog={handleOpen} />
@@ -83,7 +92,7 @@ function App() {
         <Categories openErrorDialog={handleOpen} />
       </Route>
       <Route path="/">
-        <Home openErrorDialog={handleOpen} />
+        <Home openErrorDialog={handleOpen} token={token} />
       </Route>
     </Switch>
   );

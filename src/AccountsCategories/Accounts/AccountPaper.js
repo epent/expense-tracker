@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import AccountList from "./AccountList";
 import AccountsDonut from "../../Charts/Donut/AccountsDonut";
@@ -27,12 +27,12 @@ const AccountPaper = (props) => {
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const accounts = await getAccounts("accounts");
-      console.log(accounts);
+      const accounts = await getAccounts("accounts", props.token);
+
       setAccountList(accounts);
     };
     fetchAccounts();
-  }, [props.updateAccounts, props.updateHome]);
+  }, [props.updateAccounts, props.updateHome, props.token]);
 
   return (
     <Paper elevation={3} className={classes.paper}>

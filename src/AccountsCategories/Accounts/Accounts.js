@@ -20,12 +20,14 @@ const NewAccounts = (props) => {
           pageTitle="Add new account"
           updateAccountsHandler={updateAccountsHandler}
           openErrorDialog={props.openErrorDialog}
+          token={props.token}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <AccountPaper
           updateAccounts={updateAccounts}
           title="List of accounts"
+          token={props.token}
         />
       </Grid>
     </Grid>
