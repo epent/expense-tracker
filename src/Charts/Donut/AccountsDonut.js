@@ -20,19 +20,22 @@ const AccountsDonut = (props) => {
 
   useEffect(() => {
     const updateAccounts = async () => {
-      const accountList = props.accountList;
+      let accountList;
+      if (props.accountList && props.accountList.length > 0) {
+        accountList = props.accountList;
 
-      const balances = accountList.map((account) => {
-        return Number(account.balance);
-      });
+        const balances = accountList.map((account) => {
+          return Number(account.balance);
+        });
 
-      const labels = accountList.map((account) => {
-        return account.name;
-      });
+        const labels = accountList.map((account) => {
+          return account.name;
+        });
 
-      setAccountBalances(balances);
+        setAccountBalances(balances);
 
-      setAccountLabels(labels);
+        setAccountLabels(labels);
+      }
     };
     updateAccounts();
   }, [props.accountList]);
