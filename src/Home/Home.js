@@ -127,6 +127,7 @@ const Home = (props) => {
                   showDeleteBtn={false}
                   updateHome={updateHome}
                   title="Categories"
+                  token={props.token}
                 />
               </Grid>
             </Grid>

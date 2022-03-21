@@ -55,7 +55,11 @@ const NewCategorieForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const response = await postCategory("category", categoryForm);
+      const response = await postCategory(
+        "category",
+        categoryForm,
+        props.token
+      );
 
       setCategoryForm({
         Name: "",

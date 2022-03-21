@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import CategoryList from "./CategoryList";
 import CategoriesDonut from "../../Charts/Donut/CategoriesDonut";
@@ -27,12 +27,12 @@ const CategoriePaper = (props) => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categories = await getCategories("categories");
+      const categories = await getCategories("categories", props.token);
 
       setCategorieList(categories);
     };
     fetchCategories();
-  }, [props.updateCategories, props.updateHome]);
+  }, [props.updateCategories, props.updateHome, props.token]);
 
   return (
     <Paper elevation={3} className={classes.paper}>

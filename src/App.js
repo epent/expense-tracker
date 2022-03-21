@@ -89,7 +89,7 @@ function App() {
         <TransactionList pageSize={14} pageTitle="Transaction History" />
       </Route>
       <Route path="/categories">
-        <Categories openErrorDialog={handleOpen} />
+        <Categories openErrorDialog={handleOpen} token={token}/>
       </Route>
       <Route path="/">
         <Home openErrorDialog={handleOpen} token={token} />
