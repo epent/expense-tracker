@@ -1,12 +1,20 @@
 const baseURL = "http://localhost:8080/";
 
-export const getData = async (type) => {
+export const getData = async (type, token) => {
   try {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      };
+    }
+
     const response = await fetch(`${baseURL}${type}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
     });
 
     const data = await response.json();
@@ -16,13 +24,21 @@ export const getData = async (type) => {
   }
 };
 
-export const postData = async (type, form) => {
+export const postData = async (type, form, token) => {
   try {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      };
+    }
+
     const response = await fetch(`${baseURL}${type}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify(form),
     });
 
@@ -33,13 +49,21 @@ export const postData = async (type, form) => {
   }
 };
 
-export const deleteTransaction = async (type, transaction) => {
+export const deleteTransaction = async (type, transaction, token) => {
   try {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      };
+    }
+
     const response = await fetch(`${baseURL}${type}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify(transaction),
     });
 
@@ -53,14 +77,23 @@ export const deleteTransaction = async (type, transaction) => {
 export const updateTransaction = async (
   type,
   oldTransaction,
-  newTransaction
+  newTransaction,
+  token
 ) => {
   try {
+    let headers = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      };
+    }
+
     const response = await fetch(`${baseURL}${type}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: headers,
       body: JSON.stringify({ old: oldTransaction, new: newTransaction }),
     });
 
