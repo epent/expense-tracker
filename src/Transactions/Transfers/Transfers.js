@@ -21,7 +21,7 @@ const Transfers = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to delete transfer.");
     }
 
@@ -36,7 +36,7 @@ const Transfers = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to update transfer.");
     }
 

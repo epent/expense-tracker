@@ -23,7 +23,7 @@ const Income = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to delete income.");
     }
 
@@ -38,7 +38,7 @@ const Income = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to update income.");
     }
 
@@ -76,7 +76,7 @@ const Income = (props) => {
           />
         </Grid>
         <Grid item xs={12}>
-          <IncomeChart updateIncome={updateIncome} token={props.token}/>
+          <IncomeChart updateIncome={updateIncome} token={props.token} />
         </Grid>
       </Grid>
     </Box>

@@ -22,7 +22,7 @@ const Expenses = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to delete expense.");
     }
 
@@ -37,7 +37,7 @@ const Expenses = (props) => {
       props.token
     );
 
-    if (!response) {
+    if (response && response.statusCode) {
       props.openErrorDialog("Failed to update expense.");
     }
 
