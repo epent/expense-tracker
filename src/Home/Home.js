@@ -43,7 +43,9 @@ const Home = (props) => {
         expenses: balances.expenses,
       });
     };
-    fetchTotals();
+    if (props.token) {
+      fetchTotals();
+    }
   }, [updateHome, props.token]);
 
   return (
@@ -138,7 +140,10 @@ const Home = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <ExpensesIncomeChart updateHome={updateHome} token={props.token}/>
+                <ExpensesIncomeChart
+                  updateHome={updateHome}
+                  token={props.token}
+                />
               </Grid>
             </Grid>
           </Grid>
