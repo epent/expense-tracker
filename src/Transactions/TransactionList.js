@@ -97,26 +97,12 @@ const TransactionList = (props) => {
     const fetchTransactions = async () => {
       const addType = (transactions, type) => {
         const updatedTransactions = transactions.map((transaction) => {
-          return type === "expenses"
-            ? {
-                ...transaction,
-                type: type,
-                from: transaction.accountName,
-                to: transaction.categoryName,
-              }
-            : type === "incomes"
-            ? {
-                ...transaction,
-                type: type,
-                from: transaction.from,
-                to: transaction.accountName,
-              }
-            : {
-                ...transaction,
-                type: type,
-                from: transaction.accountFromName,
-                to: transaction.accountToName,
-              };
+          return {
+            ...transaction,
+            type: type,
+            from: transaction.from,
+            to: transaction.to,
+          };
         });
         return updatedTransactions;
       };
