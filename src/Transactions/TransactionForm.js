@@ -91,7 +91,10 @@ const TransactionForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const transcationType = openForm;
+      const transcationType = props.transactionType
+        ? props.transactionType
+        : openForm;
+
       const response = await postTransaction(
         transcationType,
         form,
@@ -181,7 +184,9 @@ const TransactionForm = (props) => {
       size="medium"
       type="submit"
       color={
-        openForm === "expense"
+        props.formColor
+          ? props.formColor
+          : openForm === "expense"
           ? "secondary"
           : openForm === "income"
           ? "primary"
