@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -24,6 +24,8 @@ const SignUp = (props) => {
   const classes = useStyles();
 
   const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
 
   const [form, setForm] = useState({
     FirstName: "",
@@ -61,7 +63,7 @@ const SignUp = (props) => {
 
       if (response.user) {
         localStorage.setItem("token", response.token);
-        history.push("/");
+        history.replace(from);
       } else {
         if (response.status === 422) {
           props.openErrorDialog("User with such email already exists.");
