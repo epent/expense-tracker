@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ProvideAuth } from "./hooks/useAuth";
 
 import SideBar from "./SideBar/SideBar";
 import Home from "./Home/Home";
@@ -12,6 +13,7 @@ import TransactionList from "./Transactions/TransactionList";
 import SignUp from "./SignUp/SignUp";
 import LogIn from "./LogIn/LogIn";
 import ErrorHandler from "./ErrorHandler/ErrorHandler";
+import PrivateRoute from "./PrivateRoute/PrivateRoute";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -73,30 +75,30 @@ function App() {
       <Route path="/login">
         <LogIn openErrorDialog={handleOpen} />
       </Route>
-      <Route path="/accounts">
-        <Accounts openErrorDialog={handleOpen} token={token} />
-      </Route>
-      <Route path="/expenses">
-        <Expenses openErrorDialog={handleOpen} token={token} />
-      </Route>
-      <Route path="/income">
-        <Income openErrorDialog={handleOpen} token={token} />
-      </Route>
-      <Route path="/transfers">
-        <Transfers openErrorDialog={handleOpen} token={token} />
-      </Route>
-      <Route path="/history">
+      <PrivateRoute path="/accounts">
+        <Accounts openErrorDialog={handleOpen} />
+      </PrivateRoute>
+      <PrivateRoute path="/expenses">
+        <Expenses openErrorDialog={handleOpen} />
+      </PrivateRoute>
+      <PrivateRoute path="/income">
+        <Income openErrorDialog={handleOpen} />
+      </PrivateRoute>
+      <PrivateRoute path="/transfers">
+        <Transfers openErrorDialog={handleOpen} />
+      </PrivateRoute>
+      <PrivateRoute path="/history">
         <TransactionList
           pageSize={14}
           pageTitle="Transaction History"
           token={token}
         />
-      </Route>
-      <Route path="/categories">
-        <Categories openErrorDialog={handleOpen} token={token} />
-      </Route>
+      </PrivateRoute>
+      <PrivateRoute path="/categories">
+        <Categories openErrorDialog={handleOpen} />
+      </PrivateRoute>
       <Route path="/">
-        <Home openErrorDialog={handleOpen} token={token} />
+        <Home openErrorDialog={handleOpen} />
       </Route>
     </Switch>
   );
@@ -104,22 +106,24 @@ function App() {
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Grid container>
-            <Grid item lg={2}>
-              <SideBar />
+        <ProvideAuth>
+          <Router>
+            <Grid container>
+              <Grid item lg={2}>
+                <SideBar />
+              </Grid>
+              <Grid item xs={12} lg={10}>
+                <Toolbar />
+                <Box m={3}>{routes}</Box>
+                <ErrorHandler
+                  handleClose={handleClose}
+                  open={openErrorHandler}
+                  errorMesasage={errorMesasage}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12} lg={10}>
-              <Toolbar />
-              <Box m={3}>{routes}</Box>
-              <ErrorHandler
-                handleClose={handleClose}
-                open={openErrorHandler}
-                errorMesasage={errorMesasage}
-              />
-            </Grid>
-          </Grid>
-        </Router>
+          </Router>
+        </ProvideAuth>
       </ThemeProvider>
     </StyledEngineProvider>
   );
