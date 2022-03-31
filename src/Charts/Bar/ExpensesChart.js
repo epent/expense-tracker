@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
 import { getData as getExpenses } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -20,64 +21,63 @@ const useStyles = makeStyles({
 const ExpensesChart = (props) => {
   const classes = useStyles();
 
+  const auth = useAuth();
+
   const [months, setMonths] = useState([]);
 
   const [expensesData, setExpensesData] = useState([]);
 
   useEffect(() => {
-    const updateBarChart = async () => {
-      const fetchTransactions = async () => {
-        const expenses = await getExpenses("expenses", props.token);
+    const fetchTransactions = async () => {
+      const expenses = await getExpenses("expenses", auth.token);
 
-        expenses.sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
+      expenses.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
 
-        const updateMonthsRowList = async () => {
-          const monthsRow = [];
+      const updateMonthsRowList = async () => {
+        const monthsRow = [];
 
-          expenses.forEach((transaction) => {
-            const fullDate = new Date(transaction.date);
+        expenses.forEach((transaction) => {
+          const fullDate = new Date(transaction.date);
+          const [, month, ,] = fullDate.toString().split(" ");
+
+          if (!monthsRow.includes(month)) {
+            monthsRow.push(month);
+          }
+        });
+        setMonths(monthsRow);
+
+        return monthsRow;
+      };
+      const updatedMonthsRow = await updateMonthsRowList();
+
+      const updateExpensesData = async () => {
+        const expensesRow = [];
+
+        updatedMonthsRow.forEach((expenseMonth) => {
+          let sumOfExpenses = 0;
+
+          expenses.forEach((expense) => {
+            const fullDate = new Date(expense.date);
             const [, month, ,] = fullDate.toString().split(" ");
 
-            if (!monthsRow.includes(month)) {
-              monthsRow.push(month);
+            if (expenseMonth === month) {
+              sumOfExpenses += Number(expense.amount);
             }
           });
-          setMonths(monthsRow);
 
-          return monthsRow;
-        };
-        const updatedMonthsRow = await updateMonthsRowList();
+          expensesRow.push(sumOfExpenses);
+        });
 
-        const updateExpensesData = async () => {
-          const expensesRow = [];
-
-          updatedMonthsRow.forEach((expenseMonth) => {
-            let sumOfExpenses = 0;
-
-            expenses.forEach((expense) => {
-              const fullDate = new Date(expense.date);
-              const [, month, ,] = fullDate.toString().split(" ");
-
-              if (expenseMonth === month) {
-                sumOfExpenses += Number(expense.amount);
-              }
-            });
-
-            expensesRow.push(sumOfExpenses);
-          });
-
-          setExpensesData(expensesRow);
-        };
-        await updateExpensesData();
+        setExpensesData(expensesRow);
       };
-      if (props.token) {
-        await fetchTransactions();
-      }
+      await updateExpensesData();
     };
-    updateBarChart();
-  }, [props.updateExpenses, props.token]);
+    if (auth.token) {
+      fetchTransactions();
+    }
+  }, [props.updateExpenses, auth.token]);
 
   return (
     <Grid container>

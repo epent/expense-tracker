@@ -17,6 +17,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { getData } from "../modules/fetch";
+import { useAuth } from "../hooks/useAuth";
 
 const TransactionList = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -28,6 +29,8 @@ const TransactionList = (props) => {
   }));
 
   const classes = useStyles();
+
+  const auth = useAuth();
 
   const [showModal, setShowModal] = useState(false);
 
@@ -107,11 +110,11 @@ const TransactionList = (props) => {
         return updatedTransactions;
       };
 
-      const expenses = await getData("expenses", props.token);
+      const expenses = await getData("expenses", auth.token);
       const expensesWithType = addType(expenses, "expenses");
-      const incomes = await getData("incomes", props.token);
+      const incomes = await getData("incomes", auth.token);
       const incomesWithType = addType(incomes, "incomes");
-      const transfers = await getData("transfers", props.token);
+      const transfers = await getData("transfers", auth.token);
       const transfersWithType = addType(transfers, "transfers");
 
       const updateRowList = async () => {
@@ -156,7 +159,7 @@ const TransactionList = (props) => {
       };
       await updateRowList();
     };
-    if (props.token) {
+    if (auth.token) {
       fetchTransactions();
     }
   }, [
@@ -167,7 +170,7 @@ const TransactionList = (props) => {
     props.onlyExpenses,
     props.onlyIncome,
     props.onlyTransfers,
-    props.token,
+    auth.token,
   ]);
 
   const openModalHandler = (transactionId, transactionList) => {

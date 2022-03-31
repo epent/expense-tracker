@@ -11,8 +11,8 @@ import makeStyles from "@mui/styles/makeStyles";
 
 import Form from "../Form/Form.js";
 import { getData, postData as postTransaction } from "../modules/fetch.js";
-
 import { checkFormValidity } from "../modules/validate";
+import { useAuth } from "../hooks/useAuth.js";
 
 const TransactionForm = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -28,6 +28,8 @@ const TransactionForm = (props) => {
     },
   }));
   const classes = useStyles();
+
+  const auth = useAuth();
 
   const [accountList, setAccountList] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -53,20 +55,23 @@ const TransactionForm = (props) => {
   useEffect(() => {
     // fetch accountList from server when form is opened
     const fetchAccounts = async () => {
-      const accounts = await getData("accounts", props.token);
+      const accounts = await getData("accounts", auth.token);
 
       setAccountList(accounts);
     };
-    fetchAccounts();
 
     // fetch categoryList from server when form is opened
     const fetchCategories = async () => {
-      const categories = await getData("categories", props.token);
+      const categories = await getData("categories", auth.token);
 
       setCategoryList(categories);
     };
-    fetchCategories();
-  }, [props.token]);
+
+    if (auth.token) {
+      fetchAccounts();
+      fetchCategories();
+    }
+  }, [auth.token]);
 
   // update the form
   const formUpdateHandler = (event, formKey) => {
@@ -95,11 +100,7 @@ const TransactionForm = (props) => {
         ? props.transactionType
         : openForm;
 
-      const response = await postTransaction(
-        transcationType,
-        form,
-        props.token
-      );
+      const response = await postTransaction(transcationType, form, auth.token);
 
       setForm({
         From: "",

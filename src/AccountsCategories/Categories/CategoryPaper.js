@@ -9,6 +9,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import CategoryList from "./CategoryList";
 import CategoriesDonut from "../../Charts/Donut/CategoriesDonut";
 import { getData as getCategories } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,16 +24,21 @@ const useStyles = makeStyles((theme) => ({
 const CategoriePaper = (props) => {
   const classes = useStyles();
 
+  const auth = useAuth();
+
   const [categorieList, setCategorieList] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const categories = await getCategories("categories", props.token);
+      const categories = await getCategories("categories", auth.token);
 
       setCategorieList(categories);
     };
-    fetchCategories();
-  }, [props.updateCategories, props.updateHome, props.token]);
+
+    if (auth.token) {
+      fetchCategories();
+    }
+  }, [props.updateCategories, props.updateHome, auth.token]);
 
   return (
     <Paper elevation={3} className={classes.paper}>

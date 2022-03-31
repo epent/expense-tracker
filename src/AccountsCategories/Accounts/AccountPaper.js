@@ -9,6 +9,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import AccountList from "./AccountList";
 import AccountsDonut from "../../Charts/Donut/AccountsDonut";
 import { getData as getAccounts } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -23,16 +24,20 @@ const useStyles = makeStyles((theme) => ({
 const AccountPaper = (props) => {
   const classes = useStyles();
 
+  const auth = useAuth();
+
   const [accountList, setAccountList] = useState([]);
 
   useEffect(() => {
     const fetchAccounts = async () => {
-      const accounts = await getAccounts("accounts", props.token);
+      const accounts = await getAccounts("accounts", auth.token);
 
       setAccountList(accounts);
     };
-    fetchAccounts();
-  }, [props.updateAccounts, props.updateHome, props.token]);
+    if (auth.token) {
+      fetchAccounts();
+    }
+  }, [props.updateAccounts, props.updateHome, auth.token]);
 
   return (
     <Paper elevation={3} className={classes.paper}>

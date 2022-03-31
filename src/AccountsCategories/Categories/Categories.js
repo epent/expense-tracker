@@ -20,14 +20,12 @@ const NewCategories = (props) => {
           pageTitle="Add new categorie"
           updateCategoriesHandler={updateCategoriesHandler}
           openErrorDialog={props.openErrorDialog}
-          token={props.token}
         />
       </Grid>
       <Grid item xs={12} md={6}>
         <CategoryPaper
           updateCategories={updateCategories}
           title="List of categories"
-          token={props.token}
         />
       </Grid>
     </Grid>

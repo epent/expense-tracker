@@ -7,8 +7,11 @@ import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
 import ExpensesChart from "../../Charts/Bar/ExpensesChart";
 import { deleteTransaction, updateTransaction } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 const Expenses = (props) => {
+  const auth = useAuth();
+
   const [updateExpenses, setUpdateExpenses] = useState(false);
 
   const updateExpensesHandler = () => {
@@ -19,7 +22,7 @@ const Expenses = (props) => {
     const response = await deleteTransaction(
       "expense",
       expenseToDelete,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -34,7 +37,7 @@ const Expenses = (props) => {
       "expense",
       oldRow,
       newRow,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -56,7 +59,6 @@ const Expenses = (props) => {
             paperHeight={495}
             pageTitle="Add new expense"
             openErrorDialog={props.openErrorDialog}
-            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -71,7 +73,6 @@ const Expenses = (props) => {
             pageTitle="Recent transactions"
             sign="-"
             allowEditing
-            token={props.token}
           />
         </Grid>
         <Grid item xs={12}>

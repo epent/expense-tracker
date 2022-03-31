@@ -6,10 +6,12 @@ import Grid from "@mui/material/Grid";
 import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
 import IncomeChart from "../../Charts/Bar/IncomeChart";
-
 import { deleteTransaction, updateTransaction } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 const Income = (props) => {
+  const auth = useAuth();
+
   const [updateIncome, setUpdateIncome] = useState(false);
 
   const updateIncomeHandler = () => {
@@ -20,7 +22,7 @@ const Income = (props) => {
     const response = await deleteTransaction(
       "income",
       incomeToDelete,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -35,7 +37,7 @@ const Income = (props) => {
       "income",
       oldRow,
       newRow,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -57,7 +59,6 @@ const Income = (props) => {
             paperHeight={495}
             pageTitle="Add new income"
             openErrorDialog={props.openErrorDialog}
-            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -72,11 +73,10 @@ const Income = (props) => {
             pageTitle="Recent transactions"
             sign="+"
             allowEditing
-            token={props.token}
           />
         </Grid>
         <Grid item xs={12}>
-          <IncomeChart updateIncome={updateIncome} token={props.token} />
+          <IncomeChart updateIncome={updateIncome} />
         </Grid>
       </Grid>
     </Box>

@@ -11,6 +11,7 @@ import TransactionList from "../Transactions/TransactionList";
 import ExpensesIncomeChart from "../Charts/Bar/ExpensesIncomeChart";
 import TransactionForm from "../Transactions/TransactionForm";
 import { getData as getBalances } from "../modules/fetch";
+import { useAuth } from "../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const classes = useStyles();
+
+  const auth = useAuth();
 
   const [updateHome, setUpdateHome] = useState(false);
 
@@ -35,7 +38,7 @@ const Home = (props) => {
 
   useEffect(() => {
     const fetchTotals = async () => {
-      const balances = await getBalances("balances", props.token);
+      const balances = await getBalances("balances", auth.token);
 
       setBalances({
         total: balances.total,
@@ -43,10 +46,10 @@ const Home = (props) => {
         expenses: balances.expenses,
       });
     };
-    if (props.token) {
+    if (auth.token) {
       fetchTotals();
     }
-  }, [updateHome, props.token]);
+  }, [updateHome, auth.token]);
 
   return (
     <div className={classes.root}>
@@ -97,7 +100,6 @@ const Home = (props) => {
                   pageTitle="Add new transaction"
                   addButtonColor="secondary"
                   openErrorDialog={props.openErrorDialog}
-                  token={props.token}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
@@ -106,7 +108,6 @@ const Home = (props) => {
                   paperHeight={533}
                   pageSize={7}
                   pageTitle="Recent transactions"
-                  token={props.token}
                 />
               </Grid>
             </Grid>
@@ -121,7 +122,6 @@ const Home = (props) => {
                   showDeleteBtn={false}
                   updateHome={updateHome}
                   title="Accounts"
-                  token={props.token}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -131,7 +131,6 @@ const Home = (props) => {
                   showDeleteBtn={false}
                   updateHome={updateHome}
                   title="Categories"
-                  token={props.token}
                 />
               </Grid>
             </Grid>
@@ -140,10 +139,7 @@ const Home = (props) => {
           <Grid item xs={12}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <ExpensesIncomeChart
-                  updateHome={updateHome}
-                  token={props.token}
-                />
+                <ExpensesIncomeChart updateHome={updateHome} />
               </Grid>
             </Grid>
           </Grid>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BarChart from "./BarChart";
 import { getData as getIncomes } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -20,63 +21,62 @@ const useStyles = makeStyles({
 const IncomeChart = (props) => {
   const classes = useStyles();
 
+  const auth = useAuth();
+
   const [months, setMonths] = useState([]);
 
   const [incomeData, setIncomeData] = useState([]);
 
   useEffect(() => {
-    const updateBarChart = async () => {
-      const fetchTransactions = async () => {
-        const incomes = await getIncomes("incomes", props.token);
+    const fetchTransactions = async () => {
+      const incomes = await getIncomes("incomes", auth.token);
 
-        incomes.sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
+      incomes.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
 
-        const updateMonthsRowList = async () => {
-          const monthsRow = [];
+      const updateMonthsRowList = async () => {
+        const monthsRow = [];
 
-          incomes.forEach((transaction) => {
-            const fullDate = new Date(transaction.date);
+        incomes.forEach((transaction) => {
+          const fullDate = new Date(transaction.date);
+          const [, month, ,] = fullDate.toString().split(" ");
+
+          if (!monthsRow.includes(month)) {
+            monthsRow.push(month);
+          }
+        });
+        setMonths(monthsRow);
+        return monthsRow;
+      };
+      const updatedMonthsRow = await updateMonthsRowList();
+
+      const updateIncomeData = async () => {
+        const incomeRow = [];
+
+        updatedMonthsRow.forEach((incomeMonth) => {
+          let sumOfIncomes = 0;
+
+          incomes.forEach((income) => {
+            const fullDate = new Date(income.date);
             const [, month, ,] = fullDate.toString().split(" ");
 
-            if (!monthsRow.includes(month)) {
-              monthsRow.push(month);
+            if (incomeMonth === month) {
+              sumOfIncomes += Number(income.amount);
             }
           });
-          setMonths(monthsRow);
-          return monthsRow;
-        };
-        const updatedMonthsRow = await updateMonthsRowList();
 
-        const updateIncomeData = async () => {
-          const incomeRow = [];
+          incomeRow.push(sumOfIncomes);
+        });
 
-          updatedMonthsRow.forEach((incomeMonth) => {
-            let sumOfIncomes = 0;
-
-            incomes.forEach((income) => {
-              const fullDate = new Date(income.date);
-              const [, month, ,] = fullDate.toString().split(" ");
-
-              if (incomeMonth === month) {
-                sumOfIncomes += Number(income.amount);
-              }
-            });
-
-            incomeRow.push(sumOfIncomes);
-          });
-
-          setIncomeData(incomeRow);
-        };
-        await updateIncomeData();
+        setIncomeData(incomeRow);
       };
-      if (props.token) {
-        await fetchTransactions();
-      }
+      await updateIncomeData();
     };
-    updateBarChart();
-  }, [props.updateIncome, props.token]);
+    if (auth.token) {
+      fetchTransactions();
+    }
+  }, [props.updateIncome, auth.token]);
 
   return (
     <Grid container>

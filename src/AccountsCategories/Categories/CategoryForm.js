@@ -10,6 +10,7 @@ import makeStyles from "@mui/styles/makeStyles";
 import Form from "../../Form/Form";
 
 import { postData as postCategory } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 import { checkAccounCategorytFormValidity as checkCategoryFormValidity } from "../../modules/validate";
 
@@ -25,6 +26,8 @@ const NewCategorieForm = (props) => {
   }));
 
   const classes = useStyles();
+
+  const auth = useAuth();
 
   const [categoryForm, setCategoryForm] = useState({
     Name: "",
@@ -55,11 +58,7 @@ const NewCategorieForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const response = await postCategory(
-        "category",
-        categoryForm,
-        props.token
-      );
+      const response = await postCategory("category", categoryForm, auth.token);
 
       setCategoryForm({
         Name: "",

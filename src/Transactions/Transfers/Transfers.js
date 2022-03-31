@@ -6,8 +6,11 @@ import Grid from "@mui/material/Grid";
 import TransactionForm from "../TransactionForm";
 import TransactionList from "../TransactionList";
 import { deleteTransaction, updateTransaction } from "../../modules/fetch";
+import { useAuth } from "../../hooks/useAuth";
 
 const Transfers = (props) => {
+  const auth = useAuth();
+
   const [updateTransfers, setUpdateTransfers] = useState(false);
 
   const updateTransfersHandler = () => {
@@ -18,7 +21,7 @@ const Transfers = (props) => {
     const response = await deleteTransaction(
       "transfer",
       transferToDelete,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -33,7 +36,7 @@ const Transfers = (props) => {
       "transfer",
       oldRow,
       newRow,
-      props.token
+      auth.token
     );
 
     if (response && response.statusCode) {
@@ -55,7 +58,6 @@ const Transfers = (props) => {
             paperHeight={495}
             pageTitle="Add new transfer"
             openErrorDialog={props.openErrorDialog}
-            token={props.token}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -70,7 +72,6 @@ const Transfers = (props) => {
             pageTitle="Recent transactions"
             sign=""
             allowEditing
-            token={props.token}
           />
         </Grid>
       </Grid>

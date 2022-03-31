@@ -12,6 +12,7 @@ import Form from "../../Form/Form";
 import { postData as postAccount } from "../../modules/fetch";
 
 import { checkAccounCategorytFormValidity as checkAccountFormValidity } from "../../modules/validate";
+import { useAuth } from "../../hooks/useAuth";
 
 const NewAccountForm = (props) => {
   const useStyles = makeStyles((theme) => ({
@@ -24,6 +25,8 @@ const NewAccountForm = (props) => {
     },
   }));
   const classes = useStyles();
+
+  const auth = useAuth();
 
   const [accountForm, setAccountForm] = useState({
     Name: "",
@@ -58,7 +61,7 @@ const NewAccountForm = (props) => {
     if (isValid) {
       setFormIsValid(true);
 
-      const response = await postAccount("account", accountForm, props.token);
+      const response = await postAccount("account", accountForm, auth.token);
 
       setAccountForm({
         Name: "",
